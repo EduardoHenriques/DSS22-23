@@ -1,12 +1,11 @@
-import Equipa;
 
 package businesslayer.RacingSim.Carro;
-public class GTH extends GT {
+public class C2H extends C2 {
 
 	private int motor_eletrico;
 
-	public GTH() {
-		// TODO - implement GTH.GTH
+	public C2H() {
+		// TODO - implement C2H.C2H
 		throw new UnsupportedOperationException();
 	}
 
@@ -17,10 +16,11 @@ public class GTH extends GT {
 	 * @param cilindrada
 	 * @param potencia
 	 * @param e
+	 * @param p_mecanica
 	 * @param eletrico
 	 */
-	public GTH(String marca, String modelo, int cilindrada, int potencia, Equipa e, int eletrico) {
-		// TODO - implement GTH.GTH
+	public C2H(String marca, String modelo, int cilindrada, int potencia, int p_mecanica, int eletrico) {
+		// TODO - implement C2H.C2H
 		throw new UnsupportedOperationException();
 	}
 
@@ -28,27 +28,27 @@ public class GTH extends GT {
 	 * 
 	 * @param p
 	 */
-	public GTH(GTH p) {
-		// TODO - implement GTH.GTH
+	public C2H(C2H p) {
+		// TODO - implement C2H.C2H
 		throw new UnsupportedOperationException();
 	}
 
-	public GTH clone() {
-		// TODO - implement GTH.clone
+	public C2H clone() {
+		// TODO - implement C2H.clone
 		throw new UnsupportedOperationException();
 	}
 
 	public int getPotenciaMotorEletrico() {
-		// TODO - implement GTH.getPotenciaMotorEletrico
+		// TODO - implement C2H.getPotenciaMotorEletrico
 		throw new UnsupportedOperationException();
 	}
 
 	/**
 	 * 
-	 * @param potencia
+	 * @param e
 	 */
-	public void setPotenciaMotorEletrico(int potencia) {
-		// TODO - implement GTH.setPotenciaMotorEletrico
+	public void setPotenciaMotorEletrico(int e) {
+		// TODO - implement C2H.setPotenciaMotorEletrico
 		throw new UnsupportedOperationException();
 	}
 
@@ -59,7 +59,7 @@ public class GTH extends GT {
 	 * @param clima
 	 */
 	public boolean DNF(int volta, int totalvoltas, int clima) {
-		// TODO - implement GTH.DNF
+		// TODO - implement C2H.DNF
 		throw new UnsupportedOperationException();
 	}
 
@@ -68,7 +68,7 @@ public class GTH extends GT {
 	 * @param o
 	 */
 	public boolean equals(Object o) {
-		// TODO - implement GTH.equals
+		// TODO - implement C2H.equals
 		throw new UnsupportedOperationException();
 	}
 

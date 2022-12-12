@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.Random;
-
+import Participantes
+import businesslayer.RacingSim.Carro.Carro;
 import businesslayer.RacingSim.Corrida.*;
 
 public class Corrida implements Serializable {

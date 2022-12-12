@@ -1,83 +1,79 @@
 package businesslayer.RacingSim.Corrida;
 
+import java.util.Random;
+
 public class Seccao {
 
-	private String tipo;
+	private static final int CURVA = 0;
+	private static final int RETA = 1;
+	private static final int SHICANE = 2;
+
+	private int tipo;
 	private int gdu;
 
 	public int getGDU() {
-		// TODO - implement Seccao.getGDU
-		throw new UnsupportedOperationException();
+		return this.gdu;
 	}
 
-	/**
-	 * 
-	 * @param gdu
-	 */
 	public void setGDU(int gdu) {
-		// TODO - implement Seccao.setGDU
-		throw new UnsupportedOperationException();
+		this.gdu = gdu;
 	}
 
 	public int getTipo() {
-		// TODO - implement Seccao.getTipo
-		throw new UnsupportedOperationException();
+		return this.tipo;
 	}
 
-	/**
-	 * 
-	 * @param tipo
-	 */
 	public void setTipo(int tipo) {
-		// TODO - implement Seccao.setTipo
-		throw new UnsupportedOperationException();
+		this.tipo = tipo;
 	}
 
-	/**
-	 * 
-	 * @param tipo
-	 */
 	public Seccao(int tipo) {
-		// TODO - implement Seccao.Seccao
-		throw new UnsupportedOperationException();
+
+		this.tipo = tipo;
+		this.gdu = new Random().nextInt(3);
 	}
 
-	/**
-	 * 
-	 * @param tipo
-	 * @param gdu
-	 */
 	public Seccao(int tipo, int gdu) {
-		// TODO - implement Seccao.Seccao
-		throw new UnsupportedOperationException();
+		this.tipo = tipo;
+		this.gdu = gdu;
 	}
 
-	/**
-	 * 
-	 * @param seccao
-	 */
 	public Seccao(Seccao seccao) {
-		// TODO - implement Seccao.Seccao
-		throw new UnsupportedOperationException();
+		this.tipo = seccao.getTipo();
+		this.gdu = seccao.getGDU();
 	}
 
 	public Seccao clone() {
-		// TODO - implement Seccao.clone
-		throw new UnsupportedOperationException();
+		return this.clone();
 	}
 
 	public String toString() {
-		// TODO - implement Seccao.toString
-		throw new UnsupportedOperationException();
+		StringBuilder sb = new StringBuilder();
+		sb.append("Tipo: ");
+		switch (this.tipo) {
+		case 0:
+			sb.append("Curva");
+			break;
+		case 1:
+			sb.append("Reta");
+			break;
+		case 2:
+			sb.append("Shicane");
+			break;
+		}
+		sb.append(" GDU: ");
+		sb.append(this.gdu);
+		return sb.toString();
 	}
 
-	/**
-	 * 
-	 * @param o
-	 */
+	@Override
 	public boolean equals(Object o) {
-		// TODO - implement Seccao.equals
-		throw new UnsupportedOperationException();
+		if (o == this)
+			return true;
+		if (o == null || o.getClass() != this.getClass())
+			return false;
+		Seccao s = (Seccao) o;
+		return s.getTipo() == this.tipo && s.getGDU() == this.gdu;
 	}
 
 }

@@ -1,11 +1,20 @@
 package businesslayer.RacingSim.Corrida;
 
 import businesslayer.RacingSim.Utilizador.*;
+import businesslayer.RacingSim.Carro.Carro;
 
 public class Participante {
 
 	private int posicao = 0;
 	private Piloto piloto;
+	private Utilizador user;
+	
+	public int getPosicao() {
+		return this.posicao;
+	}
+	public Utilizador getUtilizador(){
+		return this.user;
+	}
 
 	public Participante() {
 		// TODO - implement Participante.Participante
@@ -21,10 +30,6 @@ public class Participante {
 	public Participante(Utilizador u, Piloto p, Carro c) {
 		// TODO - implement Participante.Participante
 		throw new UnsupportedOperationException();
-	}
-
-	public int getPosicao() {
-		return this.posicao;
 	}
 
 	/**

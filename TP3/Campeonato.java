@@ -4,14 +4,62 @@ import java.util.*;
 
 public class Campeonato implements Serializable {
 
-	private java.util.Map<String, Integer> classificacao;
+	private Map<String, Integer> classificacao;
 	private int numCorrida;
 	private String prova;
-	private Participante participantes;
+	private Map<String, Participante> participantes;
 	private Collection<Corrida> corridas;
+	private Set<Circuito> circuitos;
 
-	public java.util.Map<String, Integer> getClassificacao() {
+	public void setNumCorrida(int numCorrida) {
+		this.numCorrida = numCorrida;
+	}
+
+	public int getNumCorrida() {
+		return this.numCorrida;
+	}
+
+	public String getProva() {
+		return this.prova;
+	}
+
+	public void setProva(String prova) {
+		this.prova = prova;
+	}
+
+	public Map<String, Integer> getClassificacao() {
 		return this.classificacao;
+	}
+
+	public Map<String, Participante> getListaPart(){
+		return this.participantes;
+	}
+
+	public void setListaPart(Map<String, Participante> listaP){
+		this.participantes = listaP;
+	}
+
+	public Set<Circuito> getCircuitos(){
+		return this.circuitos;
+	}
+
+	public void setCircuitos(Set<Circuito> lcir){
+		this.circuitos = lcir;
+	}
+
+	public Participante getParticipante(String part){
+		return this.participantes.get(part);
+	}
+
+	/**
+	 * 
+	 * @param participante
+	 * @param piloto
+	 * @param jogador
+	 */
+	public void addParticipante(Participante participante) {
+		String nomeU = participante.getUtilizador().getUser();
+		this.participantes.put(nomeU, participante);
 	}
 
 	/**
@@ -63,44 +111,9 @@ public class Campeonato implements Serializable {
 	 * 
 	 * @param classificacao
 	 */
-	private java.util.List<Map.Entry<String, Integer>> ordenaClassificacao(java.util.Map<String, Integer> classificacao) {
+	public List<Map.Entry<String, Integer>> ordenaClassificacao(Map<String, Integer> classificacao) {
 		// TODO - implement Campeonato.ordenaClassificacao
 		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param participante
-	 * @param piloto
-	 * @param jogador
-	 */
-	public void addParticipante(Participante participante, String piloto, String jogador) {
-		// TODO - implement Campeonato.addParticipante
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param numCorrida
-	 */
-	public void setNumCorrida(int numCorrida) {
-		this.numCorrida = numCorrida;
-	}
-
-	public int getNumCorrida() {
-		return this.numCorrida;
-	}
-
-	public String getProva() {
-		return this.prova;
-	}
-
-	/**
-	 * 
-	 * @param prova
-	 */
-	public void setProva(String prova) {
-		this.prova = prova;
 	}
 
 }

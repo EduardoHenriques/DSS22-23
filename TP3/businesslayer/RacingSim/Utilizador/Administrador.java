@@ -4,41 +4,26 @@ public class Administrador extends Utilizador {
 
 	private String password;
 
-	/**
-	 * 
-	 * @param n
-	 */
-	public Administrador(String n) {
-		// TODO - implement Administrador.Administrador
-		throw new UnsupportedOperationException();
+	public Administrador(String n, String pass) {
+		super(n);
+		this.password = pass;
 	}
 
-	/**
-	 * 
-	 * @param a
-	 */
 	public Administrador(Administrador a) {
-		// TODO - implement Administrador.Administrador
-		throw new UnsupportedOperationException();
+		super(a);
+		this.password = a.getPass();
 	}
 
-	/**
-	 * 
-	 * @param password
-	 */
 	public void setPass(String password) {
-		// TODO - implement Administrador.setPass
-		throw new UnsupportedOperationException();
+		this.password = password;
 	}
 
 	public String getPass() {
-		// TODO - implement Administrador.getPass
-		throw new UnsupportedOperationException();
+		return this.password;
 	}
 
 	public Administrador clone() {
-		// TODO - implement Administrador.clone
-		throw new UnsupportedOperationException();
+		return new Administrador(this);
 	}
 
 }

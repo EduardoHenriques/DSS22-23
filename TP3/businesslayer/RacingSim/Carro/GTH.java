@@ -1,5 +1,3 @@
-import Equipa;
-
 package businesslayer.RacingSim.Carro;
 public class GTH extends GT {
 
@@ -19,7 +17,7 @@ public class GTH extends GT {
 	 * @param e
 	 * @param eletrico
 	 */
-	public GTH(String marca, String modelo, int cilindrada, int potencia, Equipa e, int eletrico) {
+	public GTH(String marca, String modelo, int cilindrada, int potencia, int eletrico) {
 		// TODO - implement GTH.GTH
 		throw new UnsupportedOperationException();
 	}

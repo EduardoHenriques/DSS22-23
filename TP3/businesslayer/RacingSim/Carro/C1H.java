@@ -1,12 +1,11 @@
-import Equipa;
 
 package businesslayer.RacingSim.Carro;
-public class GTH extends GT {
+public class C1H extends C1 {
 
 	private int motor_eletrico;
 
-	public GTH() {
-		// TODO - implement GTH.GTH
+	public C1H() {
+		// TODO - implement C1H.C1H
 		throw new UnsupportedOperationException();
 	}
 
@@ -19,8 +18,8 @@ public class GTH extends GT {
 	 * @param e
 	 * @param eletrico
 	 */
-	public GTH(String marca, String modelo, int cilindrada, int potencia, Equipa e, int eletrico) {
-		// TODO - implement GTH.GTH
+	public C1H(String marca, String modelo, int cilindrada, int potencia, int eletrico) {
+		// TODO - implement C1H.C1H
 		throw new UnsupportedOperationException();
 	}
 
@@ -28,18 +27,18 @@ public class GTH extends GT {
 	 * 
 	 * @param p
 	 */
-	public GTH(GTH p) {
-		// TODO - implement GTH.GTH
+	public C1H(C1H p) {
+		// TODO - implement C1H.C1H
 		throw new UnsupportedOperationException();
 	}
 
-	public GTH clone() {
-		// TODO - implement GTH.clone
+	public C1H clone() {
+		// TODO - implement C1H.clone
 		throw new UnsupportedOperationException();
 	}
 
 	public int getPotenciaMotorEletrico() {
-		// TODO - implement GTH.getPotenciaMotorEletrico
+		// TODO - implement C1H.getPotenciaMotorEletrico
 		throw new UnsupportedOperationException();
 	}
 
@@ -48,7 +47,7 @@ public class GTH extends GT {
 	 * @param potencia
 	 */
 	public void setPotenciaMotorEletrico(int potencia) {
-		// TODO - implement GTH.setPotenciaMotorEletrico
+		// TODO - implement C1H.setPotenciaMotorEletrico
 		throw new UnsupportedOperationException();
 	}
 
@@ -59,7 +58,7 @@ public class GTH extends GT {
 	 * @param clima
 	 */
 	public boolean DNF(int volta, int totalvoltas, int clima) {
-		// TODO - implement GTH.DNF
+		// TODO - implement C1H.DNF
 		throw new UnsupportedOperationException();
 	}
 
@@ -68,7 +67,7 @@ public class GTH extends GT {
 	 * @param o
 	 */
 	public boolean equals(Object o) {
-		// TODO - implement GTH.equals
+		// TODO - implement C1H.equals
 		throw new UnsupportedOperationException();
 	}
 
