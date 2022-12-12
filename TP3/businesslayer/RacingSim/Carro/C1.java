@@ -1,55 +1,37 @@
-
 package businesslayer.RacingSim.Carro;
 
 public class C1 extends Carro {
 
-
-
-	/**
-	 * 
-	 * @param marca
-	 * @param modelo
-	 * @param cilindrada
-	 * @param potencia
-	 * @param e
-	 */
-	public C1(String marca, String modelo, int cilindrada, int potencia) {
-		// TODO - implement C1.C1
-		throw new UnsupportedOperationException();
+	public C1()
+	{
+	super();
+	}
+	
+	public C1(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, int a_fiabilidade,float o_pa, String o_estado, String os_pneus) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
 	}
 
-	/**
-	 * 
-	 * @param p
-	 */
 	public C1(C1 p) {
-		// TODO - implement C1.C1
-		throw new UnsupportedOperationException();
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+	}
+
+	public String toString()
+	{
+		return super.toString();
 	}
 
 	public C1 clone() {
-		// TODO - implement C1.clone
-		throw new UnsupportedOperationException();
+		return new C1(this);
 	}
 
-	/**
-	 * 
-	 * @param volta
-	 * @param totalvoltas
-	 * @param clima
-	 */
-	public boolean DNF(int volta, int totalvoltas, int clima) {
-		// TODO - implement C1.DNF
-		throw new UnsupportedOperationException();
-	}
 
-	/**
-	 * 
-	 * @param o
-	 */
 	public boolean equals(Object o) {
-		// TODO - implement C1.equals
-		throw new UnsupportedOperationException();
+	   if(this == o) 
+       	return true;
+       if(o == null || o.getClass() != this.getClass())
+       	return false;
+
+		return super.equals(o);
 	}
 
 }

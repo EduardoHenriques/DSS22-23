@@ -5,20 +5,10 @@ public class C2H extends C2 {
 	private int motor_eletrico;
 
 	public C2H() {
-		// TODO - implement C2H.C2H
-		throw new UnsupportedOperationException();
+		
 	}
 
-	/**
-	 * 
-	 * @param marca
-	 * @param modelo
-	 * @param cilindrada
-	 * @param potencia
-	 * @param e
-	 * @param p_mecanica
-	 * @param eletrico
-	 */
+
 	public C2H(String marca, String modelo, int cilindrada, int potencia, int p_mecanica, int eletrico) {
 		// TODO - implement C2H.C2H
 		throw new UnsupportedOperationException();
