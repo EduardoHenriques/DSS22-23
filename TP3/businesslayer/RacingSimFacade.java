@@ -1,8 +1,8 @@
-package businesslayer.RacingSim;
+package businesslayer;
 
 import java.util.Scanner;
 
-import businesslayer.RacingSim.Carro.*;
+import businesslayer.Carro.*;
 
 public class RacingSimFacade implements IRacingSimFacade {
 

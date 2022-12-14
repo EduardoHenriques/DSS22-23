@@ -1,4 +1,4 @@
-package businesslayer.RacingSim.Utilizador;
+package businesslayer.Utilizador;
 
 public class FacadeUtilizador implements IFacadeUtilizador {
 

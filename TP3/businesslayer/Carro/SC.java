@@ -1,4 +1,4 @@
-package businesslayer.RacingSim.Carro;
+package businesslayer.Carro;
 public class SC extends Carro {
 
 	public SC()

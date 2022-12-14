@@ -1,7 +1,7 @@
-package businesslayer.RacingSim.Corrida;
+package businesslayer.Corrida;
 
-import businesslayer.RacingSim.Utilizador.*;
-import businesslayer.RacingSim.Carro.Carro;
+import businesslayer.Utilizador.*;
+import businesslayer.Carro.Carro;
 
 public class Participante {
 

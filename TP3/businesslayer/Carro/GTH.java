@@ -1,4 +1,4 @@
-package businesslayer.RacingSim.Carro;
+package businesslayer.Carro;
 public class GTH extends GT {
 
 	private int motor_eletrico;

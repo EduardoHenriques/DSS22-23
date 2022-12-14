@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 
-import businesslayer.RacingSim.Corrida.*;
+import businesslayer.Corrida.*;
 
 public class Circuito implements Serializable {
 

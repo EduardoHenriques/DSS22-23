@@ -1,4 +1,4 @@
-import businesslayer.RacingSim.Utilizador.*;
+import businesslayer.Utilizador.*;
 import java.io.*;
 
 public class Jogador extends Utilizador implements Comparable<Jogador>, Serializable {

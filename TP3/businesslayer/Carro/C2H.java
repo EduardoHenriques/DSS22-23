@@ -1,5 +1,5 @@
 
-package businesslayer.RacingSim.Carro;
+package businesslayer.Carro;
 public class C2H extends C2 {
 
 	private int motor_eletrico;

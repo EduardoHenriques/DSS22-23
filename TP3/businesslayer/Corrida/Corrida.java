@@ -1,10 +1,10 @@
-package businesslayer.RacingSim.Corrida;
+package businesslayer.Corrida;
 import java.io.*;
 import java.util.*;
 import java.util.Random;
-import businesslayer.RacingSim.Carro.Carro;
-import businesslayer.RacingSim.Carro.tipoPneu;
-import businesslayer.RacingSim.Corrida.*;
+import businesslayer.Carro.Carro;
+import businesslayer.Carro.tipoPneu;
+import businesslayer.Corrida.*;
 
 public class Corrida implements Serializable {
 

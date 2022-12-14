@@ -1,7 +1,7 @@
-package businesslayer.RacingSim.Carro;
+package businesslayer.Carro;
 import java.io.*;
-import businesslayer.RacingSim.Carro.estadoMotor;
-import businesslayer.RacingSim.Carro.tipoPneu;
+import businesslayer.Carro.estadoMotor;
+import businesslayer.Carro.tipoPneu;
 
 
 public abstract class Carro implements FacadeCarro, Serializable {

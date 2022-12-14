@@ -1,4 +1,4 @@
-package businesslayer.RacingSim.Corrida;
+package businesslayer.Corrida;
 
 public interface IFacadeCorrida {
 

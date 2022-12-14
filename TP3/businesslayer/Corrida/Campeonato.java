@@ -1,8 +1,8 @@
-package businesslayer.RacingSim.Corrida;
+package businesslayer.Corrida;
 import java.io.*;
 import java.security.KeyStore.Entry;
 
-import businesslayer.RacingSim.Corrida.*;
+import businesslayer.Corrida.*;
 import java.util.*;
 
 public class Campeonato implements Serializable {
