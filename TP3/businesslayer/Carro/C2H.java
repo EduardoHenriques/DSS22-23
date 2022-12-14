@@ -1,65 +1,52 @@
 
-package businesslayer.Carro;
 public class C2H extends C2 {
 
 	private int motor_eletrico;
 
-	public C2H() {
-		
+	public C2H()
+	{
+	super();
+	this.motor_eletrico = 0;
 	}
 
-
-	public C2H(String marca, String modelo, int cilindrada, int potencia, int p_mecanica, int eletrico) {
-		// TODO - implement C2H.C2H
-		throw new UnsupportedOperationException();
+	public C2H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, int o_motor_eletrico, float a_afinacao) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_afinacao);
+		this.motor_eletrico = o_motor_eletrico;
 	}
 
-	/**
-	 * 
-	 * @param p
-	 */
+	public int getMotorEletrico()
+	{
+		return this.motor_eletrico;
+	}
+
+	public void setMotorEletrico(int o_motor)
+	{
+		this.motor_eletrico = o_motor;
+	}
+
 	public C2H(C2H p) {
-		// TODO - implement C2H.C2H
-		throw new UnsupportedOperationException();
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getAfinacao());
+		this.motor_eletrico = p.getMotorEletrico();
+	}
+	
+	public String toString()
+	{
+		String s =  super.toString();
+		return(s + "Motor Eletrico: " + this.getMotorEletrico() + "\n" );
 	}
 
 	public C2H clone() {
-		// TODO - implement C2H.clone
-		throw new UnsupportedOperationException();
+		return new C2H(this);
 	}
 
-	public int getPotenciaMotorEletrico() {
-		// TODO - implement C2H.getPotenciaMotorEletrico
-		throw new UnsupportedOperationException();
-	}
 
-	/**
-	 * 
-	 * @param e
-	 */
-	public void setPotenciaMotorEletrico(int e) {
-		// TODO - implement C2H.setPotenciaMotorEletrico
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param volta
-	 * @param totalvoltas
-	 * @param clima
-	 */
-	public boolean DNF(int volta, int totalvoltas, int clima) {
-		// TODO - implement C2H.DNF
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param o
-	 */
 	public boolean equals(Object o) {
-		// TODO - implement C2H.equals
-		throw new UnsupportedOperationException();
+	   if(this == o) 
+       	return true;
+       if(o == null || o.getClass() != this.getClass())
+       	return false;
+		C2H c = (C2H) o;
+		return (c.getMotorEletrico() == this.getMotorEletrico() && super.equals(o));
 	}
 
 }

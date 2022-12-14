@@ -1,74 +1,57 @@
 
-package businesslayer.Carro;
 public class C1H extends C1 {
 
 	private int motor_eletrico;
 
 	public C1H() {
-		// TODO - implement C1H.C1H
-		throw new UnsupportedOperationException();
+		super();
+		this.motor_eletrico = 0;
 	}
 
-	/**
-	 * 
-	 * @param marca
-	 * @param modelo
-	 * @param cilindrada
-	 * @param potencia
-	 * @param e
-	 * @param eletrico
-	 */
-	public C1H(String marca, String modelo, int cilindrada, int potencia, int eletrico) {
-		// TODO - implement C1H.C1H
-		throw new UnsupportedOperationException();
+	public C1H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, int o_motorE) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
+		this.motor_eletrico = o_motorE;
 	}
 
-	/**
-	 * 
-	 * @param p
-	 */
+	//CONSTRUTOR DEFAULT -> A VIABILIDADE DOS C1H É 0.95, SEMPRE
+	public C1H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia,float o_pa, int o_motorE)
+	{
+	 super(a_marca,o_modelo,a_cilindrada,a_potencia,o_pa);
+	 this.setFiabilidade(0.95f);
+	 this.motor_eletrico = o_motorE;
+	}
+
+	public int getMotorEletrico() {
+		return this.motor_eletrico;
+	}
+
+	public void setMotorEletrico(int motorE) {
+		this.motor_eletrico = motorE;
+	}
+
 	public C1H(C1H p) {
-		// TODO - implement C1H.C1H
-		throw new UnsupportedOperationException();
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		this.motor_eletrico = p.getMotorEletrico();
 	}
 
 	public C1H clone() {
-		// TODO - implement C1H.clone
-		throw new UnsupportedOperationException();
+		return new C1H(this);
 	}
 
-	public int getPotenciaMotorEletrico() {
-		// TODO - implement C1H.getPotenciaMotorEletrico
-		throw new UnsupportedOperationException();
+	public String toString()
+	{
+		String s =  super.toString();
+		return(s + "Motor Eletrico: " + this.getMotorEletrico() + "\n" );
 	}
 
-	/**
-	 * 
-	 * @param potencia
-	 */
-	public void setPotenciaMotorEletrico(int potencia) {
-		// TODO - implement C1H.setPotenciaMotorEletrico
-		throw new UnsupportedOperationException();
-	}
 
-	/**
-	 * 
-	 * @param volta
-	 * @param totalvoltas
-	 * @param clima
-	 */
-	public boolean DNF(int volta, int totalvoltas, int clima) {
-		// TODO - implement C1H.DNF
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param o
-	 */
 	public boolean equals(Object o) {
-		// TODO - implement C1H.equals
-		throw new UnsupportedOperationException();
-	}
+		if(this == o) 
+			return true;
+		if(o == null || o.getClass() != this.getClass())
+			return false;
+		 C1H c = (C1H) o;
+		 return (c.getMotorEletrico() == this.getMotorEletrico() && super.equals(o));
+	 }
 
 }

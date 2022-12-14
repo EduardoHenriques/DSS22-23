@@ -1,4 +1,4 @@
-package businesslayer.Carro;
+
 public class GTH extends GT {
 
 	private int motor_eletrico;
@@ -7,6 +7,11 @@ public class GTH extends GT {
 	{
 	super();
 	this.motor_eletrico = 0;
+	}
+
+	public GTH(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus,float a_taxa, int o_motor_eletrico) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_taxa);
+		this.motor_eletrico = o_motor_eletrico;
 	}
 
 	public int getMotorEletrico()
@@ -18,15 +23,9 @@ public class GTH extends GT {
 	{
 		this.motor_eletrico = o_motor;
 	}
-
-
-	public GTH(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, int a_fiabilidade,float o_pa, String o_estado, String os_pneus, int o_motor_eletrico) {
-		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
-		this.motor_eletrico = o_motor_eletrico;
-	}
-
+	
 	public GTH(GTH p) {
-		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getTaxa_fiabilidade());
 		this.motor_eletrico = p.getMotorEletrico();
 	}
 	
@@ -40,14 +39,13 @@ public class GTH extends GT {
 		return new GTH(this);
 	}
 
-
 	public boolean equals(Object o) {
 	   if(this == o) 
        	return true;
        if(o == null || o.getClass() != this.getClass())
        	return false;
-
-		return super.equals(o);
+		GTH c = (GTH) o;
+		return (c.getMotorEletrico() == this.getMotorEletrico() && super.equals(o));
 	}
 
 }

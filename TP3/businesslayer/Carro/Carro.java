@@ -1,10 +1,5 @@
-package businesslayer.Carro;
-import java.io.*;
-import businesslayer.Carro.estadoMotor;
-import businesslayer.Carro.tipoPneu;
 
-
-public abstract class Carro implements FacadeCarro, Serializable {
+public abstract class Carro  {
 
 	private String marca;
 	private String modelo;
@@ -14,6 +9,47 @@ public abstract class Carro implements FacadeCarro, Serializable {
 	private float pa;			//perfil aerodinamico
 	private estadoMotor estado;
 	private tipoPneu pneus;
+
+	public Carro() {
+		marca = "";
+		modelo = "";
+		cilindrada = 0;
+		potencia = 0;
+		fiabilidade = 0;
+		pa = 0;
+		estado = estadoMotor.NULL;
+		pneus = tipoPneu.NULL;
+		   
+	   }
+   
+	   public Carro(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus) {
+   
+		   this.marca = a_marca;
+		   this.modelo = o_modelo;
+		   this.cilindrada = a_cilindrada;
+		   this.potencia = a_potencia;
+		   this.fiabilidade = a_fiabilidade;
+		   this.pa = o_pa;
+		   this.estado = o_estado;
+		   this.pneus = os_pneus;
+   
+	   }
+
+	   //CONSTRUTOR DEFAULT, PNEUS+MOTOR (E EM CERTOS CASOS FIABILIADE) SAO CALCULADOS NO CAMPEONATO
+	   public Carro(String a_marca, String o_modelo, int a_cilindrada, int a_potencia,float o_pa)
+	   {
+		this.marca = a_marca;
+		this.modelo = o_modelo;
+		this.cilindrada = a_cilindrada;
+		this.potencia = a_potencia;
+		this.fiabilidade = 0f;
+		this.pa = o_pa;
+		this.estado = estadoMotor.NULL;
+		this.pneus = tipoPneu.NULL;
+	   }
+	/**
+	 * Construtores
+	 */
 
 	public String getMarca() {
 		return this.marca;
@@ -51,6 +87,11 @@ public abstract class Carro implements FacadeCarro, Serializable {
 		return this.fiabilidade;
 	}
 
+	public void setFiabilidade(float a_fiabilidade)
+	{
+		this.fiabilidade = a_fiabilidade;
+	}
+
 	public float getPa()
 	{
 		return this.pa;
@@ -83,34 +124,6 @@ public abstract class Carro implements FacadeCarro, Serializable {
 
 
 
-	/**
-	 * Construtores
-	 */
-	public Carro() {
-	 marca = "";
-	 modelo = "";
-	 cilindrada = 0;
-	 potencia = 0;
-	 fiabilidade = 0;
-	 pa = 0;
-	 estado = estadoMotor.NULL;
-	 pneus = tipoPneu.NULL;
-		
-	}
-
-	public Carro(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, int a_fiabilidade,float o_pa, String o_estado, String os_pneus) {
-
-		this.marca = a_marca;
-		this.modelo = o_modelo;
-		this.cilindrada = a_cilindrada;
-		this.potencia = a_potencia;
-		this.fiabilidade = a_fiabilidade;
-		this.pa = o_pa;
-		this.estado = estadoMotor.fromString(o_estado);
-		this.pneus = tipoPneu.fromString(os_pneus);
-
-	}
-
 	public Carro(Carro c) {
 
 		marca = c.getMarca();
@@ -125,24 +138,22 @@ public abstract class Carro implements FacadeCarro, Serializable {
 	}
 
 
-
 	public String toString() {
 		String out = "";
-		return (out + "Marca: " + this.getMarca() + "\nodelo: " +  this.getModelo() +  "\nCilindrada: " +
+		return (out + "Marca: " + this.getMarca() + "\nModelo: " +  this.getModelo() +  "\nCilindrada: " +
 				 this.getCilindrada() + "\nPotencia: " + this.getPotencia() + "\nFiabilidade: " + this.getFiabilidade()
 				 + "\nPerfil Aerodinamico: " + this.getPa() + "\nEstado do motor: " + estadoMotor.toStr(this.getEstado())
 				 + "\nTipo de pneus: " + tipoPneu.toStr(this.getPneus()) + "\n");
 	}
 
+
+
+
 	public boolean equals(Object o) {
 		if (this == o)
-		{
 			return true;
-		}
 		if(o == null || o.getClass() != this.getClass())
-		{
 			return false;
-		}
 		Carro c = (Carro) o;
 		return(this.getMarca() == c.getMarca() && this.getModelo() == c.getModelo() && this.getCilindrada() == c.getCilindrada()
 		&& this.getPotencia() == c.getPotencia() && this.getFiabilidade() == c.getFiabilidade() && this.getPa() == c.getPa()
@@ -151,6 +162,7 @@ public abstract class Carro implements FacadeCarro, Serializable {
 	}
 
 
+	//FALTAM FORMULAS
 
 
 

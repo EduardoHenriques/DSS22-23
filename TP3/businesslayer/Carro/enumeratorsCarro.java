@@ -1,5 +1,3 @@
-package businesslayer.Carro;
-
 
 enum estadoMotor{
 CONSERVADOR,
@@ -38,7 +36,7 @@ NULL;
 
 }
 
-public enum tipoPneu{
+enum tipoPneu{
 MACIO,
 DURO,
 CHUVA,
