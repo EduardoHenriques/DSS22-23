@@ -4,7 +4,7 @@ import businesslayer.RacingSim.Carro.estadoMotor;
 import businesslayer.RacingSim.Carro.tipoPneu;
 
 
-public abstract class Carro implements Comparable<Carro>, Serializable {
+public abstract class Carro implements FacadeCarro, Serializable {
 
 	private String marca;
 	private String modelo;
@@ -98,15 +98,6 @@ public abstract class Carro implements Comparable<Carro>, Serializable {
 		
 	}
 
-	/**
-	 * 
-	 * @param marca
-	 * @param modelo
-	 * @param cilindrada
-	 * @param potencia
-	 * @param e
-	 * @param fiabilidade
-	 */
 	public Carro(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, int a_fiabilidade,float o_pa, String o_estado, String os_pneus) {
 
 		this.marca = a_marca;
@@ -143,23 +134,22 @@ public abstract class Carro implements Comparable<Carro>, Serializable {
 				 + "\nTipo de pneus: " + tipoPneu.toStr(this.getPneus()) + "\n");
 	}
 
-	/**
-	 * 
-	 * @param o
-	 */
 	public boolean equals(Object o) {
-		// TODO - implement Carro.equals
-		throw new UnsupportedOperationException();
+		if (this == o)
+		{
+			return true;
+		}
+		if(o == null || o.getClass() != this.getClass())
+		{
+			return false;
+		}
+		Carro c = (Carro) o;
+		return(this.getMarca() == c.getMarca() && this.getModelo() == c.getModelo() && this.getCilindrada() == c.getCilindrada()
+		&& this.getPotencia() == c.getPotencia() && this.getFiabilidade() == c.getFiabilidade() && this.getPa() == c.getPa()
+		&& this.getEstado() == c.getEstado() && this.getPneus() == c.getPneus());
+
 	}
 
-	/**
-	 * 
-	 * @param c
-	 */
-	public int compareTo(Carro c) {
-		// TODO - implement Carro.compareTo
-		throw new UnsupportedOperationException();
-	}
 
 
 

@@ -3,71 +3,51 @@ public class GTH extends GT {
 
 	private int motor_eletrico;
 
-	public GTH() {
-		// TODO - implement GTH.GTH
-		throw new UnsupportedOperationException();
+	public GTH()
+	{
+	super();
+	this.motor_eletrico = 0;
 	}
 
-	/**
-	 * 
-	 * @param marca
-	 * @param modelo
-	 * @param cilindrada
-	 * @param potencia
-	 * @param e
-	 * @param eletrico
-	 */
-	public GTH(String marca, String modelo, int cilindrada, int potencia, int eletrico) {
-		// TODO - implement GTH.GTH
-		throw new UnsupportedOperationException();
+	public int getMotorEletrico()
+	{
+		return this.motor_eletrico;
 	}
 
-	/**
-	 * 
-	 * @param p
-	 */
+	public void setMotorEletrico(int o_motor)
+	{
+		this.motor_eletrico = o_motor;
+	}
+
+
+	public GTH(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, int a_fiabilidade,float o_pa, String o_estado, String os_pneus, int o_motor_eletrico) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
+		this.motor_eletrico = o_motor_eletrico;
+	}
+
 	public GTH(GTH p) {
-		// TODO - implement GTH.GTH
-		throw new UnsupportedOperationException();
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		this.motor_eletrico = p.getMotorEletrico();
+	}
+	
+	public String toString()
+	{
+		String s =  super.toString();
+		return(s + "Motor Eletrico: " + this.getMotorEletrico() + "\n" );
 	}
 
 	public GTH clone() {
-		// TODO - implement GTH.clone
-		throw new UnsupportedOperationException();
+		return new GTH(this);
 	}
 
-	public int getPotenciaMotorEletrico() {
-		// TODO - implement GTH.getPotenciaMotorEletrico
-		throw new UnsupportedOperationException();
-	}
 
-	/**
-	 * 
-	 * @param potencia
-	 */
-	public void setPotenciaMotorEletrico(int potencia) {
-		// TODO - implement GTH.setPotenciaMotorEletrico
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param volta
-	 * @param totalvoltas
-	 * @param clima
-	 */
-	public boolean DNF(int volta, int totalvoltas, int clima) {
-		// TODO - implement GTH.DNF
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param o
-	 */
 	public boolean equals(Object o) {
-		// TODO - implement GTH.equals
-		throw new UnsupportedOperationException();
+	   if(this == o) 
+       	return true;
+       if(o == null || o.getClass() != this.getClass())
+       	return false;
+
+		return super.equals(o);
 	}
 
 }
