@@ -7,6 +7,9 @@ public class Seccao {
 	private static final int CURVA = 0;
 	private static final int RETA = 1;
 	private static final int SHICANE = 2;
+	private static final int IMPOSSIVEL = 3;
+	private static final int POSSIVEL = 4;
+	private static final int DIFICIL = 5;
 
 	private int tipo;
 	private int gdu;

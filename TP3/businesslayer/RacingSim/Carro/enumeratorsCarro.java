@@ -38,7 +38,7 @@ NULL;
 
 }
 
-enum tipoPneu{
+public enum tipoPneu{
 MACIO,
 DURO,
 CHUVA,

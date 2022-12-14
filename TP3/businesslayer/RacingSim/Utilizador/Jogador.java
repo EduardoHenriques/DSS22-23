@@ -20,8 +20,7 @@ public class Jogador extends Utilizador implements Comparable<Jogador>, Serializ
 	}
 
 	public String getPass() {
-		// TODO - implement Jogador.getPass
-		throw new UnsupportedOperationException();
+		return this.password;
 	}
 
 	/**
@@ -29,8 +28,7 @@ public class Jogador extends Utilizador implements Comparable<Jogador>, Serializ
 	 * @param password
 	 */
 	public void setPass(String password) {
-		// TODO - implement Jogador.setPass
-		throw new UnsupportedOperationException();
+		this.password = password;
 	}
 
 	/**
