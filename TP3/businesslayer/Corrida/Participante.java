@@ -1,7 +1,3 @@
-package businesslayer.Corrida;
-
-import businesslayer.Utilizador.*;
-import businesslayer.Carro.Carro;
 
 public class Participante {
 

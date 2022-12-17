@@ -1,4 +1,3 @@
-package businesslayer.Corrida;
 
 public interface IFacadeCorrida {
 

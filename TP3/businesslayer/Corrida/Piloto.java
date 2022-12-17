@@ -1,4 +1,3 @@
-package businesslayer.Corrida;
 import java.io.*;
 
 public class Piloto implements Serializable {

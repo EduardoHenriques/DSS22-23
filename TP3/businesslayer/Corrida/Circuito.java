@@ -1,7 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
 
-import businesslayer.Corrida.*;
 
 public class Circuito implements Serializable {
 
