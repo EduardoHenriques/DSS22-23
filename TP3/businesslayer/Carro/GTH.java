@@ -14,6 +14,19 @@ public class GTH extends GT {
 		this.motor_eletrico = o_motor_eletrico;
 	}
 
+	public GTH(String a_marca, String o_modelo, int a_cilindrada, int a_potencia,float o_pa, int o_motorE) throws CarroInvalido
+	{
+	
+	 super(a_marca,o_modelo,a_cilindrada,a_potencia,o_pa);
+	 if(o_motorE < 50 || o_motorE > 150)
+		throw new CarroInvalido("Valores incorretos inseridos...");
+	 
+	 //penalidade de fiabilidade entre 0.05 e 0.15
+	 this.setFiabilidade(this.getFiabilidade() - (float)(0.001 * o_motorE));
+	 this.motor_eletrico = o_motorE;
+
+	}
+
 	public int getMotorEletrico()
 	{
 		return this.motor_eletrico;

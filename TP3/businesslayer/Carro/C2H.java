@@ -3,15 +3,28 @@ public class C2H extends C2 {
 
 	private int motor_eletrico;
 
+
+
 	public C2H()
 	{
 	super();
 	this.motor_eletrico = 0;
 	}
 
-	public C2H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, int o_motor_eletrico, float a_afinacao) {
-		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_afinacao);
+	public C2H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, int o_motor_eletrico) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
 		this.motor_eletrico = o_motor_eletrico;
+	}
+
+	public C2H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia,float o_pa, int o_motorE) throws CarroInvalido
+	{
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,o_pa);
+		if(o_motorE < 50 || o_motorE > 150)
+		throw new CarroInvalido("Valores incorretos inseridos...");
+	 
+	 //penalidade de fiabilidade entre 0.05 e 0.15
+	 this.setFiabilidade(this.getFiabilidade() - (float)(0.001 * o_motorE));
+	 this.motor_eletrico = o_motorE;
 	}
 
 	public int getMotorEletrico()
@@ -25,7 +38,7 @@ public class C2H extends C2 {
 	}
 
 	public C2H(C2H p) {
-		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getAfinacao());
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
 		this.motor_eletrico = p.getMotorEletrico();
 	}
 	

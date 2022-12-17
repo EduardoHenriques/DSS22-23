@@ -1,4 +1,5 @@
 
+
 public abstract class Carro  {
 
 	private String marca;
@@ -9,6 +10,11 @@ public abstract class Carro  {
 	private float pa;			//perfil aerodinamico
 	private estadoMotor estado;
 	private tipoPneu pneus;
+
+
+	/**
+	* Construtores
+	*/
 
 	public Carro() {
 		marca = "";
@@ -21,9 +27,8 @@ public abstract class Carro  {
 		pneus = tipoPneu.NULL;
 		   
 	   }
-   
 	   public Carro(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus) {
-   
+		
 		   this.marca = a_marca;
 		   this.modelo = o_modelo;
 		   this.cilindrada = a_cilindrada;
@@ -32,7 +37,7 @@ public abstract class Carro  {
 		   this.pa = o_pa;
 		   this.estado = o_estado;
 		   this.pneus = os_pneus;
-   
+		
 	   }
 
 	   //CONSTRUTOR DEFAULT, PNEUS+MOTOR (E EM CERTOS CASOS FIABILIADE) SAO CALCULADOS NO CAMPEONATO
@@ -47,9 +52,9 @@ public abstract class Carro  {
 		this.estado = estadoMotor.NULL;
 		this.pneus = tipoPneu.NULL;
 	   }
-	/**
-	 * Construtores
-	 */
+	
+	 
+	 
 
 	public String getMarca() {
 		return this.marca;
@@ -102,9 +107,9 @@ public abstract class Carro  {
 		this.pa = o_pa;
 	}
 
-	public void setPneus(String os_pneus)
+	public void setPneus(tipoPneu os_pneus)
 	{
-		this.pneus = tipoPneu.fromString(os_pneus);
+		this.pneus = os_pneus;
 	}
 
 	public tipoPneu getPneus()
@@ -112,9 +117,9 @@ public abstract class Carro  {
 		return this.pneus;
 	}
 
-	public void setEstado(String o_estado)
+	public void setEstado(estadoMotor o_estado)
 	{
-		this.estado = estadoMotor.fromString(o_estado);
+		this.estado = o_estado;
 	}
 
 	public estadoMotor getEstado()
@@ -160,9 +165,6 @@ public abstract class Carro  {
 		&& this.getEstado() == c.getEstado() && this.getPneus() == c.getPneus());
 
 	}
-
-
-	//FALTAM FORMULAS
 
 
 

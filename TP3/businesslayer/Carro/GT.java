@@ -1,8 +1,8 @@
 
 public class GT extends Carro {
 
-	//AFINACAO MECANICA DO GT = ...
 
+	
 	private float taxa_fiabilidade; // valor baixo que é subtraído à fiabilidade com o desenrolar da corrida. Calculado quando o carro é construido
 
 	public GT()
@@ -13,6 +13,33 @@ public class GT extends Carro {
 	public GT(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, float a_taxa) {
 		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
 		this.taxa_fiabilidade = a_taxa;
+	}
+
+
+	//construtor dos GT usado para os campeonatos
+	public GT(String a_marca, String o_modelo, int a_cilindrada, int a_potencia,float o_pa) throws CarroInvalido
+	{
+		
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,o_pa);
+
+		if(a_cilindrada <2000 || a_cilindrada > 4000 || a_potencia < 300 || a_potencia > 800 || o_pa < 0f || o_pa > 1.00f)
+			throw new CarroInvalido("Valores inválidos inseridos...");
+
+		//taxa de fiabilidade entre 0.05 e 0.075
+		// 			vvvvvv
+		this.setTaxa_fiabilidade(
+			(float)(0.0375 - (a_cilindrada - 4000) * (0.0375 - 0.025) / (2000 - 4000)) + 
+			(float)(0.025 + (a_potencia - 300) * (0.0375 - 0.025) / (800 - 300))
+		);
+		this.setTaxa_fiabilidade(this.getTaxa_fiabilidade() / 10);
+
+		//fiabilidade começa a 0.75, dependendo do numero de voltas(no campeonato) e da taxa vai diminuindo
+		// 		  vvvvvv
+		this.setFiabilidade(0.75f);
+		
+		this.setEstado(estadoMotor.NULL);
+		this.setPneus(tipoPneu.NULL);
+
 	}
 
 	public float getTaxa_fiabilidade(){
