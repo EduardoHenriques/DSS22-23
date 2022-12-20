@@ -14,7 +14,7 @@ public class Corrida implements Serializable {
 	private float Tempos;
 	private List<Participante> participantes;
 	private int volta = 0;
-
+	
 	public int getClima() {
 		return this.clima;
 	}

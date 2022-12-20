@@ -5,7 +5,7 @@ import Utilizador.*;
 
 public class Participante {
 
-	private int posicao = 0;
+	private int posicao;
 	private Piloto piloto;
 	private Carro carro;
 	private Utilizador user;
@@ -14,10 +14,6 @@ public class Participante {
 		return this.posicao;
 	}
 
-	/**
-	 * 
-	 * @param posicao
-	 */
 	public void setPosicao(int posicao) {
 		this.posicao = posicao;
 	}
@@ -26,22 +22,19 @@ public class Participante {
 		return this.user;
 	}
 
-	/**
-	 * 
-	 * @param posicao
-	 */
-	public void setUtilizador(Utilizador user) {
-		this.user = user;
+	public void setUtilizador(Utilizador user) throws ErroCampeonato {
+		if(user instanceof Convidado)
+				this.user = ((Convidado) user).clone();
+		else if(user instanceof Jogador)
+				this.user = ((Jogador) user).clone();
+		else
+			throw new ErroCampeonato("Administradores não podem participar em campeonatos...");
 	}
 
 	public Piloto getpiloto() {
 		return this.piloto;
 	}
 
-	/**
-	 * 
-	 * @param posicao
-	 */
 	public void setPiloto(Piloto piloto) {
 		this.piloto = piloto;
 	}
@@ -50,29 +43,23 @@ public class Participante {
 		return this.carro;
 	}
 
-	/**
-	 * 
-	 * @param posicao
-	 */
 	public void setCarro(Carro carro) {
 		this.carro= carro;
 	}
 
 	public Participante() {
-		// TODO - implement Participante.Participante
-		throw new UnsupportedOperationException();
+			throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * 
-	 * @param user
-	 * @param piloto
-	 * @param carro
-	 */
 	public Participante(Utilizador user, Piloto piloto, Carro carro) {
 		this.user = user;
 		this.piloto = piloto;
 		this.carro = carro;
+	}
+
+	public String toString()
+	{
+		return ("===PARTICIPANTE===\n" + this.user.toString() + this.piloto.toString() + this.carro.toString());
 	}
 
 }

@@ -12,7 +12,7 @@ public class Campeonato implements Serializable {
 	private Map<String, Participante> participantes;
 	private Collection<Corrida> corridas;
 	private Set<Map.Entry<Circuito, Boolean>> circuitos;
-
+	
 	public void setNumCorrida(int numCorrida) {
 		this.numCorrida = numCorrida;
 	}
@@ -82,10 +82,6 @@ public class Campeonato implements Serializable {
 		this.prova = prova;		
 	}
 
-	/**
-	 * 
-	 * @param c
-	 */
 	public Campeonato(Campeonato c) {
 		this.circuitos = c.circuitos;
 		this.classificacao = c.classificacao;

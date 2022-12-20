@@ -27,68 +27,48 @@ public class Piloto implements Serializable {
 		this.agressividade = agressividade;
 	}
 
-	/**
-	 * Construtores
-	 */
-	public Piloto() {
-		// TODO - implement Piloto.Piloto
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param nome
-	 * @param nacionalidade
-	 * @param qual
-	 * @param chuvaVSseco
-	 * @param agressividade
-	 */
-	public Piloto(String nome, String nacionalidade, int qual, float chuvaVSseco, float agressividade) {
-		// TODO - implement Piloto.Piloto
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * 
-	 * @param p
-	 */
-	public Piloto(Piloto p) {
-		// TODO - implement Piloto.Piloto
-		throw new UnsupportedOperationException();
-	}
-
 	public float getChuvaVSseco() {
 		return this.chuvaVSseco;
 	}
 
-	/**
-	 * 
-	 * @param chuvaVSseco
-	 */
 	public void setChuvaVSseco(float chuvaVSseco) {
 		this.chuvaVSseco = chuvaVSseco;
 	}
 
-	/**
-	 * Metodos usuais
-	 */
+	public Piloto() {
+		this.nome = "";
+		this.agressividade = 0.5f;
+		this.chuvaVSseco = 0.5f;
+	}
+	
+	public Piloto(String nome, float chuvaVSseco, float agressividade) {
+		this.nome = nome;
+		this.chuvaVSseco = chuvaVSseco;
+		this.agressividade = agressividade;
+	}
+	
+	public Piloto(Piloto p) {
+		this.nome = p.getNome();
+		this.chuvaVSseco = p.getChuvaVSseco();
+		this.agressividade = p.getAgressividade();
+	}
+	
 	public String toString() {
-		// TODO - implement Piloto.toString
-		throw new UnsupportedOperationException();
+		return ("===PILOTO===\nNome: " + this.getNome() + "\nAgressividade: " + this.getAgressividade()
+									   + "\nChuva vs Tempo Seco: " + this.getChuvaVSseco() +"\n");
 	}
 
 	public Piloto clone() {
-		// TODO - implement Piloto.clone
-		throw new UnsupportedOperationException();
+		return new Piloto(this);
 	}
 
-	/**
-	 * 
-	 * @param o
-	 */
 	public boolean equals(Object o) {
-		// TODO - implement Piloto.equals
-		throw new UnsupportedOperationException();
+		if(this == o) return true;
+		if(o == null || o.getClass() != this.getClass()) return false;
+
+		Piloto p = (Piloto) o;
+		return(this.nome.equals(p.getNome()) && this.getAgressividade() == (p.getAgressividade())
+											 && this.getChuvaVSseco() == p.getChuvaVSseco());
 	}
 
 }
