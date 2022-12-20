@@ -144,7 +144,7 @@ public abstract class Carro  {
 
 
 	public String toString() {
-		String out = "";
+		String out = "===CARRO===\n";
 		return (out + "Marca: " + this.getMarca() + "\nModelo: " +  this.getModelo() +  "\nCilindrada: " +
 				 this.getCilindrada() + "\nPotencia: " + this.getPotencia() + "\nFiabilidade: " + this.getFiabilidade()
 				 + "\nPerfil Aerodinamico: " + this.getPa() + "\nEstado do motor: " + estadoMotor.toStr(this.getEstado())

@@ -12,8 +12,8 @@ public class C2H extends C2 {
 	this.motor_eletrico = 0;
 	}
 
-	public C2H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, int o_motor_eletrico) {
-		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
+	public C2H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus,float a_downforce, int o_motor_eletrico) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_downforce);
 		this.motor_eletrico = o_motor_eletrico;
 	}
 
@@ -37,9 +37,9 @@ public class C2H extends C2 {
 	{
 		this.motor_eletrico = o_motor;
 	}
-
+	
 	public C2H(C2H p) {
-		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getDownforce());
 		this.motor_eletrico = p.getMotorEletrico();
 	}
 	
