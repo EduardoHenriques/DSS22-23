@@ -46,7 +46,6 @@ public class Jogador extends Utilizador implements Comparable<Jogador> {
 
 	public String toString()
 	{
-		String s = "";
 		return("====JOGADOR====\n" + super.toString() + "\nPassword: " + this.getPassword() + "\nPontos: " + this.getPoints()
 								+ "\nPremium: " + (this.getIsPremium() ? "SIM\n" : "NAO\n"));
 	}

@@ -27,7 +27,7 @@ public abstract class Utilizador {
 
 
 	public String toString() {
-		return ("\nUsername: " + this.getUser() +"\n");
+		return ("Username: " + this.getUser());
 	}
 
 	public boolean equals(Object o) {
