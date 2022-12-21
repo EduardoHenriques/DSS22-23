@@ -11,8 +11,8 @@ public class GT extends Carro {
 	super();
 	}
 
-	public GT(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, float a_taxa) {
-		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
+	public GT(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus,float a_downforce,float a_taxa) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_downforce);
 		this.taxa_fiabilidade = a_taxa;
 	}
 
@@ -52,19 +52,19 @@ public class GT extends Carro {
 	}
 
 	public GT(GT p) {
-		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getDownforce());
 		this.taxa_fiabilidade = p.getTaxa_fiabilidade();
 	}
-
+	@Override
 	public String toString(){
 		return (super.toString() + "Taxa de Fiabilidade: " + this.getTaxa_fiabilidade() + "\n");
 	}
-
+	@Override
 	public GT clone() {
 		return new GT(this);
 	}
 
-
+	@Override
 	public boolean equals(Object o) {
 	   if(this == o) 
        	return true;

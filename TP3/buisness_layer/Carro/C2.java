@@ -1,37 +1,35 @@
 package Carro;
 public class C2 extends Carro {
 
-	private float downforce = 0.5f;
+	private float afinacao = 0.5f;
 	//aproximadamente 80% fiabilidade c/ downforce 0.5(NEUTRA)
 
-	public float getDownforce()
+	public float getAfinacao()
 	{
-		return this.downforce;
+		return this.afinacao;
 	}
 
-	//antes de entrar num campeonato, aplicamos esta função aos C2 e C2H de acordo com o que o user quer.
-	// valor inserido == 0.5 -> nao faz nada
-	// valor inserido > 0.5 -> ++ % ultrapassar em curva, -- % ultrapassar em reta
-	// valor inserido < 0.5 -> -- % ultrapassar em curva, ++ % ultrapassar em reta
-	public void setDownforce(float a_downforce)
+	//+ afinacao-> + potencia, - fiabilidade
+
+	public void setAfinacao(float a_afinacao)
 	{
-		if(a_downforce < 0f)
-			this.downforce = 0f;
-		if(a_downforce > 1f)
-			this.downforce = 1f;
+		if(a_afinacao < 0f)
+			this.afinacao = 0f;
+		if(a_afinacao > 1f)
+			this.afinacao = 1f;
 		else
-			this.downforce = a_downforce;
+			this.afinacao = a_afinacao;
 	}
 
 	public C2()
 	{
 	super();
-	this.downforce = 0.5f;
+	this.afinacao = 0.5f;
 	}
 
-	public C2(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, float a_downforce) {
-		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
-		this.downforce = a_downforce;
+	public C2(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus,float a_downforce,float a_afinacao) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_downforce);
+		this.afinacao = a_afinacao;
 	}
 	
 	//Construtor default, a downforce fica sempre neutra até o carro ser selecionado para o campeonato.
@@ -46,26 +44,26 @@ public class C2 extends Carro {
 		this.setFiabilidade(0.85f - (float)(0.05 * (a_potencia - 300) / 600) - (float)(0.05 * (5000 - a_cilindrada) / 2000) );	
 		this.setPneus(tipoPneu.NULL);
 		this.setEstado(estadoMotor.NULL);
-		this.setDownforce(0.5f);
+		this.setAfinacao(0.5f);
 
 	}
 	
 
 
 	public C2(C2 p) {
-		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getDownforce());
 	}
-
+	@Override
 	public String toString()
 	{
-		return (super.toString() + "Downforce: " + this.downforce + "\n");
+		return (super.toString() + "Afinacao: " + this.afinacao + "\n");
 	}
-
+	@Override
 	public C2 clone() {
 		return new C2(this);
 	}
 
-
+	@Override
 	public boolean equals(Object o) {
 	   if(this == o) 
        	return true;

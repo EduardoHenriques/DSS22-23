@@ -10,8 +10,8 @@ public class SC extends Carro {
 	super();
 	}
 
-	public SC(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus) {
-		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
+	public SC(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus,float a_downforce) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_downforce);
 	}
 
 	//construtor default dos SCs, para usar em campeonato
@@ -32,19 +32,19 @@ public class SC extends Carro {
 	}
 	
 	public SC(SC p) {
-		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getDownforce());
 	}
-	
+	@Override
 	public String toString()
 	{
 		return super.toString();
 	}
-
+	@Override
 	public SC clone() {
 		return new SC(this);
 	}
 
-
+	@Override
 	public boolean equals(Object o) {
 	   if(this == o) 
        	return true;

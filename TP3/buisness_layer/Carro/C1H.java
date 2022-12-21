@@ -9,8 +9,8 @@ public class C1H extends C1 {
 		this.motor_eletrico = 0;
 	}
 
-	public C1H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus, int o_motorE) {
-		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus);
+	public C1H(String a_marca, String o_modelo, int a_cilindrada, int a_potencia, float a_fiabilidade,float o_pa, estadoMotor o_estado, tipoPneu os_pneus,float a_downforce, int o_motorE) {
+		super(a_marca,o_modelo,a_cilindrada,a_potencia,a_fiabilidade,o_pa,o_estado,os_pneus,a_downforce);
 		this.motor_eletrico = o_motorE;
 	}
 
@@ -35,21 +35,22 @@ public class C1H extends C1 {
 	}
 
 	public C1H(C1H p) {
-		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus());
+		super(p.getMarca(),p.getModelo(),p.getCilindrada(),p.getPotencia(),p.getFiabilidade(),p.getPa(),p.getEstado(),p.getPneus(),p.getDownforce());
 		this.motor_eletrico = p.getMotorEletrico();
 	}
 
+	@Override
 	public C1H clone() {
 		return new C1H(this);
 	}
-
+	@Override
 	public String toString()
 	{
 		String s =  super.toString();
 		return(s + "Motor Eletrico: " + this.getMotorEletrico() + "\n" );
 	}
 
-
+	@Override
 	public boolean equals(Object o) {
 		if(this == o) 
 			return true;
