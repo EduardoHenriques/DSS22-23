@@ -16,10 +16,18 @@ public class Main {
             System.out.println(carro3.toString());
             SC carro4 = new SC("zeca","guei",2500,475,0.45f);
             System.out.println(carro4.toString());
+            FacadeCarro fC = new FacadeCarro();
+            System.out.println(fC.addCarro(carro2));
+            System.out.println(fC.addCarro(carro3));
+            System.out.println(fC.addCarro(carro1));
+            System.out.println(fC.garagemToString());
 
+            System.out.println("\n\n\nTAMBORES...\n\n\n");
+            System.out.println(fC.findCarro("GT").toString());
         } 
         catch (Exception e) {
             e.printStackTrace();
         }
+
     }   
 }
