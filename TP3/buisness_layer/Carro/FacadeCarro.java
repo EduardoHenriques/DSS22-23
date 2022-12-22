@@ -42,9 +42,55 @@ public class FacadeCarro implements IFacadeCarro {
                     SC new_sc = (SC) c;
                     return new_sc.clone();
                 default:
-                    throw new CarroInvalido("Erro a retirar o carro da garagem, tipo de carro inválido");
+                    throw new CarroInvalido("Erro a retirar o carro da garagem, modelo de carro inválido");
             }
         }
+    }
+    //                              "SC","C1",...                                                                (-1 caso nao hibrido)
+    //                                  vvv                                                                             vvv
+    public String createCarro(String tipoCarro,String marca, String modelo, int cilindrada, int potencia, int pa, int motorE )
+    {
+        Carro c = null;
+        String resposta = "";
+        try
+        {
+            switch(tipoCarro)
+            {
+                case "C1":
+                    c = new C1(marca,modelo,cilindrada,potencia,pa);
+                    break;
+                case "C1H":
+                    c = new C1H(marca,modelo,cilindrada,potencia,pa,motorE);
+                    break;
+                case "C2":
+                    c = new C2(marca,modelo,cilindrada,potencia,pa);
+                    break;
+                case "C2H":
+                    c = new C2H(marca,modelo,cilindrada,potencia,pa,motorE);
+                    break;
+                case "GT":
+                    c = new GT(marca,modelo,cilindrada,potencia,pa);
+                    break;
+                case "GTH":
+                    c = new GTH(marca,modelo,cilindrada,potencia,pa,motorE);
+                    break;
+                case "SC":
+                    c = new SC(marca,modelo,cilindrada,potencia,pa);
+                    break;
+                default:
+                    break;
+            }
+                if (c == null) //se nao foi inserido um tipo de carro valido
+                    resposta = "Tipo de carro invalido, operação abortada";
+                
+                resposta = (this.addCarro(c) ? "Carro inserido com sucesso!" :
+                                               "Já existe um carro com esse modelo na garagem...");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return resposta;
     }
 
     public boolean addCarro(Carro c)

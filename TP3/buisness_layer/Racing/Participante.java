@@ -9,6 +9,7 @@ public class Participante {
 	private Piloto piloto;
 	private Carro carro;
 	private Utilizador user;
+	private float timeDiff;
 	
 	public int getPosicao() {
 		return this.posicao;
@@ -45,6 +46,14 @@ public class Participante {
 
 	public void setCarro(Carro carro) {
 		this.carro= carro;
+	}
+
+	public float getTimeDiff(){
+		return this.timeDiff;
+	}
+
+	public void setTimeDiff(float timeDiff){
+		this.timeDiff=timeDiff;
 	}
 
 	public Participante() {

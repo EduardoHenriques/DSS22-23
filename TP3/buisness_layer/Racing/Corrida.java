@@ -97,12 +97,13 @@ public class Corrida implements Serializable {
 
 
 	public void verificaUltrapassagemPrem(Seccao sec) {
+		int index = 0;
 		for(Participante p : participantes){
 			Carro carro = p.getCarro();
 			Piloto piloto = p.getpiloto(); 
 			int posicao = p.getPosicao();
 			int gdu = sec.getGDU();
-			boolean inTime = getTimeDiff(p);
+			boolean inTime = inTime(p,index);
 			if(gdu != 3 && posicao>1 && inTime){
 				Boolean tenta = tentaUltrapassagem(carro, piloto, clima, gdu);
 				if(tenta){
@@ -113,6 +114,7 @@ public class Corrida implements Serializable {
 			}else{
 				verificaCrash(p);
 			}
+			index++;
 		}
 	}
 
@@ -141,10 +143,12 @@ public class Corrida implements Serializable {
 		ArrayList<Seccao> listaSeccoes = this.circuito.getListaSeccoes();
 		if(haPremium()){
 			for(Seccao sec : listaSeccoes){
-			verificaUltrapassagemPrem(sec);
+				calculaTimeDiff();//atualizar a diferenca entre 2 carros
+				verificaUltrapassagemPrem(sec);
 			}
 		}else{
 			for(Seccao sec :listaSeccoes){
+				calculaTimeDiff();//atualizar a diferenca entre 2 carros
 				verificarUltrapassagem(sec);
 			}
 		} 
@@ -273,9 +277,75 @@ public class Corrida implements Serializable {
 		return probInicial;
 	}
 
-	public boolean getTimeDiff(Participante participante) {
-		// TODO - implement Corrida.getTimeDiff
-		throw new UnsupportedOperationException();
+	public void calculaTimeDiff() {
+		Collections.sort(this.getParticipante(), new StockComparator());
+		int size = this.participantes.size();
+		Random random = new Random();
+		float time = random.nextFloat();
+		this.participantes.get(0).setTimeDiff(0);
+		for(int i = 1; i<size;i++){
+			float inFront = this.participantes.get(i-1).getTimeDiff();
+			this.participantes.get(i).setTimeDiff(inFront+(time*10));
+		}
+	}
+
+	public boolean inTime(Participante participante, int index){
+		//calcula a diferenca de tempos entre o participante e o carro a sua frente
+		float timeDiff = participante.getTimeDiff() - this.participantes.get(index-1).getTimeDiff();
+		if(timeDiff>2)
+			return false;
+		else{
+			Carro carro = participante.getCarro();
+			String classeCarro = carro.getClass().getSimpleName();
+			Carro carroInFront = this.participantes.get(index).getCarro();
+			String classInFront = carroInFront.getClass().getSimpleName();
+			switch(classeCarro){
+				case("C1H"):
+					if(timeDiff<2)
+						return true;
+					else 
+						return false;
+				case("C1"):
+					
+			}
+			if(classeCarro.equals(classInFront)){
+				if(timeDiff<1)
+					return true;
+				else 
+					return false;
+			}
+			if(classeCarro.equals("C1") || classeCarro.equals("C1H")){
+				
+			}else if(classeCarro.equals("C2") || classeCarro.equals("C2H")){
+				if(carroInFront.equals("C1") || carroInFront.equals("C1H")){
+					if(timeDiff<0.5f)
+						return true;
+					else	
+						return false;
+				}else{
+					if(timeDiff<2)
+						return true;
+					else	
+						return false;
+				}
+			}else if(classeCarro.equals("GT") || classeCarro.equals("GTH")){
+				if(carroInFront.equals("C1") || carroInFront.equals("C1H")){
+					if(timeDiff<0.5f)
+						return true;
+					else	
+						return false;
+				}else{
+					if(timeDiff<2)
+						return true;
+					else	
+						return false;
+				}
+			}else if(classeCarro.equals("SC")){
+
+			}
+		}
+		
+
 	}
 
 

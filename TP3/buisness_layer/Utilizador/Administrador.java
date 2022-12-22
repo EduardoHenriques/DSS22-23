@@ -11,14 +11,14 @@ public class Administrador extends Utilizador {
 
 	public Administrador(Administrador a) {
 		super(a);
-		this.password = a.getPass();
+		this.password = a.getPassword();
 	}
 
-	public void setPass(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getPass() {
+	public String getPassword() {
 		return this.password;
 	}
 
