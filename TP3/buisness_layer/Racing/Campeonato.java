@@ -157,12 +157,12 @@ public class Campeonato implements Serializable {
 
 
 class StockComparator implements Comparator<Map.Entry<String, Integer>> {
-	// override the compare() method
+	@Override
 	public int compare(Map.Entry<String, Integer> p1, Map.Entry<String, Integer> p2)
 	{
-		if (p1.getValue() == p1.getValue())
+		if (p1.getValue() == p2.getValue())
 		return 0;
-		else if (p1.getValue() > p1.getValue())
+		else if (p1.getValue() > p2.getValue())
 		return 1;
 		else
 		return -1;

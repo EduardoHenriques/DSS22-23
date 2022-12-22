@@ -9,7 +9,7 @@ import Utilizador.*;
 public class Corrida implements Serializable {
 
 	private Circuito circuito;
-	private java.util.Map<Participante, Integer> dnf;
+	private Map<Participante, Integer> dnf;
 	private int clima;
 	private float Tempos;
 	private List<Participante> participantes;
@@ -46,16 +46,14 @@ public class Corrida implements Serializable {
 		this.volta = corrida.volta;
 	}
 
-	public java.util.Map<Carro, Integer> getDNF() {
-		// TODO - implement Corrida.getDNF
-		throw new UnsupportedOperationException();
+	public java.util.Map<Participante, Integer> getDNF() {
+		return this.dnf;
 	}
 
 
 
 	public Corrida clone() {
-		// TODO - implement Corrida.clone
-		throw new UnsupportedOperationException();
+		return new Corrida(this);
 	}
 
 
@@ -74,20 +72,26 @@ public class Corrida implements Serializable {
 
 
 	public String printResultados() {
-		// TODO - implement Corrida.printResultados
-		throw new UnsupportedOperationException();
+		Collections.sort(this.getParticipante(), new StockComparator());
+		String str = "";
+		for (Participante part : this.participantes) {
+            str += part.getPosicao() + "º: " + part.getUtilizador().getUser() + "\n"; 
+        }
+		return str;
 	}
 
 	
 
 	public String printDNF() {
-		// TODO - implement Corrida.printDNF
-		throw new UnsupportedOperationException();
+		String str = "";
+		for (Map.Entry<Participante, Integer> entry : dnf.entrySet()) {
+			str += "participante " + entry.getKey().getUtilizador().getUser() + ":volta " + entry.getValue();
+		}
+		return str;
 	}
 
 	public java.util.List<Participante> getParticipante() {
-		// TODO - implement Corrida.getParticipante
-		throw new UnsupportedOperationException();
+		return this.participantes;
 	}
 
 
@@ -163,8 +167,8 @@ public class Corrida implements Serializable {
 				break;
 		}
 		Random rand = new Random();
-		float prob = rand.nextFloat(100);
-		if(prob > fiabilidade*100)
+		float prob = rand.nextFloat();
+		if(prob > fiabilidade)
 			falhou = true;
 		else
 			falhou = false;
@@ -215,7 +219,7 @@ public class Corrida implements Serializable {
 
 	public boolean calculaCrash(float agrPiloto, tipoPneu pneus, int clima, float vsPiloto, int volta){
 		Random rand = new Random();
-		float limite = rand.nextFloat(100);
+		float limite = rand.nextFloat();
 		float probPneus = probPneus(pneus, clima, volta);
 		float probClima = probClima(pneus, clima, vsPiloto);
 		float prob = (probPneus*probClima);
@@ -269,13 +273,6 @@ public class Corrida implements Serializable {
 		return probInicial;
 	}
 
-	
-	public boolean calculaFalha(estadoMotor motor, float fiabCarro) {
-		// TODO - implement Corrida.calculaFalha
-		throw new UnsupportedOperationException();
-	}
-
-
 	public boolean getTimeDiff(Participante participante) {
 		// TODO - implement Corrida.getTimeDiff
 		throw new UnsupportedOperationException();
@@ -283,8 +280,31 @@ public class Corrida implements Serializable {
 
 
 	public boolean tentaUltrapassagem(Carro carro, Piloto piloto, int clima, int gdu) {
-		// TODO - implement Corrida.tentaUltrapassagem
-		throw new UnsupportedOperationException();
+		float probInicial = 1;
+		estadoMotor estado = carro.getEstado();
+		float agressividade = piloto.getAgressividade();
+		Random random = new Random();
+		float limite = random.nextFloat();
+		if (clima == 1)// caso esteja a chover prob de ultrapassar diminui
+			probInicial -= 0.05;
+		if(gdu == 5){//caso o GDU seja dificiil
+			probInicial -=0.1;
+		}
+		probInicial += -0.05 + (0.1*agressividade);
+		switch(estado){
+			case CONSERVADOR:
+				probInicial -= 0.05;
+				break;
+			case AGRESSIVO:
+				probInicial += 0.05;
+				break;
+			default:
+				break;
+		}
+		if(limite>probInicial)
+			return true;
+		else
+			return false;
 	}
 
 	public boolean verificaCrash(Participante p){
@@ -295,6 +315,19 @@ public class Corrida implements Serializable {
 			vaiUlt(p);
 		}
 		return true;
+	}
+
+	class StockComparator implements Comparator<Participante> {
+		@Override
+		public int compare(Participante p1, Participante p2)
+		{
+			if (p1.getPosicao() == p2.getPosicao())
+			return 0;
+			else if (p1.getPosicao() > p2.getPosicao())
+			return 1;
+			else
+			return -1;
+		}
 	}
 
 }
