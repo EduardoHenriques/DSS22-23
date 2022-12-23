@@ -317,7 +317,8 @@ public class Corrida implements Serializable {
 			if(classeCarro.equals("C1") || classeCarro.equals("C1H")){
 				
 			}else if(classeCarro.equals("C2") || classeCarro.equals("C2H")){
-				if(carroInFront.equals("C1") || carroInFront.equals("C1H")){
+				if(carroInFront.getClass().getSimpleName().equals("C1") ||
+				   carroInFront.getClass().getSimpleName().equals("C1H")){
 					if(timeDiff<0.5f)
 						return true;
 					else	
@@ -329,7 +330,8 @@ public class Corrida implements Serializable {
 						return false;
 				}
 			}else if(classeCarro.equals("GT") || classeCarro.equals("GTH")){
-				if(carroInFront.equals("C1") || carroInFront.equals("C1H")){
+				if(carroInFront.getClass().getSimpleName().equals("C1") ||
+				   carroInFront.getClass().getSimpleName().equals("C1H")){
 					if(timeDiff<0.5f)
 						return true;
 					else	
@@ -341,11 +343,10 @@ public class Corrida implements Serializable {
 						return false;
 				}
 			}else if(classeCarro.equals("SC")){
-
 			}
 		}
 		
-
+		return false; //<<<<--- TEMPORARIO PARA TIRAR OS ERROS
 	}
 
 

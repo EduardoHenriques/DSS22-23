@@ -1,4 +1,3 @@
-package businesslayer;
 import java.util.*;
 
 public interface IRacingSimFacade {
