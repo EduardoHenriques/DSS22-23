@@ -6,6 +6,11 @@ public class Convidado extends Utilizador {
 		super();
 	}
 
+	public Convidado(String username)
+	{
+		super(username);
+	}
+
 	public Convidado(Convidado c) {
 		super(c.getUser());
 	}

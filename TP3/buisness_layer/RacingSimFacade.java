@@ -1,11 +1,9 @@
-package businesslayer;
 
 import java.util.Scanner;
 
 
 public class RacingSimFacade implements IRacingSimFacade {
 
-	IFacadeCarro iFacadeCarro;
 
 	@Override
 	public void corrida() {

@@ -3,7 +3,7 @@ package Utilizador;
 public abstract class Utilizador {
 
 	private String user;
-
+	
 	public String getUser() {
 		return this.user;
 	}
