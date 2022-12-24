@@ -198,11 +198,11 @@ public class Corrida implements Serializable {
 
 
 	public void avancaUm(Participante participante) {
-		int posAtual = participante.getPosicao()+1;
-		for(Participante p : this.getParticipante()){
-			if(!p.equals(participante) && posAtual == p.getPosicao())
-				p.setPosicao(posAtual--);
-		}
+		int indexInFront = participante.getPosicao()-2;
+		Participante inFront = this.participantes.get(indexInFront);
+		inFront.setPosicao(indexInFront+2);//mudar a posicao do part ha frente para a pos atual do jogador
+		participante.setPosicao(indexInFront+1);
+		Collections.sort(this.getParticipante(), new StockComparator());
 	}
 
 
@@ -216,7 +216,7 @@ public class Corrida implements Serializable {
 				p.setPosicao(posicao++);
 			}
 		}
-
+		Collections.sort(this.getParticipante(), new StockComparator());
 	}
 
 
@@ -296,56 +296,12 @@ public class Corrida implements Serializable {
 			return false;
 		else{
 			Carro carro = participante.getCarro();
-			String classeCarro = carro.getClass().getSimpleName();
+			String classeCarro = carro.getClass().getSimpleName();//classe do carro do participante
 			Carro carroInFront = this.participantes.get(index).getCarro();
-			String classInFront = carroInFront.getClass().getSimpleName();
-			switch(classeCarro){
-				case("C1H"):
-					if(timeDiff<2)
-						return true;
-					else 
-						return false;
-				case("C1"):
-					
-			}
-			if(classeCarro.equals(classInFront)){
-				if(timeDiff<1)
-					return true;
-				else 
-					return false;
-			}
-			if(classeCarro.equals("C1") || classeCarro.equals("C1H")){
-				
-			}else if(classeCarro.equals("C2") || classeCarro.equals("C2H")){
-				if(carroInFront.equals("C1") || carroInFront.equals("C1H")){
-					if(timeDiff<0.5f)
-						return true;
-					else	
-						return false;
-				}else{
-					if(timeDiff<2)
-						return true;
-					else	
-						return false;
-				}
-			}else if(classeCarro.equals("GT") || classeCarro.equals("GTH")){
-				if(carroInFront.equals("C1") || carroInFront.equals("C1H")){
-					if(timeDiff<0.5f)
-						return true;
-					else	
-						return false;
-				}else{
-					if(timeDiff<2)
-						return true;
-					else	
-						return false;
-				}
-			}else if(classeCarro.equals("SC")){
-
-			}
-		}
-		
-
+			String classInFront = carroInFront.getClass().getSimpleName();//classe do carro na posiçao em frente
+			//dependendo da classe verifica se existe possibilidade de ultrapassar ou nao
+			return classDif(classeCarro, classInFront, timeDiff);
+		}		
 	}
 
 
@@ -385,6 +341,89 @@ public class Corrida implements Serializable {
 			vaiUlt(p);
 		}
 		return true;
+	}
+
+	public boolean classDif(String classeCarro, String classInFront, float timeDiff){
+		if(classeCarro.equals(classInFront)){
+			if(timeDiff<1)
+				return true;
+			else
+				return false;
+		}
+		switch(classeCarro){
+			case("C1H"):
+				if(timeDiff<2)
+					return true;
+				else 
+					return false;
+			case("C1"):
+				if(classInFront.equals("C1H")){
+					if(timeDiff<0.5f)
+						return true;
+					else 
+						return false;
+				}else{
+					if(timeDiff<2)
+						return true;
+					else 
+						return false;
+				}
+			case("C2H"):
+				if(classInFront.equals("C1H") || classInFront.equals("C1") ){
+					if(timeDiff<0.5f)
+						return true;
+					else 
+						return false;
+				}else{
+					if(timeDiff<2)
+						return true;
+					else 
+						return false;
+				}
+			case("C2"):
+				if(classInFront.equals("C1H") || classInFront.equals("C1") || classInFront.equals("C2H")){
+					if(timeDiff<0.5f)
+						return true;
+					else 
+						return false;
+				}else{
+					if(timeDiff<2)
+						return true;
+					else 
+						return false;
+				}
+			case("GTH"):
+				if(classInFront.equals("GT") || classInFront.equals("SC")){
+					if(timeDiff<2)
+						return true;
+					else 
+						return false;
+				}else{
+					if(timeDiff<0.5f)
+						return true;
+					else 
+						return false;
+				}
+			case("GT"):
+				if(classInFront.equals("SC")){
+					if(timeDiff<2)
+						return true;
+					else 
+						return false;
+				}else{
+					if(timeDiff<0.5f)
+						return true;
+					else 
+						return false;
+				}
+			case("SC"):
+				if(timeDiff<0.5f)
+					return true;
+				else 
+					return false;
+			default:
+				return false;
+		}
 	}
 
 	class StockComparator implements Comparator<Participante> {
