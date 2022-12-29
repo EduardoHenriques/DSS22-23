@@ -61,7 +61,9 @@ public class Campeonato implements Serializable {
 	 */
 	public void addParticipante(Participante participante) {
 		String nomeU = participante.getUtilizador().getUser();
+		System.out.println(nomeU);
 		this.participantes.put(nomeU, participante);
+		this.classificacao.put(nomeU,0);
 	}
 
 	/**
@@ -79,7 +81,10 @@ public class Campeonato implements Serializable {
 	 */
 	public Campeonato(Set<Map.Entry<Circuito, Boolean>> circuitos, String prova) {
 		this.circuitos = circuitos;
-		this.prova = prova;		
+		this.prova = prova;
+		this.participantes = new HashMap<String,Participante>();
+		this.classificacao = new HashMap<String,Integer>();	
+		this.numCorrida = 0;	
 	}
 
 	public Campeonato(Campeonato c) {
@@ -109,6 +114,9 @@ public class Campeonato implements Serializable {
 			int points = this.classificacao.get(p.getUtilizador().getUser());
 			int pos = p.getPosicao();
 			switch(pos){
+				case 0:
+					points +=0;
+					break;
 				case 1:
 					points += max;
 					break;
@@ -118,6 +126,7 @@ public class Campeonato implements Serializable {
 				default:
 					points += max -(pos+1);
 			}
+		 this.classificacao.replace(p.getUtilizador().getUser(), points);
 		}
 	}
 

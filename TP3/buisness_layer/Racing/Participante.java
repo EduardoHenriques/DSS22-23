@@ -57,13 +57,23 @@ public class Participante {
 	}
 
 	public Participante() {
-			throw new UnsupportedOperationException();
+		this.user = null;
+		this.piloto = null;
+		this.carro = null;	
 	}
 
 	public Participante(Utilizador user, Piloto piloto, Carro carro) {
 		this.user = user;
 		this.piloto = piloto;
 		this.carro = carro;
+		if(carro.getClass().getSimpleName().equals("SC"))
+		{
+			float fiabilidade_piloto = 0.6f - (float)(0.1 * piloto.getAgressividade());
+			carro.setFiabilidade(carro.getFiabilidade() + fiabilidade_piloto);
+		}
+		this.timeDiff = 0f;
+		this.posicao = 1 + (int)(Math.random() * ((8 - 1) + 1)); // numero aleatorio entre 1 e 8
+		
 	}
 
 	public String toString()

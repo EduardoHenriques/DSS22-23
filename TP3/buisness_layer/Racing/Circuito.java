@@ -49,6 +49,7 @@ public class Circuito implements Serializable {
 		this.nome = n;
 		this.distancia = d;
 		this.voltas = v;
+		this.listaSeccoes = new ArrayList<>();
 		for (Seccao s : l) {
 			this.listaSeccoes.add(s.clone());
 		}

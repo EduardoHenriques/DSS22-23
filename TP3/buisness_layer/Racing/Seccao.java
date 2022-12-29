@@ -8,6 +8,7 @@ public class Seccao {
 	private static final int CURVA = 0;
 	private static final int RETA = 1;
 	private static final int SHICANE = 2;
+
 	private static final int IMPOSSIVEL = 3;
 	private static final int POSSIVEL = 4;
 	private static final int DIFICIL = 5;
@@ -47,10 +48,6 @@ public class Seccao {
 		this.gdu = seccao.getGDU();
 	}
 
-	public Seccao clone() {
-		return this.clone();
-	}
-
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Tipo: ");
@@ -78,6 +75,11 @@ public class Seccao {
 			return false;
 		Seccao s = (Seccao) o;
 		return s.getTipo() == this.tipo && s.getGDU() == this.gdu;
+	}
+
+	public Seccao clone()
+	{
+		return new Seccao(this);
 	}
 
 }

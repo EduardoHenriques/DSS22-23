@@ -19,17 +19,12 @@ public class Corrida implements Serializable {
 		return this.clima;
 	}
 
-	/**
-	 * 1-chove 0-sol
-	 * 
-	 * Construtores
-	 */
 	public Corrida() {}
 
 
 	public Corrida(Circuito circuito, int clima, List<Participante> listaParticipantes) {
 		this.circuito = circuito;
-		this.dnf = Collections.emptyMap();
+		this.dnf = new HashMap<Participante,Integer>();
 		this.clima = clima;
 		this.participantes = listaParticipantes;
 		this.Tempos = 0;
@@ -62,10 +57,15 @@ public class Corrida implements Serializable {
 		for(int i = 0; i<num_voltas;i++){
 			atualizarPosicoes();
 			for(Participante p : this.participantes){
-				Boolean falhou = verificaFalhaMotor(p, i+1);
-				if(falhou){falhaMotor(p, i+1);}
+				if(!this.getDNF().containsKey(p)){
+					Boolean falhou = verificaFalhaMotor(p, i+1);
+					if(falhou){falhaMotor(p, i+1);}
+				}
 			}
 		}
+		for (Participante participante : dnf.keySet()) {
+        	participante.setPosicao(0);
+    	}
 		return this.participantes;
 	}
 
@@ -74,7 +74,7 @@ public class Corrida implements Serializable {
 	public String printResultados() {
 		Collections.sort(this.getParticipante(), new StockComparator());
 		String str = "";
-		for (Participante part : this.participantes) {
+		for (Participante part : this.participantes){
             str += part.getPosicao() + "º: " + part.getUtilizador().getUser() + "\n"; 
         }
 		return str;
@@ -82,7 +82,7 @@ public class Corrida implements Serializable {
 
 	
 
-	public String printDNF() {
+	public String DNFtoString(){
 		String str = "";
 		for (Map.Entry<Participante, Integer> entry : dnf.entrySet()) {
 			str += "participante " + entry.getKey().getUtilizador().getUser() + ":volta " + entry.getValue();
@@ -95,58 +95,64 @@ public class Corrida implements Serializable {
 	}
 
 
-
+	//funcao premium que simula todo o que irá acontecer numa dada seccao
 	public void verificaUltrapassagemPrem(Seccao sec) {
 		int index = 0;
 		for(Participante p : participantes){
-			Carro carro = p.getCarro();
-			Piloto piloto = p.getpiloto(); 
-			int posicao = p.getPosicao();
-			int gdu = sec.getGDU();
-			boolean inTime = inTime(p,index);
-			if(gdu != 3 && posicao>1 && inTime){
-				Boolean tenta = tentaUltrapassagem(carro, piloto, clima, gdu);
-				if(tenta){
-					avancaUm(p);
-				}else{
+			if (!this.getDNF().containsKey(p)){//se o participante ainda estiver na corrida
+				Carro carro = p.getCarro();
+				Piloto piloto = p.getpiloto(); 
+				int posicao = p.getPosicao();
+				int gdu = sec.getGDU(); //grau de dificuldade da seccao
+				boolean inTime = inTime(p,index); //verifica se o utilizador está perto o suficiente para tentar a ultrapassagem
+				if(gdu != 3 && posicao>1 && inTime){
+					Boolean ultrapassou = tentaUltrapassagem(carro, piloto, clima, gdu);//verifica se o part foi capaz de ultrapassar o carrro a sua frente
+					if(ultrapassou){
+						avancaUm(p);//participante avança uma posiçao
+					}else{
+						verificaCrash(p);//verifica se o participante teve um crash nessa seccao
+					}
+				}else{//casso n seja possivel fazer a ultrapassagem verifica se o participante se despistou ou nao 
 					verificaCrash(p);
 				}
-			}else{
-				verificaCrash(p);
+				index++;//index para saber a posiçao da lista ordenada de participantes 
 			}
-			index++;
 		}
 	}
 
 
-
+	//funcao nao premium que simula todo o que irá acontecer numa dada seccao muito semelhante a anterior
 	public void verificarUltrapassagem(Seccao sec) {
 		for(Participante p : participantes){
-			Carro carro = p.getCarro();
-			Piloto piloto = p.getpiloto(); 
-			int posicao = p.getPosicao();
-			int gdu = sec.getGDU();
-			if(gdu != 3 && posicao>1){
-				Boolean tenta = tentaUltrapassagem(carro, piloto, clima, gdu);
-				if(tenta){
-					avancaUm(p);
+			if (!this.getDNF().containsKey(p))
+			{	
+				Carro carro = p.getCarro();
+				Piloto piloto = p.getpiloto(); 
+				int posicao = p.getPosicao();
+				int gdu = sec.getGDU();
+				if(gdu != 3 && posicao>1){
+					Boolean tenta = tentaUltrapassagem(carro, piloto, clima, gdu);
+					if(tenta){
+						avancaUm(p);
+					}else{
+						verificaCrash(p);
+					}
 				}else{
 					verificaCrash(p);
 				}
-			}else{
-				verificaCrash(p);
 			}
 		}
+		Collections.sort(this.getParticipante(), new StockComparator());
 	}
-
+	//funcao que itera por todas as seccoes de um determinado circuito determinando o que acontece em cada uma delas
 	public void atualizarPosicoes() {
 		ArrayList<Seccao> listaSeccoes = this.circuito.getListaSeccoes();
-		if(haPremium()){
+		if(haPremium()){//se houver um participante com premuim utiliza a funcao premium de ultrapassagem
 			for(Seccao sec : listaSeccoes){
 				calculaTimeDiff();//atualizar a diferenca entre 2 carros
 				verificaUltrapassagemPrem(sec);
 			}
-		}else{
+		}else{//se nao utiliza a funcao default
 			for(Seccao sec :listaSeccoes){
 				calculaTimeDiff();//atualizar a diferenca entre 2 carros
 				verificarUltrapassagem(sec);
@@ -154,18 +160,18 @@ public class Corrida implements Serializable {
 		} 
 	}
 
-
+	//funcao que com um conjunto de fatores verifica se o houve uma falha no motor do participante
 	public Boolean verificaFalhaMotor(Participante participante, int voltas) {
 		boolean falhou;
 		Carro carro = participante.getCarro();
 		estadoMotor estado =  carro.getEstado();
-		float fiabilidade = carro.getFiabilidade();
+		float fiabilidade = carro.getFiabilidade();// valor calculado previamente da probabilidade do motor falhar
 		switch(estado){
-			case CONSERVADOR:
-				fiabilidade -= 0.05;
-				break;
-			case AGRESSIVO:
+			case CONSERVADOR: // se o motor estiver conservador diminui a prob de falhar
 				fiabilidade += 0.05;
+				break;
+			case AGRESSIVO:// se o motor estiver agressivo aumenta a prob de falhar
+				fiabilidade -= 0.05;
 				break;
 			default:
 				break;
@@ -179,19 +185,23 @@ public class Corrida implements Serializable {
 		return falhou;
 	}
 
-
+	//funcao que coloca o participante na lista de corredores que não irao acabar a corrida
 	public void falhaMotor(Participante participante, int volta) {
-		throw new UnsupportedOperationException();
+		dnf.put(participante, volta);
+		vaiUlt(participante);
 	}
 
 	public boolean haPremium() {
 		for(Participante p : this.getParticipante()){
-			if (p.getUtilizador() instanceof Jogador){
-				Jogador j = (Jogador) p.getUtilizador();
-				if(j.getIsPremium()){
-					return true;
-				}
-			} 
+			if (!this.getDNF().containsKey(p))
+			{	
+				if (p.getUtilizador() instanceof Jogador){
+					Jogador j = (Jogador) p.getUtilizador();
+					if(j.getIsPremium()){
+						return true;
+					}
+				} 
+			}
 		}
 		return false;
 	}
@@ -202,7 +212,7 @@ public class Corrida implements Serializable {
 		Participante inFront = this.participantes.get(indexInFront);
 		inFront.setPosicao(indexInFront+2);//mudar a posicao do part ha frente para a pos atual do jogador
 		participante.setPosicao(indexInFront+1);
-		Collections.sort(this.getParticipante(), new StockComparator());
+		//Collections.sort(this.getParticipante(), new StockComparator());
 	}
 
 
@@ -211,12 +221,14 @@ public class Corrida implements Serializable {
 		int lastPos = this.getParticipante().size();
 		participante.setPosicao(lastPos); 
 		for(Participante p : this.getParticipante()){
-			int posicao = p.getPosicao();
-			if(!(p.equals(participante)) && posicao<posAtual){
-				p.setPosicao(posicao++);
+			if (!this.getDNF().containsKey(p))
+			{	
+				int posicao = p.getPosicao();
+				if(!(p.equals(participante)) && posicao<posAtual)
+					p.setPosicao(posicao++);
 			}
 		}
-		Collections.sort(this.getParticipante(), new StockComparator());
+		//Collections.sort(this.getParticipante(), new StockComparator());
 	}
 
 
@@ -284,8 +296,13 @@ public class Corrida implements Serializable {
 		float time = random.nextFloat();
 		this.participantes.get(0).setTimeDiff(0);
 		for(int i = 1; i<size;i++){
-			float inFront = this.participantes.get(i-1).getTimeDiff();
-			this.participantes.get(i).setTimeDiff(inFront+(time*10));
+			Participante p = this.participantes.get(i);
+			if(!this.getDNF().containsKey(p)){
+				float inFront = this.participantes.get(i-1).getTimeDiff();
+				this.participantes.get(i).setTimeDiff(inFront+(time*10));
+			}
+				
+			
 		}
 	}
 
