@@ -21,7 +21,7 @@ public class UtilizadorDAO implements Map<String, Utilizador>{
         try (Connection conn = DriverManager.getConnection(DAOConfig.URL, DAOConfig.USERNAME, DAOConfig.PASSWORD);
             Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS utilizador ("
-                    + "id VARCHAR(255) PRIMARY KEY AUTOINCREMENT,"
+                    + "id VARCHAR(255) PRIMARY KEY,"
                     + "user VARCHAR(255) NOT NULL,"
                     + "password VARCHAR(255) NOT NULL,"
                     + "points INTEGER NOT NULL,"
@@ -106,7 +106,11 @@ public class UtilizadorDAO implements Map<String, Utilizador>{
                     if (rs.getString("type").equals("Administrador")) {
                         u = new Administrador(rs.getString("user"), rs.getString("password"));
                     } else if (rs.getString("type").equals("Jogador")) {
-                        u = new Jogador(rs.getString("user"), rs.getString("password"), rs.getInt("points"), rs.getBoolean("isPremium"));
+                        boolean b = false;
+                        if (rs.getInt("isPremium") == 1) {
+                            b = true;
+                        }
+                        u = new Jogador(rs.getString("user"), rs.getString("password"), rs.getInt("points"), b);
                     }
                 }
             }
@@ -122,11 +126,11 @@ public class UtilizadorDAO implements Map<String, Utilizador>{
         Utilizador u = null;
         try (Connection conn = DriverManager.getConnection(DAOConfig.URL, DAOConfig.USERNAME, DAOConfig.PASSWORD);
             Statement stm = conn.createStatement()) {
-            String sql = "SELECT * FROM Carro WHERE idCarro='" + key + "'";
+            String sql = "SELECT * FROM utilizador WHERE id='" + key + "'";
             try (ResultSet rs = stm.executeQuery(sql)) {
                 if (rs.next()) {
                     u = get(key);
-                    sql = "DELETE FROM Carro WHERE idCarro='" + key + "'";
+                    sql = "DELETE FROM utilizador WHERE id='" + key + "'";
                     stm.executeUpdate(sql);
                 }
             }
@@ -139,12 +143,15 @@ public class UtilizadorDAO implements Map<String, Utilizador>{
                         + ")";
                 stm.executeUpdate(sql);
             } else if (value instanceof Jogador) {
+                int b = 0;
+                if(((Jogador) value).getIsPremium())
+                    b = 1;
                 sql = "INSERT INTO utilizador VALUES("
                         + "'" + key + "',"
                         + "'" + value.getUser() + "',"
                         + "'" + ((Jogador) value).getPassword() + "',"
                         + "'" + ((Jogador) value).getPoints() + "',"
-                        + "'" + ((Jogador) value).getIsPremium() + "',"
+                        + "'" + b + "',"
                         + "'" + "Jogador" + "'"
                         + ")";
                 stm.executeUpdate(sql);

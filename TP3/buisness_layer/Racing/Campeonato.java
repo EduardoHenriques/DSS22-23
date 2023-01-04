@@ -10,8 +10,8 @@ public class Campeonato implements Serializable {
 	private int numCorrida;
 	private String prova;
 	private Map<String, Participante> participantes;
-	private Collection<Corrida> corridas;
-	private Set<Map.Entry<Circuito, Boolean>> circuitos;
+	private ArrayList<Circuito> circuitos; //
+	private Map<Corrida,Boolean> corridas; //vazio até o campeonato começar
 	
 	public void setNumCorrida(int numCorrida) {
 		this.numCorrida = numCorrida;
@@ -41,11 +41,11 @@ public class Campeonato implements Serializable {
 		this.participantes = listaP;
 	}
 
-	public Set<java.util.Map.Entry<Circuito, Boolean>> getCircuitos(){
+	public ArrayList<Circuito> getCircuitos(){
 		return this.circuitos;
 	}
 
-	public void setCircuitos(Set<java.util.Map.Entry<Circuito, Boolean>> lcir){
+	public void setCircuitos(ArrayList<Circuito> lcir){
 		this.circuitos = lcir;
 	}
 
@@ -53,6 +53,15 @@ public class Campeonato implements Serializable {
 		return this.participantes.get(part);
 	}
 
+	public Map<Corrida,Boolean> getCorridas()
+	{
+		return this.corridas;
+	}
+
+	public void setCorridas(Map<Corrida,Boolean> lcorr)
+	{
+		this.corridas = lcorr;
+	}
 	/**
 	 * 
 	 * @param participante
@@ -70,8 +79,6 @@ public class Campeonato implements Serializable {
 	 * incrementa a cada prova realizada (aponta para a prova a realizar)
 	 */
 	public Campeonato() {
-		// TODO - implement Campeonato.Campeonato
-		throw new UnsupportedOperationException();
 	}
 
 	/**
@@ -79,16 +86,18 @@ public class Campeonato implements Serializable {
 	 * @param circuitos os circuitos a utilizar neste campeonato
 	 * @param prova nome do campeonato
 	 */
-	public Campeonato(Set<Map.Entry<Circuito, Boolean>> circuitos, String prova) {
+	public Campeonato(ArrayList<Circuito> circuitos, String prova) {
 		this.circuitos = circuitos;
 		this.prova = prova;
 		this.participantes = new HashMap<String,Participante>();
 		this.classificacao = new HashMap<String,Integer>();	
-		this.numCorrida = 0;	
+		this.numCorrida = 0;
+		this.corridas = new HashMap<Corrida,Boolean>();	
 	}
 
 	public Campeonato(Campeonato c) {
 		this.circuitos = c.circuitos;
+		this.corridas = c.corridas;
 		this.classificacao = c.classificacao;
 		this.corridas = c.corridas;
 		this.numCorrida = c.numCorrida;
@@ -101,8 +110,7 @@ public class Campeonato implements Serializable {
 	 * @param c circuito a adicionar
 	 */
 	public void addCircuito(Circuito c) {
-		Map.Entry<Circuito,Boolean> entry = new AbstractMap.SimpleEntry<Circuito, Boolean>(c, false);
-		circuitos.add(entry);
+		circuitos.add(c.clone());
 	} 
 
 	/**

@@ -9,7 +9,6 @@ public class Main {
     {
      try
      {
-
         ArrayList<Seccao> lista_seccoes = new ArrayList<>();
         lista_seccoes.add(new Seccao(0,4));
         lista_seccoes.add(new Seccao(1,4));

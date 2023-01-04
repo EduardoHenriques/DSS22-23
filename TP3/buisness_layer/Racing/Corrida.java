@@ -7,7 +7,7 @@ import Carro.*;
 import Utilizador.*;
 
 public class Corrida implements Serializable {
-
+	
 	private Circuito circuito;
 	private Map<Participante, Integer> dnf;
 	private int clima;
@@ -28,6 +28,16 @@ public class Corrida implements Serializable {
 		this.clima = clima;
 		this.participantes = listaParticipantes;
 		this.Tempos = 0;
+	}
+
+	public Circuito getCiruito()
+	{
+		return this.circuito.clone();
+	}
+
+	public void setCircuito(Circuito c)
+	{
+		this.circuito = c;
 	}
 
 
@@ -62,6 +72,7 @@ public class Corrida implements Serializable {
 					if(falhou){falhaMotor(p, i+1);}//se sim desqualifica o particante e a volta a que o motor falhou
 				}
 			}
+			//print do estado da corrida a cada volta
 			System.out.print("volta " + (i+1));
 			System.out.print("\n--------------\n");
 			System.out.print(printResultados());
@@ -101,8 +112,6 @@ public class Corrida implements Serializable {
 
 	//funcao premium que simula todo o que irá acontecer numa dada seccao
 	public void verificaUltrapassagemPrem(Seccao sec) {
-		System.out.println("VERIFICA ULTRAPASSAGEM prem");
-		System.out.println(printResultados());
 		int index = 0;
 		for(Participante p : participantes){
 			if (!this.getDNF().containsKey(p)){//se o participante ainda estiver na corrida
@@ -129,10 +138,8 @@ public class Corrida implements Serializable {
 
 	//funcao nao premium que simula todo o que irá acontecer numa dada seccao muito semelhante a anterior
 	public void verificarUltrapassagem(Seccao sec) {
-		System.out.println("VERIFICA ULTRAPASSAGEM ");
-		System.out.println(printResultados());
 		for(Participante p : participantes){
-			if (!this.getDNF().containsKey(p))
+			if (!this.getDNF().containsKey(p))//se o participante ainda estiver na corrida
 			{	
 				Carro carro = p.getCarro();
 				Piloto piloto = p.getpiloto(); 
@@ -154,29 +161,24 @@ public class Corrida implements Serializable {
 	}
 	//funcao que itera por todas as seccoes de um determinado circuito determinando o que acontece em cada uma delas
 	public void atualizarPosicoes() {
-		System.out.println("ATUALIZAR POSICOES");
-		System.out.println(printResultados());
 		ArrayList<Seccao> listaSeccoes = this.circuito.getListaSeccoes();
 		if(haPremium()){//se houver um participante com premuim utiliza a funcao premium de ultrapassagem
 			for(Seccao sec : listaSeccoes){
-				calculaTimeDiff();//atualizar a diferenca entre 2 carros
-				verificaUltrapassagemPrem(sec);
+				calculaTimeDiff();//atualizar a diferenca dos participantes para o 1ª lugar
+				verificaUltrapassagemPrem(sec);//verificar a ultrapassagem de modo premium
 			}
 		}else{//se nao utiliza a funcao default
 			for(Seccao sec :listaSeccoes){
-				calculaTimeDiff();//atualizar a diferenca entre 2 carros
-				verificarUltrapassagem(sec);
+				calculaTimeDiff();//atualizar a diferenca dos participantes para o 1ª lugar
+				verificarUltrapassagem(sec);//verificar a ultrapassagem de modo premium
 			}
 		} 
 	}
 
 	//funcao que com um conjunto de fatores verifica se o houve uma falha no motor do participante
 	public Boolean verificaFalhaMotor(Participante participante, int voltas) {
-		System.out.println("VERIFICA FALHA MOTOR");
-		System.out.println(printResultados());
-		boolean falhou;
 		Carro carro = participante.getCarro();
-		estadoMotor estado =  carro.getEstado();
+		estadoMotor estado =  carro.getEstado();// valor do estado do motor do carro
 		float fiabilidade = carro.getFiabilidade();// valor calculado previamente da probabilidade do motor falhar
 		switch(estado){
 			case CONSERVADOR: // se o motor estiver conservador diminui a prob de falhar
@@ -189,29 +191,23 @@ public class Corrida implements Serializable {
 				break;
 		}
 		Random rand = new Random();
-		float prob = rand.nextFloat();
-		if(prob > fiabilidade)
-			falhou = true;
-		else
-			falhou = false;
-		return falhou;
+		float prob = rand.nextFloat();//valor aleotorio
+		return(prob > fiabilidade);// ver se o motor falhou ou nao
 	}
 
 	//funcao que coloca o participante na lista de corredores que não irao acabar a corrida
 	public void falhaMotor(Participante participante, int volta) {
-		System.out.println("FALHA MOTOR");
-		System.out.println(printResultados());
 		vaiUlt(participante);
 		dnf.put(participante, volta);
 	}
-
+	//funcao que verifica se existem utilizadores premium na lista de participantes
 	public boolean haPremium() {
 		for(Participante p : this.getParticipante()){
-			if (!this.getDNF().containsKey(p))
+			if (!this.getDNF().containsKey(p))//se o participante ainda estiver na corrida
 			{	
-				if (p.getUtilizador() instanceof Jogador){
+				if (p.getUtilizador() instanceof Jogador){// verifica se o participante e um jogador registado
 					Jogador j = (Jogador) p.getUtilizador();
-					if(j.getIsPremium()){
+					if(j.getIsPremium()){//verifica se o jogador tem premium
 						return true;
 					}
 				} 
@@ -220,36 +216,36 @@ public class Corrida implements Serializable {
 		return false;
 	}
 
-
+	//funcao que muda as posicoes de 2 participantes depois de uma ultrapassagem
 	public void avancaUm(Participante participante) {
 		System.out.println("FUNCAO AVNAÇA UM");
-		int indexInFront = participante.getPosicao()-2;//ir buscar o index do jogador a frente
-		Participante inFront = this.participantes.get(indexInFront);
+		int indexInFront = participante.getPosicao()-2;//ir buscar o index do participante a frente
+		Participante inFront = this.participantes.get(indexInFront);//participante a frente
 		System.out.println("participante que ultrapassou: " + participante.getUtilizador().getUser() + " posicao inicial " + participante.getPosicao());
 		System.out.println("posicao carro a frente: " + inFront.getUtilizador().getUser() + " posicao inicial " + inFront.getPosicao());
-		inFront.setPosicao(indexInFront+2);//mudar a posicao do jogador a frente para a posicao atual do jogador
-		participante.setPosicao(indexInFront+1);
+		inFront.setPosicao(indexInFront+2);//mudar a posicao do participante acabado de ultrapassar para a posicao um valor acima
+		participante.setPosicao(indexInFront+1);//mudar a posicao do participante que ultrapassou para a posicao um valor abaixo
 		System.out.println("participante que ultrapassou: " + participante.getUtilizador().getUser() + " posicao final " + participante.getPosicao());
 		System.out.println("posicao carro a frente: " + inFront.getUtilizador().getUser() + " posicao final " + inFront.getPosicao());
-		//Collections.sort(this.getParticipante(), new StockComparator());
+		Collections.sort(this.getParticipante(), new StockComparator());//dar sort ao array por posicao do participante
 	}
 
-
+	//funcao que coloca o participante na ultima posicao dos particantes ainda na corrida
 	public void vaiUlt(Participante participante) {
 		System.out.println("FUNCAO VAIULT");
 		System.out.println(participante.getUtilizador().getUser()+ " CRASHOU");
-		int posAtual = participante.getPosicao();
-		int numParticipantes = this.getParticipante().size();
-		int	numDNF = dnf.size();
-		int lastPos = numParticipantes-numDNF;
-		participante.setPosicao(lastPos); 
+		int posAtual = participante.getPosicao();//posicao initial do participante
+		int numParticipantes = this.getParticipante().size();//num da lista de participantes
+		int	numDNF = dnf.size();//num de participantes que abandonaram a corrida
+		int lastPos = numParticipantes-numDNF;//ultimo lugar dos participantes ainda na corrida
+		participante.setPosicao(lastPos);// colocar o participante em ultimo dos participantes ainda na corrida 
 		for(Participante p : this.getParticipante()){
-			if (!this.getDNF().containsKey(p))
+			if (!this.getDNF().containsKey(p))//se o participante ainda estiver na corrida
 			{	
-				int posicao = p.getPosicao();
+				int posicao = p.getPosicao();//buscar a posicao do particpante em questao
 				System.out.println("participante que ultrapassou: " + p.getUtilizador().getUser() + " posicao inicial " + posicao);
-				if(!(p.equals(participante)) && posicao>posAtual)
-					p.setPosicao(posicao-1);
+				if(!(p.equals(participante)) && posicao>posAtual)//se nao for o participante que se despistou e a sua posicao for superior 
+					p.setPosicao(posicao-1);//decrementa a sua posicao
 				System.out.println("participante que ultrapassou: " + p.getUtilizador().getUser() + " posicao final " + p.getPosicao());
 			}
 		}
@@ -259,86 +255,85 @@ public class Corrida implements Serializable {
 
 	//calcula a probabilidade de um participante se despistar
 	public boolean calculaCrash(float agrPiloto, tipoPneu pneus, int clima, float vsPiloto, int volta){
-		System.out.println("CALCULA CRASH");
-		System.out.println(printResultados());
 		Random rand = new Random();
-		float limite = rand.nextFloat();
-		float probPneus = probPneus(pneus, clima, volta);
-		float probClima = probClima(pneus, clima, vsPiloto);
-		float prob = (probPneus*probClima);
-		prob += 0.05 + (-0.1*agrPiloto);
-		return(limite>prob);
+		float limite = rand.nextFloat();//valor aleatoria 
+		//float probPneus = probPneus(pneus, clima, volta);// valor em que o tipo de pneu afeta a prob de se despistar
+		float prob = probClima(pneus, clima, volta,vsPiloto);// calcula a prob de se dispistar considerando o clima, os pneus, o piloto e a volta correntr
+		//float prob = (probPneus*probClima);// probabilidade do participante se despistar
+		prob += 0.05 + (-0.1*agrPiloto);//quanto mais agressivo o piloto maior a prob de se despitar
+		return(limite>prob);//se o valor aleatorio for maior que a prob calculada o participante despista se
 	}
 
-	public float probPneus(tipoPneu pneus, int clima, int volta){
+	public float probClima(tipoPneu pneus, int clima, int volta, float vsPiloto){
 		float probInicial = 1;
 		switch(pneus){
 			case MACIO:
-				probInicial -= (0.0033*volta);
+				probInicial -= (0.0033*volta);//pneus macios desgastam-se mais facilmente
 				break;
 			case DURO:
-				probInicial -= (0.0025*volta);
+				probInicial -= (0.0025*volta);//pneus duros demoram mais a desgastar
 				break;
 			case CHUVA:
 				if(clima == 1) //caso esteja a chuver
 					probInicial -= (0.0028*volta);	
-				else // caso esteja sol, penaliza de forma severa o jogador.
+				else // caso esteja sol, penaliza de forma severa o participante.
 					probInicial -= (0.025*volta); 
 				break;
 			default:
 				probInicial -= (0.003*volta);
 				break;
 		}
-		return probInicial;
-	}
-
-	public float probClima(tipoPneu pneus, int clima, float vsPiloto){
-		float probInicial = 1;
-		switch(pneus){
-			case MACIO:
-				if(clima == 1)
-					probInicial -= 0.25;
-			case DURO:
-				if(clima ==1)
-					probInicial -= 0.20;
-			case CHUVA:
-				if(clima == 1) //caso esteja a chuver
-					probInicial -= 0;	
-				else // caso esteja sol, penaliza de forma severa o jogador.
-					probInicial -= 0.40; 
-			default:
-				probInicial -= 0.10;
-			}
 		if(clima == 0)
-			probInicial += -0.05 + (0.1*vsPiloto);
+			probInicial += -0.05 + (0.1*vsPiloto);// pilotos melhores em seco sao recompensados 
 		else
-			probInicial += 0.05 + (-0.1*vsPiloto);
+			probInicial += 0.05 + (-0.1*vsPiloto);// pilotos melhores em chuva sao recompensados 
 		return probInicial;
 	}
 
+	//public float probClima(tipoPneu pneus, int clima, float vsPiloto){
+	//	float probInicial = 1;
+	//	switch(pneus){
+	//		case MACIO:
+	//			if(clima == 1)
+	//				probInicial -= 0.25;
+	//		case DURO:
+	//			if(clima ==1)
+	//				probInicial -= 0.20;
+	//		case CHUVA:
+	//			if(clima == 1) //caso esteja a chuver
+	//				probInicial -= 0;	
+	//			else // caso esteja sol, penaliza de forma severa o jogador.
+	//				probInicial -= 0.40; 
+	//		default:
+	//			probInicial -= 0.10;
+	//		}
+	//	if(clima == 0)
+	//		probInicial += -0.05 + (0.1*vsPiloto);
+	//	else
+	//		probInicial += 0.05 + (-0.1*vsPiloto);
+	//	return probInicial;
+	//}
+
+	//funcao que ira atribui valores aleatorios para a dif de tempo para o 1ª lugar
 	public void calculaTimeDiff() {
-		Collections.sort(this.getParticipante(), new StockComparator());
-		System.out.println("CALCULA TIME DIFF");
-		System.out.println(printResultados());
-		int size = this.participantes.size();
+		Collections.sort(this.getParticipante(), new StockComparator());//garantir que a lista está ordenada
+		int size = this.participantes.size();//num de participantes
 		Random random = new Random();
-		float time = random.nextFloat();
-		this.participantes.get(0).setTimeDiff(0);
-		for(int i = 1; i<size;i++){
+		float time = random.nextFloat();//valor que irá ser usado como diferenca
+		this.participantes.get(0).setTimeDiff(0);//participante em 1º lugar tem tempo a zero
+		for(int i = 1; i<size;i++){//percorrer a lista para alterar os valores
 			Participante p = this.participantes.get(i);
-			if(!this.getDNF().containsKey(p)){
-				float inFront = this.participantes.get(i-1).getTimeDiff();
-				this.participantes.get(i).setTimeDiff(inFront+(time*10));
+			if(!this.getDNF().containsKey(p)){//se o participante ainda estiver na corrida
+				float inFront = this.participantes.get(i-1).getTimeDiff();//vai buscar o tempo do participante a sua frente
+				this.participantes.get(i).setTimeDiff(inFront+(time*10));//soma ao valor anterior o tempo criado 
 			}
-				
-			
 		}
 	}
 
 	public boolean inTime(Participante participante, int index){
 		//calcula a diferenca de tempos entre o participante e o carro a sua frente
 		float timeDiff = participante.getTimeDiff() - this.participantes.get(index-1).getTimeDiff();
-		if(timeDiff>2)
+		if(timeDiff>2)// se esta diferenca for maior que 2 nunca pode tentar a ultrapassagem
 			return false;
 		else{
 			Carro carro = participante.getCarro();
@@ -352,8 +347,6 @@ public class Corrida implements Serializable {
 
 
 	public boolean tentaUltrapassagem(Carro carro, Piloto piloto, int clima, int gdu) {
-		System.out.println("TENTA ULTRAPASSAGEM");
-		System.out.println(printResultados());
 		float probInicial = 1;
 		estadoMotor estado = carro.getEstado();
 		float agressividade = piloto.getAgressividade();
@@ -382,8 +375,6 @@ public class Corrida implements Serializable {
 	}
 
 	public boolean verificaCrash(Participante p){
-		System.out.println("VERIFICA CRASH ");
-		System.out.println(printResultados());
 		float agressividade = p.getpiloto().getAgressividade();
 		float vs = p.getpiloto().getChuvaVSseco();
 		tipoPneu pneus = p.getCarro().getPneus();

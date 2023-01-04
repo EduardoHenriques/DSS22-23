@@ -23,13 +23,24 @@ public class FacadeCorrida implements IFacadeCorrida {
 		return null;
 	}
 
+	public void startCampeonato(Campeonato c)
+	{
+		ArrayList<Participante> participantes = new ArrayList<>(c.getListaPart().values());
+		for(Circuito circ : c.getCircuitos())
+		{
+			Corrida corr = new Corrida(circ.clone(),(int)Math.round(Math.random()),participantes);
+			c.getCorridas().put(corr,false);
+		}
+	}
+
+
 	public String simularProximaCorrida(String nome_campeonato) {
 		String resultado_corrida = null;
 		Campeonato camp = this.mapCampeonatos.get(nome_campeonato);
-		for(Map.Entry<Circuito,Boolean> pair : camp.getCircuitos())
+		for(Map.Entry<Corrida,Boolean> pair : camp.getCorridas().entrySet())
 			if (!pair.getValue())
 				{
-					resultado_corrida = camp.simulaProximaCorrida(pair.getKey());
+					resultado_corrida = camp.simulaProximaCorrida(pair.getKey().getCiruito());
 					pair.setValue(false);
 					break;
 				}

@@ -17,6 +17,8 @@ import Carro.C2H;
 import Carro.GT;
 import Carro.GTH;
 import Carro.SC;
+import Carro.estadoMotor;
+import Carro.tipoPneu;
 import Carro.Carro;
 
 public class CarroDAO implements Map<String, Carro>{
@@ -35,6 +37,8 @@ public class CarroDAO implements Map<String, Carro>{
                     + "pa FLOAT NOT NULL,"
                     + "estado VARCHAR(255) NOT NULL,"
                     + "pneus VARCHAR(255) NOT NULL,"
+                    + "downforce FLOAT NOT NULL,"
+                    + "other_value FLOAT NOT NULL,"
                     + "categoria VARCHAR(255) NOT NULL,"
                     + "potencia_elec INT,"
                     + "PRIMARY KEY (idCarro))";
@@ -91,7 +95,7 @@ public class CarroDAO implements Map<String, Carro>{
     @Override
     public boolean containsValue(Object value) {
         Carro c = (Carro) value;
-        return containsKey(c.getIdCarro());
+        return containsKey(c.getModelo());
     }
 
     @Override
@@ -102,20 +106,25 @@ public class CarroDAO implements Map<String, Carro>{
             String sql = "SELECT * FROM Carro WHERE idCarro='" + key + "'";
             try (ResultSet rs = stm.executeQuery(sql)) {
                 if (rs.next()) {
+                    estadoMotor estado = estadoMotor.valueOf(rs.getString("estado"));
+                    tipoPneu pneus = tipoPneu.valueOf(rs.getString("pneus"));
                     if (rs.getString("categoria").equals("C1")) {
-                        c = new C1(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), rs.getString("estado"), rs.getString("pneus"));
+                        c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"));
                     }else if (rs.getString("categoria").equals("C2")) {
-                        c = new C2(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), rs.getString("estado"), rs.getString("pneus"));
+                        c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"));
                     }else if (rs.getString("categoria").equals("C1H")) {
-                        c = new C1H(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("potencia_elec"));
+                        c = new C1H(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getInt("potencia_elec"));
                     }else if (rs.getString("categoria").equals("C2H")) {
-                        c = new C2H(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("potencia_elec"));
+                        c = new C2H(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"), rs.getInt("potencia_elec"));
                     }else if (rs.getString("categoria").equals("GT")) {
-                        c = new GT(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), rs.getString("estado"), rs.getString("pneus"));
+                        c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"));
                     }else if (rs.getString("categoria").equals("GTH")) {
-                        c = new GTH(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("potencia_elec"));
+                        c = new GTH(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"), rs.getInt("potencia_elec"));
                     }else if (rs.getString("categoria").equals("SC")) {
-                        c = new SC(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), rs.getString("estado"), rs.getString("pneus"));
+                        c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"));
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
@@ -136,9 +145,9 @@ public class CarroDAO implements Map<String, Carro>{
                     stm.executeUpdate(sql);
                 }
             }
-            if (value instanceof C1) {
+            if (value instanceof C1H) {
                 sql = "INSERT INTO Carro VALUES ('"
-                        + value.getIdCarro() + "','"
+                        + value.getModelo() + "','"
                         + value.getMarca() + "','"
                         + value.getModelo() + "',"
                         + value.getCilindrada() + ","
@@ -147,37 +156,13 @@ public class CarroDAO implements Map<String, Carro>{
                         + value.getPa() + ",'"
                         + value.getEstado() + "','"
                         + value.getPneus() + "','"
-                        + "C1" + "',"
-                        + 0 + ")";
-            } else if (value instanceof C2) {
-                sql = "INSERT INTO Carro VALUES ('"
-                        + value.getIdCarro() + "','"
-                        + value.getMarca() + "','"
-                        + value.getModelo() + "',"
-                        + value.getCilindrada() + ","
-                        + value.getPotencia() + ","
-                        + value.getFiabilidade() + ","
-                        + value.getPa() + ",'"
-                        + value.getEstado() + "','"
-                        + value.getPneus() + "','"
-                        + "C2" + "',"
-                        + 0 + ")";
-            } else if (value instanceof C1H) {
-                sql = "INSERT INTO Carro VALUES ('"
-                        + value.getIdCarro() + "','"
-                        + value.getMarca() + "','"
-                        + value.getModelo() + "',"
-                        + value.getCilindrada() + ","
-                        + value.getPotencia() + ","
-                        + value.getFiabilidade() + ","
-                        + value.getPa() + ",'"
-                        + value.getEstado() + "','"
-                        + value.getPneus() + "','"
+                        + value.getDownforce() + "','"
+                        + 0 + "','"
                         + "C1H" + "',"
                         + ((C1H) value).getMotorEletrico() + ")";
             } else if (value instanceof C2H) {
                 sql = "INSERT INTO Carro VALUES ('"
-                        + value.getIdCarro() + "','"
+                        + value.getModelo() + "','"
                         + value.getMarca() + "','"
                         + value.getModelo() + "',"
                         + value.getCilindrada() + ","
@@ -186,11 +171,58 @@ public class CarroDAO implements Map<String, Carro>{
                         + value.getPa() + ",'"
                         + value.getEstado() + "','"
                         + value.getPneus() + "','"
+                        + value.getDownforce() + "','"
+                        + ((C2H) value).getAfinacao() + "','"
                         + "C2H" + "',"
-                        + ((C2H) value).getMotorEletrico() + ")";
+                        + ((C2H) value).getMotorEletrico() + ")"; 
+            } else if (value instanceof C1) {
+                sql = "INSERT INTO Carro VALUES ('"
+                        + value.getModelo() + "','"
+                        + value.getMarca() + "','"
+                        + value.getModelo() + "',"
+                        + value.getCilindrada() + ","
+                        + value.getPotencia() + ","
+                        + value.getFiabilidade() + ","
+                        + value.getPa() + ",'"
+                        + value.getEstado() + "','"
+                        + value.getPneus() + "','"
+                        + value.getDownforce() + "','"
+                        + 0 + "','"
+                        + "C1" + "',"
+                        + 0 + ")";
+            } else if (value instanceof C2) {
+                sql = "INSERT INTO Carro VALUES ('"
+                        + value.getModelo() + "','"
+                        + value.getMarca() + "','"
+                        + value.getModelo() + "',"
+                        + value.getCilindrada() + ","
+                        + value.getPotencia() + ","
+                        + value.getFiabilidade() + ","
+                        + value.getPa() + ",'"
+                        + value.getEstado() + "','"
+                        + value.getPneus() + "','"
+                        + value.getDownforce() + "','"
+                        + ((C2) value).getAfinacao() + "','"
+                        + "C2" + "',"
+                        + 0 + ")";
+            } else if (value instanceof GTH) {
+                sql = "INSERT INTO Carro VALUES ('"
+                        + value.getModelo() + "','"
+                        + value.getMarca() + "','"
+                        + value.getModelo() + "',"
+                        + value.getCilindrada() + ","
+                        + value.getPotencia() + ","
+                        + value.getFiabilidade() + ","
+                        + value.getPa() + ",'"
+                        + value.getEstado() + "','"
+                        + value.getPneus() + "','"
+                        + value.getDownforce() + "','"
+                        + ((GTH) value).getTaxa_fiabilidade() + "','"
+                        + "GTH" + "',"
+                        + ((GTH) value).getMotorEletrico() + ")"; 
             } else if (value instanceof GT) {
                 sql = "INSERT INTO Carro VALUES ('"
-                        + value.getIdCarro() + "','"
+                        + value.getModelo() + "','"
                         + value.getMarca() + "','"
                         + value.getModelo() + "',"
                         + value.getCilindrada() + ","
@@ -199,25 +231,14 @@ public class CarroDAO implements Map<String, Carro>{
                         + value.getPa() + ",'"
                         + value.getEstado() + "','"
                         + value.getPneus() + "','"
+                        + value.getDownforce() + "','"
+                        + ((GT) value).getTaxa_fiabilidade() + "','"
                         + "GT" + "',"
                         + 0 +
                         ")";
-            } else if (value instanceof GTH) {
-                sql = "INSERT INTO Carro VALUES ('"
-                        + value.getIdCarro() + "','"
-                        + value.getMarca() + "','"
-                        + value.getModelo() + "',"
-                        + value.getCilindrada() + ","
-                        + value.getPotencia() + ","
-                        + value.getFiabilidade() + ","
-                        + value.getPa() + ",'"
-                        + value.getEstado() + "','"
-                        + value.getPneus() + "','"
-                        + "GTH" + "',"
-                        + ((GTH) value).getMotorEletrico() + ")";
             } else if (value instanceof SC) {
                 sql = "INSERT INTO Carro VALUES ('"
-                        + value.getIdCarro() + "','"
+                        + value.getModelo() + "','"
                         + value.getMarca() + "','"
                         + value.getModelo() + "',"
                         + value.getCilindrada() + ","
@@ -226,6 +247,8 @@ public class CarroDAO implements Map<String, Carro>{
                         + value.getPa() + ",'"
                         + value.getEstado() + "','"
                         + value.getPneus() + "','"
+                        + value.getDownforce() + "','"
+                        + 0 + "','"
                         + "SC" + "',"
                         + 0 + ")";
             }
@@ -254,7 +277,7 @@ public class CarroDAO implements Map<String, Carro>{
     @Override
     public void putAll(Map<? extends String, ? extends Carro> m) {
         for (Carro c : m.values()) {
-            this.put(c.getIdCarro(), c);
+            this.put(c.getModelo(), c);
         }
     }
 
@@ -296,20 +319,22 @@ public class CarroDAO implements Map<String, Carro>{
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 Carro c = null;
-                if (rs.getString("tipo").equals("C1")) {
-                    c = new C1(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
-                } else if (rs.getString("tipo").equals("C2")) {
-                    c = new C2(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
-                } else if (rs.getString("tipo").equals("C1H")) {
-                    c = new C1H(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("motorEletrico"));
-                } else if (rs.getString("tipo").equals("C2H")) {
-                    c = new C2H(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("motorEletrico"));
-                } else if (rs.getString("tipo").equals("GT")) {
-                    c = new GT(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
-                } else if (rs.getString("tipo").equals("GTH")) {
-                    c = new GTH(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("motorEletrico"));
-                } else if (rs.getString("tipo").equals("SC")) {
-                    c = new SC(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
+                estadoMotor estado = estadoMotor.valueOf(rs.getString("estado"));
+                tipoPneu pneus = tipoPneu.valueOf(rs.getString("pneus"));
+                if (rs.getString("categoria").equals("C1")) {
+                    c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"));
+                }else if (rs.getString("categoria").equals("C2")) {
+                    c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"));
+                }else if (rs.getString("categoria").equals("C1H")) {
+                    c = new C1H(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getInt("potencia_elec"));
+                }else if (rs.getString("categoria").equals("C2H")) {
+                    c = new C2H(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"), rs.getInt("potencia_elec"));
+                }else if (rs.getString("categoria").equals("GT")) {
+                    c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"));
+                }else if (rs.getString("categoria").equals("GTH")) {
+                    c = new GTH(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"), rs.getInt("potencia_elec"));
+                }else if (rs.getString("categoria").equals("SC")) {
+                    c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"));
                 }
                 col.add(c);
             }
@@ -329,20 +354,22 @@ public class CarroDAO implements Map<String, Carro>{
             ResultSet rs = stm.executeQuery(sql);
             while (rs.next()) {
                 Carro c = null;
-                if (rs.getString("tipo").equals("C1")) {
-                    c = new C1(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
-                } else if (rs.getString("tipo").equals("C2")) {
-                    c = new C2(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
-                } else if (rs.getString("tipo").equals("C1H")) {
-                    c = new C1H(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("motorEletrico"));
-                } else if (rs.getString("tipo").equals("C2H")) {
-                    c = new C2H(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("motorEletrico"));
-                } else if (rs.getString("tipo").equals("GT")) {
-                    c = new GT(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
-                } else if (rs.getString("tipo").equals("GTH")) {
-                    c = new GTH(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"), rs.getInt("motorEletrico"));
-                } else if (rs.getString("tipo").equals("SC")) {
-                    c = new SC(rs.getString("idCarro"), rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getInt("fiabilidade"), rs.getInt("pa"), rs.getString("estado"), rs.getString("pneus"));
+                estadoMotor estado = estadoMotor.valueOf(rs.getString("estado"));
+                tipoPneu pneus = tipoPneu.valueOf(rs.getString("pneus"));
+                if (rs.getString("categoria").equals("C1")) {
+                    c = new C1(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"));
+                }else if (rs.getString("categoria").equals("C2")) {
+                    c = new C2(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"));
+                }else if (rs.getString("categoria").equals("C1H")) {
+                    c = new C1H(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getInt("potencia_elec"));
+                }else if (rs.getString("categoria").equals("C2H")) {
+                    c = new C2H(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"), rs.getInt("potencia_elec"));
+                }else if (rs.getString("categoria").equals("GT")) {
+                    c = new GT(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"));
+                }else if (rs.getString("categoria").equals("GTH")) {
+                    c = new GTH(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"), rs.getFloat("other_value"), rs.getInt("potencia_elec"));
+                }else if (rs.getString("categoria").equals("SC")) {
+                    c = new SC(rs.getString("marca"), rs.getString("modelo"), rs.getInt("cilindrada"), rs.getInt("potencia"), rs.getFloat("fiabilidade"), rs.getFloat("pa"), estado, pneus, rs.getFloat("downforce"));
                 }
                 set.add(new AbstractMap.SimpleEntry<>(rs.getString("idCarro"), c));
             }

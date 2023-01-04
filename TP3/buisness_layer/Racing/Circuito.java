@@ -43,7 +43,12 @@ public class Circuito implements Serializable {
 		return this.listaSeccoes;
 	}
 
-	public Circuito() {}
+	public Circuito() {
+		this.nome = "";
+		this.distancia = 0;
+		this.voltas = 0;
+		this.listaSeccoes = new ArrayList<>();
+	}
 
 	public Circuito(String n, int d, int v, ArrayList<Seccao> l) {
 		this.nome = n;
@@ -64,26 +69,33 @@ public class Circuito implements Serializable {
 		}
 	}
 
-	public Circuito createCircuito(String nome, int dist, int voltas, int n_retas, int n_chicanes) {
-		Circuito c = new Circuito();
-		c.setNome(nome);
-		c.setDistancia(dist);
-		c.setVoltas(voltas);
+	public void createCircuito(String nome, int dist, int voltas, int n_retas, int n_chicanes) {
+		this.setNome(nome);
+		this.setDistancia(dist);
+		this.setVoltas(voltas);
 		int curvas = (n_retas + n_chicanes) / 2;
 		for (int i = 0; i < n_retas ; i++) {
-			c.getListaSeccoes().add(new Seccao(1));
+			this.getListaSeccoes().add(new Seccao(1));
 		}
 		for (int i = 0; i < curvas ; i++) {
-			c.getListaSeccoes().add(new Seccao(0));
+			this.getListaSeccoes().add(new Seccao(0));
 		}
 		for (int i = 0; i < n_chicanes ; i++) {
-			c.getListaSeccoes().add(new Seccao(2));
+			this.getListaSeccoes().add(new Seccao(2));
 		}
-		return c;
 	}
 
 	public Circuito clone() {
 		return new Circuito(this);
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Nome: ").append(this.nome).append("\n");
+		sb.append("Distancia: ").append(this.distancia).append("\n");
+		sb.append("Voltas: ").append(this.voltas).append("\n");
+		sb.append("Seccoes: ").append(this.listaSeccoes).append("\n");
+		return sb.toString();
 	}
 
 	@Override

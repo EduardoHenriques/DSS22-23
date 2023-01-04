@@ -22,19 +22,17 @@ public class CircuitoDAO implements Map<String, Circuito>{
         try (Connection conn = DriverManager.getConnection(DAOConfig.URL, DAOConfig.USERNAME, DAOConfig.PASSWORD);
             Statement stm = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS circuito ("
-                + "id VARCHAR(255) PRIMARY KEY AUTOINCREMENT,"
+                + "id VARCHAR(255) NOT NULL,"
                 + "nome VARCHAR(255) NOT NULL,"
                 + "distancia INT NOT NULL,"
                 + "voltas INT NOT NULL,"
-                + ")";
+                + "PRIMARY KEY (id))";
             stm.executeUpdate(sql);
             String sql2 = "CREATE TABLE IF NOT EXISTS seccao ("
-                + "id VARCHAR(255) PRIMARY KEY AUTOINCREMENT,"
                 + "tipo INT NOT NULL,"
                 + "gdu INT NOT NULL,"
                 + "circuito_id VARCHAR(255) NOT NULL,"
-                + "FOREIGN KEY(circuito_id) REFERENCES circuito(id)"
-                + ")";
+                + "FOREIGN KEY(circuito_id) REFERENCES circuito(id))";
             stm.executeUpdate(sql2);
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +116,7 @@ public class CircuitoDAO implements Map<String, Circuito>{
                 for (; rs2.next();) {
                     seccoes.add(new Seccao(rs2.getInt("tipo"), rs2.getInt("gdu")));
                 }
-                c = new Circuito(rs.getString("id"), rs.getString("nome"), rs.getInt("distancia"), rs.getInt("voltas"), seccoes);
+                c = new Circuito(rs.getString("nome"), rs.getInt("distancia"), rs.getInt("voltas"), seccoes);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,18 +138,19 @@ public class CircuitoDAO implements Map<String, Circuito>{
                     stm.executeUpdate(sql);
                 }
             }
-            String sql2 = "INSERT INTO circuito (id, nome, distancia, voltas) VALUES ("
-                + value.getNome() + ", '"
-                + value.getNome() + "', "
-                + value.getDistancia() + ", "
-                + value.getVoltas() + ")";
-            stm.executeUpdate(sql);
-            for (Seccao s : Circuito.getSeccoes()) {
-                String sql2 = "INSERT INTO seccao (tipo, gdu, circuito_id) VALUES ("
+            String sql2 = "INSERT INTO circuito VALUES ('"
+                + value.getNome() + "','"
+                + value.getNome() + "','"
+                + value.getDistancia() + "','"
+                + value.getVoltas() + "')";
+            stm.executeUpdate(sql2);
+            for (Seccao s : value.getListaSeccoes()) {
+                String sql4 = "INSERT INTO seccao (tipo, gdu, circuito_id) VALUES ("
                     + s.getTipo() + ", "
-                    + s.getGDU() + ", "
-                    + value.getNome() + ")";
-                stm.executeUpdate(sql2);
+                    + s.getGDU() + ", '"
+                    + value.getNome() + "')";
+                System.out.println(sql4);
+                stm.executeUpdate(sql4);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,7 +228,7 @@ public class CircuitoDAO implements Map<String, Circuito>{
                 for (; rs2.next();) {
                     seccoes.add(new Seccao(rs2.getInt("tipo"), rs2.getInt("gdu")));
                 }
-                col.add(new Circuito(rs.getString("id"), rs.getString("nome"), rs.getInt("distancia"), rs.getInt("voltas"), seccoes));
+                col.add(new Circuito(rs.getString("nome"), rs.getInt("distancia"), rs.getInt("voltas"), seccoes));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -253,7 +252,7 @@ public class CircuitoDAO implements Map<String, Circuito>{
                 for (; rs2.next();) {
                     seccoes.add(new Seccao(rs2.getInt("tipo"), rs2.getInt("gdu")));
                 }
-                set.add(new AbstractMap.SimpleEntry<>(rs.getString("id"), new Circuito(rs.getString("id"), rs.getString("nome"), rs.getInt("distancia"), rs.getInt("voltas"), seccoes)));
+                set.add(new AbstractMap.SimpleEntry<>(rs.getString("id"), new Circuito(rs.getString("nome"), rs.getInt("distancia"), rs.getInt("voltas"), seccoes)));
             }
         } catch (Exception e) {
             e.printStackTrace();
