@@ -44,7 +44,7 @@ public class Main {
          participantes.add(part3);
 
          Corrida corrida = new Corrida(circuito, 0, participantes);
-
+         corrida.vaiUlt(part3);
          HashSet<Map.Entry<Circuito,Boolean>> circuitos = new HashSet<>();
          Map.Entry<Circuito,Boolean> entry =
             new AbstractMap.SimpleEntry<Circuito,Boolean>(circuito, false);
@@ -54,7 +54,7 @@ public class Main {
          campeonato.addParticipante(part);
          campeonato.addParticipante(part2);
          campeonato.addParticipante(part3);
-
+         
          System.out.println(campeonato.simulaProximaCorrida(circuito));
      }
      catch(Exception e)

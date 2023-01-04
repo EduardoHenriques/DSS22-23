@@ -51,28 +51,32 @@ public class Corrida implements Serializable {
 		return new Corrida(this);
 	}
 
-
+ // funçao que irá simular a corrida devolvendo a lista dos participantes
 	public List<Participante>  simulaCorrida() {
 		int num_voltas = circuito.getVoltas();
 		for(int i = 0; i<num_voltas;i++){
-			atualizarPosicoes();
+			atualizarPosicoes();//simula o que vai acontecer a cada volta
 			for(Participante p : this.participantes){
-				if(!this.getDNF().containsKey(p)){
-					Boolean falhou = verificaFalhaMotor(p, i+1);
-					if(falhou){falhaMotor(p, i+1);}
+				if(!this.getDNF().containsKey(p)){//verifica se o participante já foi desqualificado
+					Boolean falhou = verificaFalhaMotor(p, i+1);//verifica se o motor do participante falhou
+					if(falhou){falhaMotor(p, i+1);}//se sim desqualifica o particante e a volta a que o motor falhou
 				}
 			}
+			System.out.print("volta " + (i+1));
+			System.out.print("\n--------------\n");
+			System.out.print(printResultados());
+			System.out.print("DNF\n");
+			System.out.print(DNFtoString());
+			System.out.print("--------------\n");
 		}
-		for (Participante participante : dnf.keySet()) {
-        	participante.setPosicao(0);
+		for (Participante participante : dnf.keySet()) {// para todos os participantes desqualificados
+        	participante.setPosicao(0); //coloca a sua posiçao a 0
     	}
-		return this.participantes;
+		return this.participantes;//devolve a lista dos participantes
 	}
 
-
-
+	//funçao para testes
 	public String printResultados() {
-		Collections.sort(this.getParticipante(), new StockComparator());
 		String str = "";
 		for (Participante part : this.participantes){
             str += part.getPosicao() + "º: " + part.getUtilizador().getUser() + "\n"; 
@@ -81,11 +85,11 @@ public class Corrida implements Serializable {
 	}
 
 	
-
+	//funçao para testes
 	public String DNFtoString(){
 		String str = "";
 		for (Map.Entry<Participante, Integer> entry : dnf.entrySet()) {
-			str += "participante " + entry.getKey().getUtilizador().getUser() + ":volta " + entry.getValue();
+			str += entry.getKey().getUtilizador().getUser() + ":volta " + entry.getValue() + "\n";
 		}
 		return str;
 	}
@@ -97,6 +101,8 @@ public class Corrida implements Serializable {
 
 	//funcao premium que simula todo o que irá acontecer numa dada seccao
 	public void verificaUltrapassagemPrem(Seccao sec) {
+		System.out.println("VERIFICA ULTRAPASSAGEM prem");
+		System.out.println(printResultados());
 		int index = 0;
 		for(Participante p : participantes){
 			if (!this.getDNF().containsKey(p)){//se o participante ainda estiver na corrida
@@ -123,6 +129,8 @@ public class Corrida implements Serializable {
 
 	//funcao nao premium que simula todo o que irá acontecer numa dada seccao muito semelhante a anterior
 	public void verificarUltrapassagem(Seccao sec) {
+		System.out.println("VERIFICA ULTRAPASSAGEM ");
+		System.out.println(printResultados());
 		for(Participante p : participantes){
 			if (!this.getDNF().containsKey(p))
 			{	
@@ -146,6 +154,8 @@ public class Corrida implements Serializable {
 	}
 	//funcao que itera por todas as seccoes de um determinado circuito determinando o que acontece em cada uma delas
 	public void atualizarPosicoes() {
+		System.out.println("ATUALIZAR POSICOES");
+		System.out.println(printResultados());
 		ArrayList<Seccao> listaSeccoes = this.circuito.getListaSeccoes();
 		if(haPremium()){//se houver um participante com premuim utiliza a funcao premium de ultrapassagem
 			for(Seccao sec : listaSeccoes){
@@ -162,6 +172,8 @@ public class Corrida implements Serializable {
 
 	//funcao que com um conjunto de fatores verifica se o houve uma falha no motor do participante
 	public Boolean verificaFalhaMotor(Participante participante, int voltas) {
+		System.out.println("VERIFICA FALHA MOTOR");
+		System.out.println(printResultados());
 		boolean falhou;
 		Carro carro = participante.getCarro();
 		estadoMotor estado =  carro.getEstado();
@@ -187,8 +199,10 @@ public class Corrida implements Serializable {
 
 	//funcao que coloca o participante na lista de corredores que não irao acabar a corrida
 	public void falhaMotor(Participante participante, int volta) {
-		dnf.put(participante, volta);
+		System.out.println("FALHA MOTOR");
+		System.out.println(printResultados());
 		vaiUlt(participante);
+		dnf.put(participante, volta);
 	}
 
 	public boolean haPremium() {
@@ -208,32 +222,45 @@ public class Corrida implements Serializable {
 
 
 	public void avancaUm(Participante participante) {
-		int indexInFront = participante.getPosicao()-2;
+		System.out.println("FUNCAO AVNAÇA UM");
+		int indexInFront = participante.getPosicao()-2;//ir buscar o index do jogador a frente
 		Participante inFront = this.participantes.get(indexInFront);
-		inFront.setPosicao(indexInFront+2);//mudar a posicao do part ha frente para a pos atual do jogador
+		System.out.println("participante que ultrapassou: " + participante.getUtilizador().getUser() + " posicao inicial " + participante.getPosicao());
+		System.out.println("posicao carro a frente: " + inFront.getUtilizador().getUser() + " posicao inicial " + inFront.getPosicao());
+		inFront.setPosicao(indexInFront+2);//mudar a posicao do jogador a frente para a posicao atual do jogador
 		participante.setPosicao(indexInFront+1);
+		System.out.println("participante que ultrapassou: " + participante.getUtilizador().getUser() + " posicao final " + participante.getPosicao());
+		System.out.println("posicao carro a frente: " + inFront.getUtilizador().getUser() + " posicao final " + inFront.getPosicao());
 		//Collections.sort(this.getParticipante(), new StockComparator());
 	}
 
 
 	public void vaiUlt(Participante participante) {
+		System.out.println("FUNCAO VAIULT");
+		System.out.println(participante.getUtilizador().getUser()+ " CRASHOU");
 		int posAtual = participante.getPosicao();
-		int lastPos = this.getParticipante().size();
+		int numParticipantes = this.getParticipante().size();
+		int	numDNF = dnf.size();
+		int lastPos = numParticipantes-numDNF;
 		participante.setPosicao(lastPos); 
 		for(Participante p : this.getParticipante()){
 			if (!this.getDNF().containsKey(p))
 			{	
 				int posicao = p.getPosicao();
-				if(!(p.equals(participante)) && posicao<posAtual)
-					p.setPosicao(posicao++);
+				System.out.println("participante que ultrapassou: " + p.getUtilizador().getUser() + " posicao inicial " + posicao);
+				if(!(p.equals(participante)) && posicao>posAtual)
+					p.setPosicao(posicao-1);
+				System.out.println("participante que ultrapassou: " + p.getUtilizador().getUser() + " posicao final " + p.getPosicao());
 			}
 		}
 		//Collections.sort(this.getParticipante(), new StockComparator());
 	}
 
 
-
+	//calcula a probabilidade de um participante se despistar
 	public boolean calculaCrash(float agrPiloto, tipoPneu pneus, int clima, float vsPiloto, int volta){
+		System.out.println("CALCULA CRASH");
+		System.out.println(printResultados());
 		Random rand = new Random();
 		float limite = rand.nextFloat();
 		float probPneus = probPneus(pneus, clima, volta);
@@ -291,6 +318,8 @@ public class Corrida implements Serializable {
 
 	public void calculaTimeDiff() {
 		Collections.sort(this.getParticipante(), new StockComparator());
+		System.out.println("CALCULA TIME DIFF");
+		System.out.println(printResultados());
 		int size = this.participantes.size();
 		Random random = new Random();
 		float time = random.nextFloat();
@@ -323,6 +352,8 @@ public class Corrida implements Serializable {
 
 
 	public boolean tentaUltrapassagem(Carro carro, Piloto piloto, int clima, int gdu) {
+		System.out.println("TENTA ULTRAPASSAGEM");
+		System.out.println(printResultados());
 		float probInicial = 1;
 		estadoMotor estado = carro.getEstado();
 		float agressividade = piloto.getAgressividade();
@@ -351,6 +382,8 @@ public class Corrida implements Serializable {
 	}
 
 	public boolean verificaCrash(Participante p){
+		System.out.println("VERIFICA CRASH ");
+		System.out.println(printResultados());
 		float agressividade = p.getpiloto().getAgressividade();
 		float vs = p.getpiloto().getChuvaVSseco();
 		tipoPneu pneus = p.getCarro().getPneus();
@@ -449,7 +482,7 @@ public class Corrida implements Serializable {
 		{
 			if (p1.getPosicao() == p2.getPosicao())
 			return 0;
-			else if (p1.getPosicao() > p2.getPosicao())
+			else if (p1.getPosicao() > p2.getPosicao()) // se p1 estiver a frente de p2
 			return 1;
 			else
 			return -1;

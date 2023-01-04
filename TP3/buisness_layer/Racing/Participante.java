@@ -76,6 +76,15 @@ public class Participante {
 		
 	}
 
+	@Override
+	public boolean equals(Object obj){
+		if(this == obj)
+			return true;
+		if(obj == null || obj.getClass()!=this.getClass())
+			return false;
+		Participante p = (Participante) obj;
+		return this.getUtilizador().getUser().equals(p.getUtilizador().getUser());
+	}
 	public String toString()
 	{
 		return ("===PARTICIPANTE===\n" + this.user.toString() + this.piloto.toString() + this.carro.toString());

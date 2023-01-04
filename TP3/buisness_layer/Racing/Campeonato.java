@@ -143,8 +143,10 @@ public class Campeonato implements Serializable {
 		atualizarClassificacao(listaPart);
 		ArrayList<Map.Entry<String, Integer>> camp = ordenaClassificacao(this.classificacao);
 		String strClassificacoes = "";
+		int lugar = 0;
 		for(Map.Entry<String, Integer> entry : camp){
-			String str = entry.getValue() + "º  " + entry.getKey()+ "\n";
+			lugar++;
+			String str =entry.getKey()+ " lugar->" + lugar + "º | pontos-> " + entry.getValue() +  "\n";
 			strClassificacoes += str; 
 		}
 		return strClassificacoes;
@@ -171,7 +173,7 @@ class StockComparator implements Comparator<Map.Entry<String, Integer>> {
 	{
 		if (p1.getValue() == p2.getValue())
 		return 0;
-		else if (p1.getValue() > p2.getValue())
+		else if (p1.getValue() < p2.getValue()) // se p1 tiver menos pontos que p2
 		return 1;
 		else
 		return -1;
