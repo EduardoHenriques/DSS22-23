@@ -5,10 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -146,7 +144,7 @@ public class UtilizadorDAO implements Map<String, Utilizador>{
                         + "'" + value.getUser() + "',"
                         + "'" + ((Jogador) value).getPassword() + "',"
                         + "'" + ((Jogador) value).getPoints() + "',"
-                        + "'" + ((Jogador) value).isPremium() + "',"
+                        + "'" + ((Jogador) value).getIsPremium() + "',"
                         + "'" + "Jogador" + "'"
                         + ")";
                 stm.executeUpdate(sql);

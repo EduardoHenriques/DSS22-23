@@ -140,8 +140,8 @@ public class CircuitoDAO implements Map<String, Circuito>{
                     stm.executeUpdate(sql);
                 }
             }
-            String sql = "INSERT INTO circuito (id, nome, distancia, voltas) VALUES ("
-                + value.getId() + ", '"
+            String sql2 = "INSERT INTO circuito (id, nome, distancia, voltas) VALUES ("
+                + value.getNome() + ", '"
                 + value.getNome() + "', "
                 + value.getDistancia() + ", "
                 + value.getVoltas() + ")";
@@ -150,7 +150,7 @@ public class CircuitoDAO implements Map<String, Circuito>{
                 String sql2 = "INSERT INTO seccao (tipo, gdu, circuito_id) VALUES ("
                     + s.getTipo() + ", "
                     + s.getGDU() + ", "
-                    + value.getId() + ")";
+                    + value.getNome() + ")";
                 stm.executeUpdate(sql2);
             }
         } catch (Exception e) {
@@ -179,7 +179,7 @@ public class CircuitoDAO implements Map<String, Circuito>{
     @Override
     public void putAll(Map<? extends String, ? extends Circuito> m) {
         for (Circuito c : m.values()) {
-            this.put(c.getId(), c);
+            this.put(c.getNome(), c);
         }
     }
 
