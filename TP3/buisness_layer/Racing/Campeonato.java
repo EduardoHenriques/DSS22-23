@@ -94,7 +94,7 @@ public class Campeonato implements Serializable {
 		this.numCorrida = 0;
 		this.corridas = new HashMap<Corrida,Boolean>();	
 	}
-
+	//alterar para copiar listas valor a valor
 	public Campeonato(Campeonato c) {
 		this.circuitos = c.circuitos;
 		this.corridas = c.corridas;
@@ -103,6 +103,11 @@ public class Campeonato implements Serializable {
 		this.numCorrida = c.numCorrida;
 		this.participantes = c.participantes;
 		this.prova = c.prova;
+	}
+
+	@Override
+	public Campeonato clone(){
+		return new Campeonato(this);
 	}
 
 	/**

@@ -41,7 +41,7 @@ public class Corrida implements Serializable {
 	}
 
 
-
+	//alterar para copiar listas valor a valor
 	public Corrida(Corrida corrida) {
 		this.circuito = corrida.circuito;
 		this.dnf = corrida.dnf;

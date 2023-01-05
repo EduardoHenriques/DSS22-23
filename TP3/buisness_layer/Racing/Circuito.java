@@ -50,13 +50,13 @@ public class Circuito implements Serializable {
 		this.listaSeccoes = new ArrayList<>();
 	}
 
-	public Circuito(String n, int d, int v, ArrayList<Seccao> l) {
-		this.nome = n;
-		this.distancia = d;
-		this.voltas = v;
+	public Circuito(String nome, int distancia, int voltas, ArrayList<Seccao> listaSeccoes) {
+		this.nome = nome;
+		this.distancia = distancia;
+		this.voltas = voltas;
 		this.listaSeccoes = new ArrayList<>();
-		for (Seccao s : l) {
-			this.listaSeccoes.add(s.clone());
+		for (Seccao seccao : listaSeccoes) {
+			this.listaSeccoes.add(seccao.clone());
 		}
 	}
 

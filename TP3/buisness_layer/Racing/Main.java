@@ -49,12 +49,7 @@ public class Main {
             new AbstractMap.SimpleEntry<Circuito,Boolean>(circuito, false);
          circuitos.add(entry);
          
-         Campeonato campeonato = new Campeonato(circuitos,"campeonato1");
-         campeonato.addParticipante(part);
-         campeonato.addParticipante(part2);
-         campeonato.addParticipante(part3);
          
-         System.out.println(campeonato.simulaProximaCorrida(circuito));
      }
      catch(Exception e)
      {
