@@ -90,4 +90,6 @@ public class Participante {
 		return ("===PARTICIPANTE===\n" + this.user.toString() + this.piloto.toString() + this.carro.toString());
 	}
 
+	//customizar carro
+
 }

@@ -110,6 +110,18 @@ public class Campeonato implements Serializable {
 		return new Campeonato(this);
 	}
 
+	public String toString()
+	{
+		String s1 = "==PARTICIPANTE(S)==\n";
+		String s2 = "==CIRCUITO(S)==\n";
+		for(Map.Entry<String,Participante> pair : participantes.entrySet())
+			s1+=pair.getValue().toString();
+		for(Circuito c : circuitos)
+			s2+=c.toString();
+		
+		return (s1 + s2);
+	}	
+
 	/**
 	 * Adicionar corrida ao campeonato
 	 * @param c circuito a adicionar

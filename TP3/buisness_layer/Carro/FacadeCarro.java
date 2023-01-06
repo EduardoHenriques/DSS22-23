@@ -13,7 +13,7 @@ public class FacadeCarro implements IFacadeCarro {
 
     public Carro findCarro(String modelo) throws CarroInvalido
     {
-        if(!this.mapCarros.containsKey(modelo)) throw new CarroInvalido("Nao existe carro com esse modelo");
+        if(!this.mapCarros.containsKey(modelo)) return null;
         else 
         {
             Carro c = this.mapCarros.get(modelo);    
@@ -113,6 +113,8 @@ public class FacadeCarro implements IFacadeCarro {
         return s;
 
     }
+
+
 
 
 

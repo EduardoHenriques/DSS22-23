@@ -82,17 +82,6 @@ public class FacadeUtilizador implements IFacadeUtilizador {
 
 	//funcoes que cada user tem
 
-	public void criarLobby(Campeonato campeonato){
-	int num_lobby = mapLobbys.size();
-		
-	}
-	
-	public boolean joinLobby(int num_lobby)
-	{
-		if(!mapLobbys.containsKey(num_lobby))
-			return false;
-		mapLobbys.get(num_lobby)
-			
-	}
+
 
 }

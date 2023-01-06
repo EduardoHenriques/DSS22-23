@@ -30,7 +30,7 @@ public class RacingSimFacade implements IRacingSimFacade {
 		
 	}
 	@Override
-	public void addCampeonato(Scanner sc) {
+	public boolean addCampeonato(Scanner sc) {
 		ArrayList<Circuito> listaCircuitos = new ArrayList<>();
 		String prova = sc.nextLine();
 		String numCircuito = sc.nextLine();
@@ -114,11 +114,11 @@ public class RacingSimFacade implements IRacingSimFacade {
 		fCorrida.getMapLobbys().put((num_lobby+1), campeonato);
 	}
 
-	public boolean joinLobby(Scanner sc)
+		public boolean joinLobby(Scanner sc)
 	{
 		if(you == null || this.getClass().getSimpleName().equals("Administrador")) return false;// sem login/registo ou é admin
 
-		System.out.println("Número do lobby:"); //para tirar depois
+		System.out.println("Número do lobby:"); 
 		
 		String nomeJogador = you.getUser();
 		int num_lobby = sc.nextInt(); 
@@ -126,22 +126,41 @@ public class RacingSimFacade implements IRacingSimFacade {
 			return false;
 		
 		Carro c = null;
-		String modelo_carro;
 
 		Piloto p = null;
 		String modelo_piloto;
-		
-		
-		while(true)
+		//mostrar o campeonato em que entrou
+		System.out.println(fCorrida.getMapLobbys().get(num_lobby).toString());
+		System.out.println("Prima qualquer botao para selecionar um carro.");
+		sc.next();
+		//estas duas linhas vao ser uma funcao do UI
+		System.out.println(fCarro.garagemToString());
+		System.out.println("Digite o carro que quer usar (Modelo)");
+		//
+		try 
 		{
-		System.out.println("1->Ver Carros || \n2-> Selecionar Carro(pelo modelo) ||");
-		int optCar = sc.nextInt();
-		if(optCar==1) System.out.println(fCarro.garagemToString());
-		if(optCarro==2)	
+			while( (c = fCarro.findCarro(sc.nextLine())) != null)
+				c = fCarro.findCarro(sc.nextLine());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		
+		participante.customizarCarro();
+		
+		//estas duas linhas vao para uma funcao do UI
+		System.out.println(fCorrida.listaPilotosStr());
+		System.out.println("Digite o piloto que quer usar(Nome do Piloto");
+		//
+		while( (p = fCorrida.findPiloto(sc.nextLine())) != null )
+			p = fCorrida.findPiloto(sc.nextLine());
 
-		fCorrida.getMapLobbys().get(num_lobby).getListaPart().put(u.getUser(),u);
+		Participante participante = new Participante(you,p,c);
+
+		
+		
+
 		return true;
 	}
 

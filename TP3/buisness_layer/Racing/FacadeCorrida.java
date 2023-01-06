@@ -92,6 +92,19 @@ public class FacadeCorrida implements IFacadeCorrida {
 		return resultado_corrida;
 	}
 
+	public Piloto findPiloto(String nome)
+	{
+		if(!mapPilotos.containsKey(nome)) return null;
+		return mapPilotos.get(nome).clone();
+	}
+
+	public String listaPilotosStr()
+	{
+		String s = "Pilotos:\n";
+		for(Map.Entry<String,Piloto> pair : mapPilotos.entrySet())
+			s += pair.getValue().toString();
+		return s;
 	
 
-}
+
+}rn
