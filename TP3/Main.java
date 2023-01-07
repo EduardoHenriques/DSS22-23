@@ -1,31 +1,20 @@
-import java.util.Map;
+import java.util.*;
 
-import Carro.C1H;
-import Carro.C2;
-import Carro.Carro;
-import Carro.FacadeCarro;
-import Carro.GT;
-import Carro.SC;
-import Racing.Circuito;
-import Racing.Piloto;
-import Utilizador.Jogador;
-import Utilizador.Utilizador;
-import data.PilotoDAO;
-import data.UtilizadorDAO;
-import data.CarroDAO;
-import data.CircuitoDAO;
+import buisness.Racing.*;
+import buisness.Utilizador.*;
+import buisness.Carro.*;
+import ui.*;
 
 public class Main {
 
     public static void main(String args[])
     {
         try {
-            Map <String, Circuito> circuitos = CircuitoDAO.getInstance();
-            circuitos.clear();
+            Map <String, Circuito> circuitos = new HashMap<>();
             Circuito circuito1 = new Circuito();
             circuito1.createCircuito("Portimao", 1000, 10, 4, 1);
             System.out.println(circuito1.toString());
-            ;circuitos.put("Portimao", circuito1);
+            circuitos.put("Portimao", circuito1);
             System.out.println("=====TESTES=====");
             System.out.println("C1 HIBRIDO:");
             C1H carro1 =  new C1H("Mercedes", "Benz", 6000, 410, 0.4f, 150);
@@ -45,6 +34,9 @@ public class Main {
 
             System.out.println("\n\n\nTAMBORES...\n\n\n");
             System.out.println(fC.findCarro("GT").toString());
+
+
+
         } 
         catch (Exception e) {
             e.printStackTrace();
