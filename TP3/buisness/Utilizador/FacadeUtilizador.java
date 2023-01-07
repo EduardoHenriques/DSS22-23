@@ -1,20 +1,18 @@
 package buisness.Utilizador;
 
 import java.util.HashMap;
+import java.util.Map;
+
+import data.UtilizadorDAO;
 
 public class FacadeUtilizador implements IFacadeUtilizador {
 
-	private HashMap<String,Administrador> mapAdmins = new HashMap<String,Administrador>(); //chave -> username
-	private HashMap<String,Jogador> mapJogadores = new HashMap<String,Jogador>(); //chave -> username
 	private HashMap<String,Convidado> mapConvidados = new HashMap<String,Convidado>(); //chave -> ("Convidado " + nº)
+	private Map<String,Utilizador> mapUtilizadores = UtilizadorDAO.getInstance();
 
-	public HashMap<String,Administrador> getMapAdmins()
+	public Map<String,Utilizador> getMapUtil()
 	{
-		return this.mapAdmins;
-	}
-	public HashMap<String,Jogador> getMapJogador()
-	{
-		return this.mapJogadores;
+		return this.mapUtilizadores;
 	}
 	public HashMap<String,Convidado> getMapConvidados()
 	{
@@ -27,23 +25,23 @@ public class FacadeUtilizador implements IFacadeUtilizador {
 	//Utilizador -> sucesso
 	public Utilizador Login(String username, String password) throws UtilizadorInvalido
 	{
-		if(!this.getMapAdmins().containsKey(username) || !this.getMapJogador().containsKey(username))
+		if(!this.getMapUtil().containsKey(username))
 			throw new UtilizadorInvalido("Username nao existe, por favor registe-se.");
 		else if(password.length()<8)
 			throw new UtilizadorInvalido("Password demasiado curta.");
 		else
 		{
-			if(this.getMapJogador().containsKey(username))
+			if(this.getMapUtil().containsKey(username))
 			{
-				String pw = this.getMapJogador().get(username).getPassword();
-				return (pw.equals(password) ? this.getMapJogador().get(username).clone() : null);
-			}
-			else
-			{
-				String pw = this.getMapAdmins().get(username).getPassword();
-				return (pw.equals(password) ? this.getMapAdmins().get(username) : null);
+				if(username.equals("admin")){
+					String pw = ((Administrador) this.getMapUtil().get(username)).getPassword();
+					return (pw.equals(password) ? this.getMapUtil().get(username) : null);
+				}
+				String pw = ((Jogador) this.getMapUtil().get(username)).getPassword();
+				return (pw.equals(password) ? this.getMapUtil().get(username) : null);
 			}
 		}
+		return null;
 	}
 
 	//login como convidado resulta sempre.
@@ -58,11 +56,11 @@ public class FacadeUtilizador implements IFacadeUtilizador {
 	//se nao acontece nada o registo teve sucesso. Se ocorreu a excecao, registo falhou.
 	public void Registo(String username, String password, boolean isPremium) throws UtilizadorInvalido
 	{
-		if (this.getMapJogador().containsKey(username))
+		if (this.getMapUtil().containsKey(username))
 			throw new UtilizadorInvalido("Username já existe.");
 		if(password.length() < 8)
 			throw new UtilizadorInvalido("Password demasiado curta.");
-		this.getMapJogador().put(username, new Jogador(username, password, 0, isPremium));
+		this.getMapUtil().put(username, new Jogador(username, password, 0, isPremium));
 		return;
 		
 	}
@@ -71,12 +69,12 @@ public class FacadeUtilizador implements IFacadeUtilizador {
 	//nao devem ter acesso a esta funcao
 	public void RegistoAdmin(String username, String password) throws UtilizadorInvalido
 	{
-		if(this.getMapAdmins().containsKey(username))
+		if(this.getMapUtil().containsKey(username))
 			throw new UtilizadorInvalido("Erro no registo, user já existe");
 		else if(password.length() < 8)
 			throw new UtilizadorInvalido("Password demasiado curta");
 		else
-			this.getMapAdmins().put(username, new Administrador(username,password));
+			this.getMapUtil().put(username, new Administrador(username,password));
 
 	}
 

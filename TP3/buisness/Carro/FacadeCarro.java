@@ -1,12 +1,14 @@
 package buisness.Carro;
 import java.util.*;
 
+import data.CarroDAO;
+
 
 public class FacadeCarro implements IFacadeCarro {
 
-    private HashMap<String,Carro> mapCarros = new HashMap<String,Carro>();   //modelo(key) -> carro
+    private Map<String,Carro> mapCarros = CarroDAO.getInstance();   //modelo(key) -> carro
 
-    public HashMap<String,Carro> getGaragem()
+    public Map<String,Carro> getGaragem()
     {
         return this.mapCarros;
     }
@@ -93,6 +95,31 @@ public class FacadeCarro implements IFacadeCarro {
             e.printStackTrace();
         }
         return resposta;
+    }
+
+    public boolean addCarrohibridro(int tipo, String marca, String modelo,int cilindrada, int potencia, float pa, int potenciaE){
+        try
+			{
+				switch (tipo)
+				{
+					case 1:
+						C1H c1 = new C1H(marca,modelo,cilindrada,potencia,pa,potenciaE);
+						return this.addCarro(c1) ;
+					case 2:
+						C2H c2 = new C2H(marca,modelo,cilindrada,potencia,pa,potenciaE);
+						return this.addCarro(c2) ;
+					case 3:
+						GTH gt = new GTH(marca,modelo,cilindrada,potencia,pa,potenciaE);
+						return this.addCarro(gt) ;
+					default:
+						break;		
+				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+        return true;
     }
 
     public boolean addCarro(Carro c)

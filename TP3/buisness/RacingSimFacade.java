@@ -12,6 +12,7 @@ public class RacingSimFacade implements IRacingSimFacade {
 	private FacadeCorrida fCorrida = new FacadeCorrida();
 	//utilizador 
 	private FacadeUtilizador fUtilizador = new FacadeUtilizador();
+	//utilizador a usar o sistema
 	private Utilizador you = null;
 
 	
@@ -45,6 +46,7 @@ public class RacingSimFacade implements IRacingSimFacade {
 	//Hibridos				 //1 -> 3  
 		public String addCarrohibridro(int tipo, String marca, String modelo,int cilindrada, int potencia, float pa, int potenciaE) {
 			boolean deuCerto = false;
+			//fCarro.addCarrohibridro(int tipo, String marca, String modelo,int cilindrada, int potencia, float pa, int potenciaE)
 			try
 			{
 				switch (tipo)
@@ -389,16 +391,19 @@ public class RacingSimFacade implements IRacingSimFacade {
 	}
 
 
-	public String login(String user, String password)
+	public int login(String user, String password)
 	{
 		try 
 		{
 			you = fUtilizador.Login(user, password);
-			return "Login com sucesso - " + user; 
+			System.out.println(user);
+			System.out.println(you.getUser());
+			if(user.equals("admin")) return 1;
+			return 0;
 		}
 		catch(Exception e)
 		{
-			return "Credenciais Invalidas ou user nao existe";
+			return -1;
 		}
 
 	}

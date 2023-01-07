@@ -48,7 +48,7 @@ public interface IRacingSimFacade {
 
 	public String mostrar_pontos(); //jogador
 	public String loginConvidado(); //convidado
-	public String login(String user, String password); //user
+	public int login(String user, String password); //user
 	public String registo(String user,String password); //jogador 
 	//public String registoAdmin(String user, String password); //nao na Interface, admins sao adicionados por nos ("hard coded") 
 }

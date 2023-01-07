@@ -2,13 +2,15 @@ package buisness.Racing;
 
 import java.util.*;
 import buisness.Carro.*;
+import data.CircuitoDAO;
+import data.PilotoDAO;
 public class FacadeCorrida implements IFacadeCorrida {
 
 	private HashMap<String, Campeonato> mapCampeonatos = new HashMap<String, Campeonato>(); // "campeonato1" -> c1
 	private HashMap<Integer, Campeonato> mapLobbys = new HashMap<Integer, Campeonato>();  // 1 -> c1
-	private HashMap<String, Piloto> mapPilotos = new HashMap<String, Piloto>();
+	private Map<String, Piloto> mapPilotos = PilotoDAO.getInstance();
 	private HashMap<String, Participante> mapParticipantes = new HashMap<String, Participante>();
-	private HashMap<String, Circuito> mapCircuitos = new HashMap<String, Circuito>();
+	private Map<String, Circuito> mapCircuitos = CircuitoDAO.getInstance();
 	private HashMap<String, Seccao> mapSeccoes = new HashMap<String, Seccao>();
 
 
@@ -21,7 +23,7 @@ public class FacadeCorrida implements IFacadeCorrida {
 		return this.mapLobbys;
 	}
 
-	public HashMap<String, Piloto> getMapPilotos() {
+	public Map<String, Piloto> getMapPilotos() {
 		return this.mapPilotos;
 	}
 
@@ -33,7 +35,7 @@ public class FacadeCorrida implements IFacadeCorrida {
 		return this.mapSeccoes;
 	}
 
-	public HashMap<String, Circuito> getMapCircuitos() {
+	public Map<String, Circuito> getMapCircuitos() {
 		return this.mapCircuitos;
 	}
 

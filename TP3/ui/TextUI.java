@@ -501,7 +501,17 @@ public class TextUI {
         String username = scin.nextLine();
         System.out.println("Password: ");
         String password = scin.nextLine();
-        System.out.println(this.model.login(username, password));
+        int check = this.model.login(username, password);
+        if(check == 1){
+            System.out.println("Login efetuado com sucesso!");
+            this.menuAdim.run();
+            
+        } else if (check == 0){
+            System.out.println("Login efetuado com sucesso!");
+            this.menuUtilizador.run();
+        } else {
+            System.out.println("Login falhou!");
+        }
     }
 
     private void registo(){
@@ -509,11 +519,15 @@ public class TextUI {
         String username = scin.nextLine();
         System.out.println("Password: ");
         String password = scin.nextLine();
-        System.out.println(this.model.registo(username, password));
+        String r = this.model.registo(username, password);
+        System.out.println(r);
+        if(r.equals("Registado com sucesso e login efetuado - " + username))
+            this.menuUtilizador.run();
     }
 
     private void convidado(){
         System.out.println(this.model.loginConvidado());
+        this.menuUtilizador.run();
     }
 
     
