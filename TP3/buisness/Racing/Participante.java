@@ -76,6 +76,14 @@ public class Participante {
 		
 	}
 
+	public Participante(int posicao, Piloto piloto, Carro carro, Utilizador user, float timeDiff) {
+		this.posicao = posicao;
+		this.piloto = piloto;
+		this.carro = carro;
+		this.user = user;
+		this.timeDiff = timeDiff;
+	}
+
 	@Override
 	public boolean equals(Object obj){
 		if(this == obj)

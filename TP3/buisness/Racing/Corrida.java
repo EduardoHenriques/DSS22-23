@@ -20,8 +20,28 @@ public class Corrida implements Serializable {
 		return this.clima;
 	}
 
+	public void setClima(int clima) {
+		this.clima = clima;
+	}
+
+	public void setTempos(float tempos) {
+		this.Tempos = tempos;
+	}
+
+	public int getVolta() {
+		return this.volta;
+	}
+
 	public Corrida() {}
 
+	public Corrida(Circuito circuito, Map<Participante, Integer> dnf, int clima, float tempos, List<Participante> participantes, int volta) {
+		this.circuito = circuito;
+		this.dnf = dnf;
+		this.clima = clima;
+		this.Tempos = tempos;
+		this.participantes = participantes;
+		this.volta = volta;
+	}
 
 	public Corrida(Circuito circuito, int clima, List<Participante> listaParticipantes) {
 		this.circuito = circuito;
@@ -34,6 +54,10 @@ public class Corrida implements Serializable {
 	public Circuito getCiruito()
 	{
 		return this.circuito.clone();
+	}
+
+	public float getTempos() {
+		return this.Tempos;
 	}
 
 	public void setCircuito(Circuito c)

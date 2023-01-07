@@ -92,6 +92,16 @@ public class Campeonato implements Serializable {
 		this.numCorrida = 0;
 		this.corridas = new HashMap<Corrida,Boolean>();	
 	}
+
+	public Campeonato(String prova, ArrayList<Circuito> circuitos, Map<String, Participante> participantes, Map<String, Integer> classificacao, int numCorrida, Map<Corrida,Boolean> corridas) {
+		this.prova = prova;
+		this.circuitos = circuitos;
+		this.participantes = participantes;
+		this.classificacao = classificacao;
+		this.numCorrida = numCorrida;
+		this.corridas = corridas;
+	}
+
 	//alterar para copiar listas valor a valor
 	public Campeonato(Campeonato c) {
 		this.circuitos = c.circuitos;
