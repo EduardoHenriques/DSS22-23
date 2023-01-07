@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import Racing.Circuito;
-import Racing.Seccao;
+import buisness.Racing.*;
 
 public class CircuitoDAO implements Map<String, Circuito>{
     private static CircuitoDAO instance = null;

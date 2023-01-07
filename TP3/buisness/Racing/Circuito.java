@@ -105,10 +105,7 @@ public class Circuito implements Serializable {
 
 		Circuito circuito = (Circuito) o;
 
-		if (distancia != circuito.distancia) return false;
-		if (voltas != circuito.voltas) return false;
-		if (nome != null ? !nome.equals(circuito.nome) : circuito.nome != null) return false;
-		return listaSeccoes != null ? listaSeccoes.equals(circuito.listaSeccoes) : circuito.listaSeccoes == null;
+		return this.getNome().equals(circuito.getNome());
 	}
 
 }

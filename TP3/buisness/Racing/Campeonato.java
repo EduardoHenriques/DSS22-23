@@ -175,6 +175,9 @@ public class Campeonato implements Serializable {
 		return strClassificacoes;
 	}
 
+	public String separaClassificacoes(ArrayList<Map.Entry<String, Integer>> lista){
+		
+	}
 
 	public ArrayList<Map.Entry<String, Integer>> ordenaClassificacao(Map<String, Integer> classificacao) {
 		ArrayList<Map.Entry<String, Integer>> lista = new ArrayList<Map.Entry<String, Integer>>();

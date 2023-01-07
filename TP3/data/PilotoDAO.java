@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import Racing.Piloto;
+import buisness.Racing.*;
 
 public class PilotoDAO implements Map<String, Piloto>{
     private static PilotoDAO singleton = new PilotoDAO();

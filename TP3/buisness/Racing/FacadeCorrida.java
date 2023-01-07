@@ -11,17 +11,7 @@ public class FacadeCorrida implements IFacadeCorrida {
 	private HashMap<String, Circuito> mapCircuitos = new HashMap<String, Circuito>();
 	private HashMap<String, Seccao> mapSeccoes = new HashMap<String, Seccao>();
 
-	public String resultadosCorrida() {
-		return null;
-	}
 
-	public String listaCircuitos() {
-		return null;
-	}
-
-	public String listaParticipantes() {
-		return null;
-	}
 
 	public HashMap<String, Campeonato> getMapCampeonatos() {
 		return this.mapCampeonatos;
@@ -60,10 +50,7 @@ public class FacadeCorrida implements IFacadeCorrida {
 	}
 
 
-
-
-
-
+	//para que é que isto serve???? - Eduardo
 	public boolean addCircuito(String nome, int dist, int voltas, int n_retas, int n_chicanes) {
 		return true;
 	}
@@ -102,6 +89,28 @@ public class FacadeCorrida implements IFacadeCorrida {
 			c+=pair.getValue().toString();
 		}
 		return c;
+	}
+
+	public String listaCampeonatosString()
+	{
+		String camp = "==Campeonatos:==\n";
+		for (Map.Entry<String,Campeonato> pair: mapCampeonatos.entrySet())
+		{
+			camp += ("Nome->: " + pair.getValue().getProva() + "\nCircuitos");
+			for (Circuito c : pair.getValue().getCircuitos())
+				camp += c.toString();
+		}
+		return camp;
+	}
+
+	public String listaLobbiesString()
+	{
+		String camp = "";
+		for (Map.Entry<Integer,Campeonato> pair: mapLobbys.entrySet())
+		{
+			camp += ("ID lobbie->: " + pair.getKey() + "Campeonato" + pair.getValue());
+		}
+		return camp;
 	}
 
 

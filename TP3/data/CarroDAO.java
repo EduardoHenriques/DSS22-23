@@ -10,16 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import Carro.C1;
-import Carro.C2;
-import Carro.C1H;
-import Carro.C2H;
-import Carro.GT;
-import Carro.GTH;
-import Carro.SC;
-import Carro.estadoMotor;
-import Carro.tipoPneu;
-import Carro.Carro;
+import buisness.Carro.*;
 
 public class CarroDAO implements Map<String, Carro>{
     private static CarroDAO singleton = null;

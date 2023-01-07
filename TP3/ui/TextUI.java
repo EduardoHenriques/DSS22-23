@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import buisness.Racing.*;
 
 
+
 /**
  * Exemplo de interface em modo texto.
  *
@@ -21,7 +22,7 @@ public class TextUI {
     // Menus da aplicação
     private Menu menuUtilizador;
     // Menus da aplicação
-    private Menu menuCampeonato;
+    private Menu menuLogin;
 
     // Scanner para leitura
     private Scanner scin;
@@ -47,31 +48,34 @@ public class TextUI {
                 "Remover Carro",
                 "Remover Piloto",
         });
-        this.menuAdim.setHandler(1, this::AdicionarCampeonato);
-        this.menuAdim.setHandler(2, this::AdicionarCircuito);
-        this.menuAdim.setHandler(3, this::AdicionarCarro);
-        this.menuAdim.setHandler(4, this::trataAdicionarTurma);
-        this.menuAdim.setHandler(5, this::trataMudarSalaTurma);
-        this.menuAdim.setHandler(6, this::trataListarTurmas);
-        this.menuAdim.setHandler(7, this::trataAdicionarAlunoATurma);
-        this.menuAdim.setHandler(8, this::trataRemoverAlunoDaTurma);
-        this.menuAdim.setHandler(9, this::trataListarAlunosTurma);
+        this.menuAdim.setHandler(1, this::adicionarCampeonato);
+        this.menuAdim.setHandler(2, this::adicionarCircuito);
+        this.menuAdim.setHandler(3, this::adicionarCarro);
+        this.menuAdim.setHandler(4, this::adicionarPiloto);
+        this.menuAdim.setHandler(5, this::editarCampeonato);
+        this.menuAdim.setHandler(6, this::editarCircuito);
+        this.menuAdim.setHandler(7, this::editarCarro);
+        this.menuAdim.setHandler(8, this::editarPiloto);
+        this.menuAdim.setHandler(9, this::removerCampeonato);
+        this.menuAdim.setHandler(10, this::removerCircuito);
+        this.menuAdim.setHandler(11, this::removerCarro);
+        this.menuAdim.setHandler(12, this::removerPiloto);
         this.menuUtilizador = new Menu(new String[]{
-            "Criar Campeonato",
+            "Criar Lobby",
             "Juntar Campeonato",
             "Mostrar Pontos",
         });
-        this.menuUtilizador.setHandler(1, this::trataAdicionarAluno);
-        this.menuUtilizador.setHandler(2, this::trataAdicionarAluno);
-        this.menuUtilizador.setHandler(3, this::trataAdicionarAluno);
-        this.menuCampeonato = new Menu(new String[]{
-            "Proxima Corrida",
-            "Alterar Carro",
-            "Mostrar Pontos",
+        this.menuUtilizador.setHandler(1, this::criarLobby);
+        this.menuUtilizador.setHandler(2, this::juntarCampeonato);
+        this.menuUtilizador.setHandler(3, this::mostrarPontos);
+        this.menuLogin = new Menu(new String[]{
+            "Convidado",
+            "Login",
+            "Registar",
         });
-        this.menuCampeonato.setHandler(1, this::trataAdicionarAluno);
-        this.menuCampeonato.setHandler(2, this::trataAdicionarAluno);
-        this.menuCampeonato.setHandler(3, this::trataAdicionarAluno);
+        this.menuLogin.setHandler(1, this::convidado);
+        this.menuLogin.setHandler(2, this::login);
+        this.menuLogin.setHandler(3, this::registo);
         this.model = new RacingSimFacade();
         scin = new Scanner(System.in);
     }
@@ -85,13 +89,14 @@ public class TextUI {
     }
 
     // Métodos auxiliares
-    private void AdicionarCampeonato() {
+    private void adicionarCampeonato() {
         try {
             System.out.println("Nome do Campeonato: ");
             String nomeCampeonato = scin.nextLine();
             if (!this.model.existeCampeonato(nomeCampeonato)) {
                 ArrayList<String> listaCircuitos = new ArrayList<String>();
-                //dar print a lista de circuitos
+                System.out.println(this.model.getFacadeCorrida().listaCircuitoString());
+                System.out.println("Circuitos a adicionar('F' para terminar)");
                 String circuito = scin.nextLine();
                 while(!(circuito.equals("f")) || !(circuito.equals("F"))){
                     listaCircuitos.add(circuito);
@@ -107,7 +112,7 @@ public class TextUI {
         }
     }
 
-    private void AdicionarCircuito() {
+    private void adicionarCircuito() {
         try {
             //String nome, int dist, int voltas, int n_retas, int n_chicanes
             System.out.println("Nome do Circuito: ");
@@ -131,15 +136,7 @@ public class TextUI {
         }
     }
 
-     private void AdicionarCarro() {
-        //tipo
-		//c1 -> marca,modelo,potencia,cilindrada,pa
-		//c1h -> marca,modelo,potencia,cilindarda,pa,potenciaE
-		//c2 -> marca,modelo,potencia,cilindrada,pa,afinacao
-		//c2h->marca,modelo,potencia,cilindrada,pa,afinacao,potenciaE
-		//gt->marca,modelo,potencia,cilindrada,pa
-		//gth->marca,modelo,potencia,cilindrada,pa,potenciaE
-		//sc->marca,modelo,potencia,cilindrada,pa
+    private void adicionarCarro() {
         System.out.println("tipo do Carro: ");
         System.out.println("C1 -> 1 ");
         System.out.println("C2 -> 2 ");
@@ -188,7 +185,7 @@ public class TextUI {
                             this.model.addCarro(tipoCarro, marcaCarro, modeloCarro, cilindrada, potenciaE, pa);
                         break;
                     case(4):
-                        int cilindarda = 2500;
+                        cilindrada = 2500;
                         if(hibrido==0)
                             this.model.addCarrohibridro(tipoCarro, marcaCarro, modeloCarro, cilindrada, potencia, pa, potenciaE);
                         else
@@ -206,53 +203,54 @@ public class TextUI {
         }
     }
 
-
-    private void trataMudarSalaTurma() {
+    private void adicionarPiloto() {
         try {
-            System.out.println("Número da turma: ");
-            String tid = scin.nextLine();
-            if (this.model.existeTurma(tid)) {
-                System.out.println("Sala: ");
-                String sala = scin.nextLine();
-                System.out.println("Edifício: ");
-                String edif = scin.nextLine();
-                System.out.println("Capacidade: ");
-                int cap = scin.nextInt();
-                scin.nextLine();    // Limpar o buffer depois de ler o inteiro
-                this.model.alteraSalaDeTurma(tid, new Sala(sala, edif, cap));
-                System.out.println("Sala da turma alterada");
+            System.out.println("Nome do Piloto: ");
+            String nomePiloto = scin.nextLine();
+            if (!this.model.existePiloto(nomePiloto)) {
+                System.out.println("chuva vs seco (0 a 1):\n0->bom em seco | 1->bom em chuva ");
+                Float vs = scin.nextFloat();
+                System.out.println("agressividade (0 a 1):\n0->conservador | 1->agressivo ");
+                Float agressividade = scin.nextFloat();
+                this.model.addPiloto(nomePiloto, vs, agressividade);
             } else {
-                System.out.println("Esse número de turma não existe!");
+                System.out.println("Esse Piloto já existe!");
             }
-        } catch (Exception e) {
+        }
+        catch (NullPointerException e){
             System.out.println(e.getMessage());
         }
     }
 
-    private void trataListarTurmas() {
+    private void editarCampeonato() {
+        System.out.println(this.model.getFacadeCorrida().listaCampeonatosString());
         try {
-            System.out.println(this.model.getTurmas().toString());
-        }
-        catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void trataAdicionarAlunoATurma() {
-        try {
-            System.out.println("Número da turma: ");
-            String tid = scin.nextLine();
-            if (this.model.existeTurma(tid)) {
-                System.out.println("Número do aluno: ");
-                String num = scin.nextLine();
-                if (this.model.existeAluno(num)) {
-                    this.model.adicionaAlunoTurma(tid, num);
-                    System.out.println("Aluno adicionado à turma");
-                } else {
-                    System.out.println("Esse número de aluno não existe!");
+            System.out.println("Nome do Campeonato a alterar: ");
+            String nomeCampeonato = scin.nextLine();
+            if (!this.model.existeCampeonato(nomeCampeonato)) {
+                ArrayList<String> circuitos = new ArrayList<>();
+                System.out.println("Adicionar Ciruitos->1 || Remover Circuitos->2");
+                int opt = scin.nextInt();
+                if(opt==1){
+                    System.out.println(this.model.getFacadeCorrida().listaCircuitoString());
+                    System.out.println("Circuitos a adicionar('F' para terminar):");
+                    String circuito = scin.nextLine();
+                    while(!(circuito.equals("f")) || !(circuito.equals("F"))){
+                        circuitos.add(circuito);
+                        circuito = scin.nextLine();
+                    }
+                }else if(opt==2){
+                    System.out.println("Circuitos a remover('F' para terminar):");
+                    String circuito = scin.nextLine();
+                    while(!(circuito.equals("f")) || !(circuito.equals("F"))){
+                        circuitos.add(circuito);
+                        circuito = scin.nextLine();
+                    }
                 }
+                this.model.editCampeonato(opt, nomeCampeonato, circuitos);
+                
             } else {
-                System.out.println("Esse número de turma não existe!");
+                System.out.println("Esse Piloto já existe!");
             }
         }
         catch (NullPointerException e) {
@@ -260,21 +258,17 @@ public class TextUI {
         }
     }
 
-    private void trataRemoverAlunoDaTurma() {
+    private void editarCircuito() {
         try {
-            System.out.println("Número da turma: ");
-            String tid = scin.nextLine();
-            if (this.model.existeTurma(tid)) {
-                System.out.println("Número do aluno: ");
-                String num = scin.nextLine();
-                if (this.model.existeAlunoEmTurma(tid,num)) {
-                    this.model.removeAlunoTurma(tid, num);
-                    System.out.println("Aluno removido da turma");
-                } else {
-                    System.out.println("Esse número de aluno não existe na turma!");
-                }
+            System.out.println(this.model.getFacadeCorrida().listaCircuitoString());
+            System.out.println("Nome do Circuito: ");
+            String nomeCircuito = scin.nextLine();
+            if (!this.model.existeCircuito(nomeCircuito)) {
+                System.out.println("Novo numero de voltas: ");
+                int voltas = scin.nextInt();
+                System.out.println(this.model.editCircuito(nomeCircuito, voltas));
             } else {
-                System.out.println("Esse número de turma não existe!");
+                System.out.println("Esse Campeonato já existe!");
             }
         }
         catch (NullPointerException e) {
@@ -282,17 +276,245 @@ public class TextUI {
         }
     }
 
-    private void trataListarAlunosTurma() {
+    private void editarCarro() {
+        System.out.println(this.model.getFacadeCarro().garagemToString());
+        System.out.println("Modelo do Carro a alterar: ");
         try {
-            System.out.println("Número da turma: ");
-            String tid = scin.nextLine();
-            List<Aluno> als = this.model.getAlunos(tid).stream()
-                                                       .map((na)->this.model.procuraAluno(na))
-                                                       .collect(Collectors.toList());
-            System.out.println(als);
+            String modeloCarro = scin.nextLine();
+            if(this.model.existeCarro(modeloCarro)){
+                System.out.println("Parametro a alterar:");
+                System.out.println("1->Potencia || 2->Cilindrada || 3->Potencia Eletrica");
+                int opt = scin.nextInt();
+                System.out.println("Novo valor: ");
+                int value = scin.nextInt();
+                System.out.println(this.model.editCarro(modeloCarro, opt, value));
+            }else {
+                System.out.println("Esse Carro nao existe!");
+            }
+        }catch(NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void editarPiloto() {
+        try {
+            System.out.println(this.model.getFacadeCorrida().listaPilotosStr());
+            System.out.println("Nome do Piloto a alterar: ");
+            String nomePiloto = scin.nextLine();
+            if(this.model.existePiloto(nomePiloto)) {
+                System.out.println("Parametro a alterar:");
+                System.out.println("1->Agressividade || 2->chuvaVSseco");
+                int opt = scin.nextInt();
+                System.out.println("Novo valor: ");
+                Float value = scin.nextFloat();
+                this.model.editPiloto(nomePiloto, opt, value);
+            } else {
+                System.out.println("Esse Piloto nao existe!");
+            }
         }
         catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }
+    
+    private void removerCampeonato() {
+        try {
+            System.out.println(this.model.getFacadeCorrida().listaCampeonatosString());
+            System.out.println("Nome do Campeonato a remover: ");
+            String nomeCampeonato = scin.nextLine();
+            if (this.model.existeCampeonato(nomeCampeonato)) {
+                System.out.println(this.model.delCampeonato(nomeCampeonato));
+            } else {
+                System.out.println("Esse Campeonato nao existe!");
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void removerCircuito() {
+        try {
+            System.out.println(this.model.getFacadeCorrida().listaCircuitoString());
+            System.out.println("Nome do Circuito a remover: ");
+            String nomeCircuito = scin.nextLine();
+            if(this.model.existeCircuito(nomeCircuito)) {
+                System.out.println(this.model.delCircuito(nomeCircuito));
+            } else {
+                System.out.println("Esse Circuito nao existe!");
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void removerCarro() {
+        try {
+            System.out.println(this.model.getFacadeCarro().garagemToString());
+            System.out.println("Nome do Modelo a remover: ");
+            String nomeModelo = scin.nextLine();
+            if(this.model.existeCarro(nomeModelo)) {
+                System.out.println(this.model.delCarro(nomeModelo));
+            } else {
+                System.out.println("Esse Carro nao existe!");
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void removerPiloto() {
+        try {
+            System.out.println(this.model.getFacadeCorrida().listaPilotosStr());
+            System.out.println("Nome do Piloto a remover: ");
+            String nomePiloto = scin.nextLine();
+            if(this.model.existeCarro(nomePiloto)) {
+                System.out.println(this.model.delPiloto(nomePiloto));
+            } else {
+                System.out.println("Esse Piloto nao existe!");
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void criarLobby(){
+        try {
+            System.out.println(this.model.getFacadeCorrida().listaCampeonatosString());
+            System.out.println("Nome do Campeonato a escolher: ");
+            String nomeCampeonato = scin.nextLine();
+            if (this.model.existeCampeonato(nomeCampeonato)) {
+                int num_lobby = this.model.criarLobby(nomeCampeonato);
+                System.out.println(this.model.getFacadeCarro().garagemToString());
+                System.out.println("Modelo do Carro a usar ");
+                String modeloCarro = scin.nextLine();
+                System.out.println(this.model.getFacadeCorrida().listaPilotosStr());
+                System.out.println("Piloto a usar ");
+                String piloto = scin.nextLine();
+                System.out.println(this.model.joinLobby(num_lobby, modeloCarro, piloto));
+                int opt;
+                while((opt = scin.nextInt()) != 2 || opt != 1)
+                {
+                    System.out.println("[NUM_LOBBY:" + num_lobby + "]  1->Comecar || 2->Proxima Corrida || 3-> particpantes || 4->resultados || 5-> sair");
+                    if(opt== 1){ System.out.println(this.model.startLobby(num_lobby)); }
+                    if(opt == 2){
+                        System.out.println("Fazer alteracoes ao Carro: 0->sim || 1->nao");
+                        int alteracoes = scin.nextInt();
+                        if(alteracoes==0){
+                            String tipo_carro = this.model.getTipoCarro(num_lobby);
+                            System.out.println("Estado Motor(conservador | normal | agressivo) ");
+                            String estadoMotor = scin.nextLine();
+                            System.out.println("Tipo Pneus(macio | duro | chuva) ");
+                            String tipoPneu = scin.nextLine();
+                            System.out.println("Downforce(0 a 1): ");
+                            float downforce = scin.nextFloat();
+                            float afinacao = 0.5f;
+                            if(tipo_carro.equals("C2") || tipo_carro.equals("C2H")){
+                                System.out.println("Afinacao(0 a 1): ");
+                                afinacao = scin.nextFloat();
+                            }       
+                            System.out.println(this.model.customizarCarro(num_lobby,tipo_carro,estadoMotor,tipoPneu,downforce,afinacao));
+                            
+                        }
+                        System.out.print(this.model.proximaCorrida(num_lobby));
+                        //verificar se ainda pode fazer alteraçoes
+                        //fazer alteraçoes
+                        //print proximaCorrida
+                    }
+                    if(opt == 3){ System.out.println(this.model.lobbyToString(num_lobby)); }
+                } 
+            } else {
+                System.out.println("Esse Campeonato nao existe!");
+            }
+        }
+        catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    private void juntarCampeonato(){
+        System.out.println(this.model.getFacadeCorrida().listaLobbiesString());
+        System.out.println("Lobbie a juntar: ");
+        try{
+            int idLobbie = scin.nextInt();
+            if(this.model.existeLobbie(idLobbie)){
+                System.out.println(this.model.lobbyToString(idLobbie));
+                System.out.println(this.model.getFacadeCarro().garagemToString());
+                System.out.println("Modelo do Carro a usar ");
+                String modeloCarro = scin.nextLine();
+                System.out.println(this.model.getFacadeCorrida().listaPilotosStr());
+                System.out.println("Piloto a usar ");
+                String piloto = scin.nextLine();
+                System.out.println(this.model.joinLobby(idLobbie, modeloCarro, piloto));
+                int opt;
+                while((opt = scin.nextInt()) != 2 || opt != 1)
+                {
+                    System.out.println("[NUM_LOBBY:" + idLobbie + "]  1->Comecar || 2->Proxima Corrida || 3-> particpantes");
+                    if(opt== 1){ System.out.println(this.model.startLobby(idLobbie)); }
+                    if(opt == 2){
+                        System.out.println("Fazer alteracoes ao Carro: 0->sim || 1->nao");
+                        int alteracoes = scin.nextInt();
+                        if(alteracoes==0){
+                            String tipo_carro = this.model.getTipoCarro(idLobbie);
+                            System.out.println("Estado Motor(conservador | normal | agressivo) ");
+                            String estadoMotor = scin.nextLine();
+                            System.out.println("Tipo Pneus(macio | duro | chuva) ");
+                            String tipoPneu = scin.nextLine();
+                            System.out.println("Downforce(0 a 1): ");
+                            float downforce = scin.nextFloat();
+                            float afinacao = 0.5f;
+                            if(tipo_carro.equals("C2") || tipo_carro.equals("C2H")){
+                                System.out.println("Afinacao(0 a 1): ");
+                                afinacao = scin.nextFloat();
+                            }       
+                            System.out.println(this.model.customizarCarro(idLobbie,tipo_carro,estadoMotor,tipoPneu,downforce,afinacao));
+                            
+                        }
+                        System.out.print(this.model.proximaCorrida(idLobbie));
+                        
+                        //questiona se quer fazer alteraçoes
+                        //get campeonato
+                        //verificar se ainda pode fazer alteraçoes
+                        //fazer alteraçoes
+                        //print proximaCorrida
+                    }
+                    if(opt == 3){ System.out.println(this.model.lobbyToString(idLobbie)); }
+                } 
+            }else{
+                System.out.println("Esse Lobbie nao existe!");
+            }
+        }catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void mostrarPontos(){
+        System.out.print(this.model.mostrar_pontos());
+    }
+
+    private void login(){
+        System.out.println("Nome de utilizador: ");
+        String username = scin.nextLine();
+        System.out.println("Password: ");
+        String password = scin.nextLine();
+        System.out.println(this.model.login(username, password));
+    }
+
+    private void registo(){
+        System.out.println("Nome de utilizador: ");
+        String username = scin.nextLine();
+        System.out.println("Password: ");
+        String password = scin.nextLine();
+        System.out.println(this.model.registo(username, password));
+    }
+
+    private void convidado(){
+        System.out.println(this.model.loginConvidado());
+    }
+
+    
 }

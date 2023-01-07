@@ -7,7 +7,7 @@ public interface IFacadeUtilizador {
     public Utilizador Login(String username, String password) throws UtilizadorInvalido;
 
     public Convidado LoginConvidado();
-
-    // APENAS PARA ADMINS -> public void RegistoAdmin(String username, String password) throws UtilizadorInvalido;
+    
+    //public void RegistoAdmin(String username, String password) throws UtilizadorInvalido;
 
 }

@@ -14,13 +14,7 @@ public class RacingSimFacade implements IRacingSimFacade {
 	private FacadeUtilizador fUtilizador = new FacadeUtilizador();
 	private Utilizador you = null;
 
-
-	@Override
-	public void corrida() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	public String addCircuito(String nome, int dist, int voltas, int n_retas, int n_chicanes){
 		if (fCorrida.getMapCircuitos().containsKey(nome)) return "Failure";
 		Circuito circ = new Circuito(); //criar objeto
@@ -112,63 +106,159 @@ public class RacingSimFacade implements IRacingSimFacade {
 			return (deuCerto ? "Success" : "Failure");
 	}
 
-
-
-
-	@Override
-	public void addPiloto(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	public String customizarCarro(int num_lobby, String tipo_carro, String estado_motor, String tipo_pneu, float downforce, float afinacao)
+	{
+		tipoPneu p = tipoPneu.fromString(tipo_pneu);
+		estadoMotor e  = estadoMotor.fromString(estado_motor);
+		fCorrida.getMapLobbys().get(num_lobby).getListaPart().get(you.getUser()).getCarro().setDownforce(downforce);
+		fCorrida.getMapLobbys().get(num_lobby).getListaPart().get(you.getUser()).getCarro().setEstado(e);
+		fCorrida.getMapLobbys().get(num_lobby).getListaPart().get(you.getUser()).getCarro().setPneus(p);
+		if(tipo_carro.equals("C2"))
+			{
+				C2 c2 = (C2) fCorrida.getMapLobbys().get(num_lobby).getListaPart().get(you.getUser()).getCarro();
+				c2.setAfinacao(afinacao);
+				fCorrida.getMapLobbys().get(num_lobby).getListaPart().get(you.getUser()).setCarro(c2);
+			} 
+		if(tipo_carro.equals("C2H"))
+			{
+				C2H c2h = (C2H) fCorrida.getMapLobbys().get(num_lobby).getListaPart().get(you.getUser()).getCarro();
+				c2h.setAfinacao(afinacao);
+				fCorrida.getMapLobbys().get(num_lobby).getListaPart().get(you.getUser()).setCarro(c2h);
+			} 
+		return "Sucess - carro customizado";
 	}
 
-	@Override
-	public void editCampeonato(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	//pode alterar a cilindrada ou a potencia de um carro (1-> potencia 2 -> cilindrada 3 -> motor eletrico)
+	public String editCarro(String modelo,int opt, int value) {
+		try
+		{
+		if(fCarro.getGaragem().containsKey(modelo))
+			 return "Failure";
+			
+		String classe = fCarro.getGaragem().get(modelo).getClass().getSimpleName();
+		//editar potencia
+		if(opt == 1)
+		{
+				fCarro.getGaragem().get(modelo).setPotencia(value);
+				return "Sucess";
+		}
+		//editar cilindrada
+		if (opt == 2 && (classe.equals("C2") || classe.equals("C2H") || classe.equals("C2H") || classe.equals("GTH")) )
+		{
+				fCarro.getGaragem().get(modelo).setCilindrada(value);
+				return "Sucess";
+		}
+		//editar motor eletrico
+		if(opt == 3 && (classe.equals("C1H") || classe.equals("C2H") || classe.equals("GTH")) )
+		{
+			switch(classe)
+			{
+				case("C1H"):
+					C1H copia1 = (C1H)fCarro.getGaragem().get(modelo);
+					copia1.setMotorEletrico(value);
+					fCarro.getGaragem().replace(modelo,copia1);
+					return "Sucess";
+				case("C2H"):
+					C2H copia2 = (C2H)fCarro.getGaragem().get(modelo);
+					copia2.setMotorEletrico(value);
+					fCarro.getGaragem().replace(modelo,copia2);
+					return "Sucess";
+				case("GTH"):
+					GTH copia3 = (GTH)fCarro.getGaragem().get(modelo);
+					copia3.setMotorEletrico(value);
+					fCarro.getGaragem().replace(modelo,copia3);
+					return "Sucess";
+				default:
+					return "Failure";
+			}	
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return "Failure";
 	}
 
-	@Override
-	public void editCircuito(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+
+	public String addPiloto(String nome, float chuvaVSseco, float  agressividade) {
+		if(fCorrida.getMapPilotos().containsKey(nome)) return "Failure";
+		Piloto p = new Piloto(nome, chuvaVSseco, agressividade);
+		fCorrida.getMapPilotos().put(nome,p);
+		return "Sucess";
 	}
 
-	@Override
-	public void editCarro(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	//1 -> add 2 -> remover
+	public String editCampeonato(int opt, String nome_campeonato, List<String> circuitos) {
+		if(opt == 1)
+		{
+			for (String s : circuitos)
+				fCorrida.getMapCampeonatos().get(nome_campeonato).
+						 addCircuito( fCorrida.getMapCircuitos().get(s).clone() );
+			return "Sucess";
+		}
+		if(opt == 2)
+		{
+			for(String s : circuitos)
+				{
+					fCorrida.getMapCampeonatos().get(nome_campeonato).getCircuitos().
+							 remove( fCorrida.getMapCircuitos().get(s).clone() );
+				}
+			return "Sucess";
+		}
+		else
+			return "Failure";
 	}
 
-	@Override
-	public void editPiloto(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	public String editCircuito(String nome_circuito, int n_voltas) {
+		if(!fCorrida.getMapCircuitos().containsKey(nome_circuito)) return "Failure";
+		fCorrida.getMapCircuitos().get(nome_circuito).setVoltas(n_voltas);
+		return "Sucess";
 	}
 
 
+	public String editPiloto(String nome_piloto,int opt, float valor) {
+		if(!fCorrida.getMapPilotos().containsKey(nome_piloto)) return "Failure";
+		if(opt == 1)
+		{
+			fCorrida.getMapPilotos().get(nome_piloto).setAgressividade(valor);
+			return "Sucess";
+		}
+		if(opt == 2)
+		{
+			fCorrida.getMapPilotos().get(nome_piloto).setChuvaVSseco(valor);
+			return "Sucess";
+		}
+		return "Failure";
+	}		
 
-	@Override
-	public void delCircuito(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	public String delCircuito(String nome_circuito) {
+		if(!fCorrida.getMapCircuitos().containsKey(nome_circuito)) return "Failure";
+		Circuito c = fCorrida.getMapCircuitos().get(nome_circuito);
+		for(Map.Entry<String,Campeonato> pair : fCorrida.getMapCampeonatos().entrySet())
+			{
+				pair.getValue().getCircuitos().remove(c);
+			}
+		fCorrida.getMapCircuitos().remove(nome_circuito);
+		return "Sucess";
 	}
 
-	@Override
-	public void delCampeonato(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	public String delCampeonato(String nome_campeonato) {
+		if(!fCorrida.getMapCampeonatos().containsKey(nome_campeonato)) return "Failure";
+		fCorrida.getMapCampeonatos().remove(nome_campeonato);
+		return "Sucess";
 	}
 
-	@Override
-	public void delCarro(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	public String delCarro(String nome_carro) {
+		if(!fCarro.getGaragem().containsKey(nome_carro)) return "Failure";
+		fCarro.getGaragem().remove(nome_carro);
+		return "Sucess";
 	}
 
-	@Override
-	public void delPiloto(Scanner sc) {
-		// TODO Auto-generated method stub
-		
+	public String delPiloto(String nome_piloto) {
+		if(!fCorrida.getMapPilotos().containsKey(nome_piloto)) return "Failure";
+		fCorrida.getMapPilotos().remove(nome_piloto);
+		return "Sucess";
 	}
 
 	public boolean existeCampeonato(String nomeCampeonato){
@@ -194,54 +284,149 @@ public class RacingSimFacade implements IRacingSimFacade {
 		return res;
 	}
 
-	
-
-
-	//um utilizador utiliza uma "template" que ja esta no sistema(e que foi adicionada pelo administrador) para criar um lobby
-	public void criarLobby(Campeonato campeonato){
-		int num_lobby = fCorrida.getMapLobbys().size();
-		fCorrida.getMapLobbys().put((num_lobby+1), campeonato);
+	public boolean existeLobbie(int idLobbie){
+		return fCorrida.getMapLobbys().containsKey(idLobbie);
 	}
 
-	//entrar no lobby de um user para 
-	public boolean joinLobby(Scanner sc)
-	{
-		if(you == null || this.getClass().getSimpleName().equals("Administrador")) return false;// sem login/registo ou é admin
+	public FacadeCorrida getFacadeCorrida(){
+		return this.fCorrida;
+	}
 
-		System.out.println("Número do lobby:"); 
-		int num_lobby = sc.nextInt(); 
+	public FacadeCarro getFacadeCarro(){
+		return this.fCarro;
+	}
+
+	//um utilizador utiliza uma "template" que ja esta no sistema(e que foi adicionada pelo administrador) para criar um lobby
+	public int criarLobby(String nomeCampeonato){
+		Campeonato campeonato = fCorrida.getMapCampeonatos().get(nomeCampeonato).clone();
+		int num_lobby = fCorrida.getMapLobbys().size();
+		fCorrida.getMapLobbys().put((num_lobby+1), campeonato);
+		return num_lobby+1;
+	}
+
+	public String lobbyToString(int num_lobby)
+	{
+		if(!fCorrida.getMapLobbys().containsKey(num_lobby)) return "Failure - Campeonato Inexistente";
+		return fCorrida.getMapLobbys().get(num_lobby).toString();
+
+	}
+
+	//listalobbysString
+	//scanner -> numlobby
+	//print(lobbytoString(num_lobby))
+	//garagemtoString
+	//scanner -> digaCarro
+	//pilotostoString
+	//scanner -> digaPiloto
+	//joinlobby(num_lobby, modelo_carro,nome_piloto)
+	//customizar carro
+
+
+
+
+	//entrar no lobby de um user 
+	public String joinLobby(int num_lobby, String modelo_carro, String nome_piloto)
+	{
+		if(you == null || this.getClass().getSimpleName().equals("Administrador")) return "Failure";// sem login/registo ou é admin
 		
 		if(!fCorrida.getMapLobbys().containsKey(num_lobby)) //lobby nao existe
-			return false;
+			return "Failure";
 		
 		Carro c = null;
-
 		Piloto p = null;
-		//mostrar o campeonato em que entrou
-		System.out.println(fCorrida.getMapLobbys().get(num_lobby).toString());
-		System.out.println("Prima qualquer botao para selecionar um carro.");
-		sc.next();
-		//estas duas linhas vao ser uma funcao do UI
-		System.out.println(fCarro.garagemToString());
-		System.out.println("Digite o carro que quer usar (Modelo)");
-		//
 		try 
 		{
-			while( (c = fCarro.findCarro(sc.nextLine())) != null)
-				c = fCarro.findCarro(sc.nextLine());
+			c = fCarro.findCarro(modelo_carro);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+		p = fCorrida.findPiloto(nome_piloto);
+		if(p == null || c == null)
+			return "Failure";
 
+		Participante participante = new Participante(you,p,c);
 		
+		fCorrida.getMapLobbys().get(num_lobby).addParticipante(participante);
+		
+		return "Sucess";
+	}
+
+	public String startLobby(int num_lobby)
+	{
+		Campeonato campeonato = fCorrida.getMapLobbys().get(num_lobby);
+		fCorrida.startCampeonato(campeonato);
+		return "Sucesso - Corridas foram criadas a partir dos circuitos e participantes!";
+	}
+
+	public String proximaCorrida(int num_lobby){
+		Campeonato campeonato = fCorrida.getMapLobbys().get(num_lobby);
+		return(fCorrida.simularProximaCorrida(campeonato.getProva()));
+	}
+
+	public String getTipoCarro(int num_lobby)
+	{
+		return fCorrida.getMapLobbys().
+						get(num_lobby).getListaPart().get(you.getUser()).
+						getCarro().getClass().getSimpleName();
+	}
+
+
+	public String mostrar_pontos()
+	{
+		if(you == null || you.getClass().getSimpleName().equals("Administrador") )return "Failure";
+		if(you.getClass().getSimpleName().equals("Convidado")) return "Convidados não teem pontos";
+		Jogador j = (Jogador) you;
+		String pontos = "PONTOS :" + j.getPoints() +"!!";
+		return pontos;
+	}
+
+	public String loginConvidado()
+	{
+		you = fUtilizador.LoginConvidado();
+		return "Sucess - " + you.getUser();
+	}
+
+
+	public String login(String user, String password)
+	{
+		try 
+		{
+			you = fUtilizador.Login(user, password);
+			return "Login com sucesso - " + user; 
+		}
+		catch(Exception e)
+		{
+			return "Credenciais Invalidas ou user nao existe";
+		}
+
+	}
+
+	public String registo(String user,String password)
+	{
+		try
+		{
+			fUtilizador.Registo(user, password, false);
+			you = fUtilizador.Login(user,password);
+
+			return "Registado com sucesso e login efetuado - " + user;
+		}
+		catch(Exception e)
+		{
+			return "Algo correu mal";
+		}
+	}
+
+
+
+
+
+	/*
 		//UI
 		System.out.println(fCorrida.listaPilotosStr());
 		System.out.println("Digite o piloto que quer usar(Nome do Piloto");
-		//
-		while( (p = fCorrida.findPiloto(sc.nextLine())) != null )
-			p = fCorrida.findPiloto(sc.nextLine());
+			p = fCorrida.findPiloto(nome_piloto);
 		//customizacao do carro
 		
 		String tipo_carro = c.getClass().getSimpleName();
@@ -259,7 +444,6 @@ public class RacingSimFacade implements IRacingSimFacade {
 		System.out.println("Escolha tipo de pneus(conservador/normal/agressivo)");
 		estadoMotor estado = estadoMotor.fromString(sc.nextLine());
 		c.setEstado(estado);
-
 		//criar participante
 		Participante participante = null;
 
@@ -273,21 +457,8 @@ public class RacingSimFacade implements IRacingSimFacade {
 			participante = new Participante(you,p,c2);
 			
 		}
-		else
-		{
-			participante = new Participante(you,p,c);
-		}
-		
-		fCorrida.getMapLobbys().get(num_lobby).addParticipante(participante);
-		
-		return true;
-	}
+		*/
 
-	@Override
-	public void addCircuito(Scanner sc) {
-		// TODO Auto-generated method stub
-		
-	}
 
 
 }

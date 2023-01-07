@@ -291,29 +291,7 @@ public class Corrida implements Serializable {
 		return probInicial;
 	}
 
-	//public float probClima(tipoPneu pneus, int clima, float vsPiloto){
-	//	float probInicial = 1;
-	//	switch(pneus){
-	//		case MACIO:
-	//			if(clima == 1)
-	//				probInicial -= 0.25;
-	//		case DURO:
-	//			if(clima ==1)
-	//				probInicial -= 0.20;
-	//		case CHUVA:
-	//			if(clima == 1) //caso esteja a chuver
-	//				probInicial -= 0;	
-	//			else // caso esteja sol, penaliza de forma severa o jogador.
-	//				probInicial -= 0.40; 
-	//		default:
-	//			probInicial -= 0.10;
-	//		}
-	//	if(clima == 0)
-	//		probInicial += -0.05 + (0.1*vsPiloto);
-	//	else
-	//		probInicial += 0.05 + (-0.1*vsPiloto);
-	//	return probInicial;
-	//}
+
 
 	//funcao que ira atribui valores aleatorios para a dif de tempo para o 1ª lugar
 	public void calculaTimeDiff() {

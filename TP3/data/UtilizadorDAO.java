@@ -10,9 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import Utilizador.Utilizador;
-import Utilizador.Administrador;
-import Utilizador.Jogador;
+import buisness.Utilizador.*;
 
 public class UtilizadorDAO implements Map<String, Utilizador>{
     private static UtilizadorDAO singleton = null;

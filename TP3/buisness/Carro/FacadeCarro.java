@@ -11,6 +11,8 @@ public class FacadeCarro implements IFacadeCarro {
         return this.mapCarros;
     }
 
+    //para os participantes tirarem uma "copia" do carro da garagem. quando os admins querem aceder a um
+    //carro para o alterar, nao usam esta funcao.
     public Carro findCarro(String modelo) throws CarroInvalido
     {
         if(!this.mapCarros.containsKey(modelo)) return null;
