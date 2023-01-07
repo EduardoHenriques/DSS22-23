@@ -45,32 +45,31 @@ public class RacingSimFacade implements IRacingSimFacade {
 
 	//Hibridos				 //1 -> 3  
 		public String addCarrohibridro(int tipo, String marca, String modelo,int cilindrada, int potencia, float pa, int potenciaE) {
-			boolean deuCerto = false;
-			//fCarro.addCarrohibridro(int tipo, String marca, String modelo,int cilindrada, int potencia, float pa, int potenciaE)
-			try
-			{
-				switch (tipo)
-				{
-					case 1:
-						C1H c1 = new C1H(marca,modelo,cilindrada,potencia,pa,potenciaE);
-						deuCerto = ( (fCarro.addCarro(c1)) ?  true :  false);
-						break;
-					case 2:
-						C2H c2 = new C2H(marca,modelo,cilindrada,potencia,pa,potenciaE);
-						deuCerto = ( (fCarro.addCarro(c2)) ?  true :  false);
-						break;
-					case 3:
-						GTH gt = new GTH(marca,modelo,cilindrada,potencia,pa,potenciaE);
-						deuCerto = ( (fCarro.addCarro(gt)) ?  true :  false);
-						break;
-					default:
-						break;		
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+			boolean deuCerto = fCarro.addCarrohibridro(tipo, marca, modelo, cilindrada, potencia, pa, potenciaE);
+			//try
+			//{
+			//	switch (tipo)
+			//	{
+			//		case 1:
+			//			C1H c1 = new C1H(marca,modelo,cilindrada,potencia,pa,potenciaE);
+			//			deuCerto = ( (fCarro.addCarro(c1)) ?  true :  false);
+			//			break;
+			//		case 2:
+			//			C2H c2 = new C2H(marca,modelo,cilindrada,potencia,pa,potenciaE);
+			//			deuCerto = ( (fCarro.addCarro(c2)) ?  true :  false);
+			//			break;
+			//		case 3:
+			//			GTH gt = new GTH(marca,modelo,cilindrada,potencia,pa,potenciaE);
+			//			deuCerto = ( (fCarro.addCarro(gt)) ?  true :  false);
+			//			break;
+			//		default:
+			//			break;		
+			//	}
+			//}
+			//catch(Exception e)
+			//{
+			//	e.printStackTrace();
+			//}
 			return (deuCerto ? "Success" : "Failure");
 
 	}

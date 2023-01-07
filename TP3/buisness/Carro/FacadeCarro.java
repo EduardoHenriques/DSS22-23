@@ -122,6 +122,7 @@ public class FacadeCarro implements IFacadeCarro {
         return true;
     }
 
+
     public boolean addCarro(Carro c)
     {
         String key = c.getModelo();
