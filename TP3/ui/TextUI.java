@@ -84,7 +84,7 @@ public class TextUI {
      * Executa o menu principal e invoca o método correspondente à opção seleccionada.
      */
     public void run() {
-        this.menuAdim.run();
+        this.menuLogin.run();
         System.out.println("Até breve!...");
     }
 
@@ -365,7 +365,7 @@ public class TextUI {
             System.out.println(e.getMessage());
         }
     }
-
+    
     private void removerPiloto() {
         try {
             System.out.println(this.model.getFacadeCorrida().listaPilotosStr());

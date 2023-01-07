@@ -14,13 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import Carro.Carro;
-import Racing.Campeonato;
-import Racing.Circuito;
-import Racing.Corrida;
-import Racing.Participante;
-import Racing.Piloto;
-import Utilizador.Utilizador;
+import buisness.Carro.Carro;
+import buisness.Racing.Campeonato;
+import buisness.Racing.Circuito;
+import buisness.Racing.Corrida;
+import buisness.Racing.Participante;
+import buisness.Racing.Piloto;
+import buisness.Utilizador.Utilizador;
 
 public class CampeonatoDAO implements Map<String, Campeonato> {
     private static CampeonatoDAO singleton = null;

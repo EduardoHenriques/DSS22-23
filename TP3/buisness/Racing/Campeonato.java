@@ -1,7 +1,8 @@
 package buisness.Racing;
 import java.io.*;
 import java.security.KeyStore.Entry;
-import buisness.*;
+import buisness.Carro.*;
+
 
 import java.util.*;
 
@@ -185,8 +186,32 @@ public class Campeonato implements Serializable {
 		return strClassificacoes;
 	}
 
-	public String separaClassificacoes(ArrayList<Map.Entry<String, Integer>> lista){
-		
+	public String separaClassificacoes(ArrayList<Map.Entry<String, Integer>> classificacoes){
+		String c1 = "";
+		String c2 = "";
+		String gt = "";
+		String sc = "";
+		for(Map.Entry<String, Integer> entry : classificacoes){
+			Participante p = participantes.get(entry.getKey());
+			Carro carro = p.getCarro();
+			if(carro instanceof C1H){
+				c1 += "valor";
+			} else if (carro instanceof C2H){
+				c2 += "valor";
+			} else if (carro instanceof GTH){
+				gt += "valor";
+			} else if (carro instanceof C1){
+				c1 += "valor";
+			} else if (carro instanceof C2){
+				c2 += "valor";
+			} else if (carro instanceof GT){
+				gt += "valor";
+			} else if (carro instanceof SC){
+				sc += "valor";
+			}
+		}
+		String result = "C1: \n" + c1 + "C2: \n" + c2 + "GT: \n" + gt + "SC: \n" + sc;
+		return result;
 	}
 
 	public ArrayList<Map.Entry<String, Integer>> ordenaClassificacao(Map<String, Integer> classificacao) {

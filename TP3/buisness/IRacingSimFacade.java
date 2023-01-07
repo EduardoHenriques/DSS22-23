@@ -5,7 +5,7 @@ import java.util.*;
 public interface IRacingSimFacade {
 
 	//=====ADMIN=====
-
+	
 
 	public String addCircuito(String nome, int dist, int voltas, int n_retas, int n_chicanes); //admin
 	public String addCampeonato(ArrayList<String> circuitos, String nomeProva); //admin
